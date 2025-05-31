@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6E0B1B49-583F-4963-A8C5-FABECFA65BBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetCareBooking.Core", "src\PetCareBooking.Core\PetCareBooking.Core.csproj", "{50C9EEEF-A62C-4484-A00B-6E9F4153B01E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetCareBooking.Infrastructure", "src\PetCareBooking.Infrastructure\PetCareBooking.Infrastructure.csproj", "{FCCFD8A0-0783-476E-ABAA-5B0A54A007E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetCareBooking.Services", "src\PetCareBooking.Services\PetCareBooking.Services.csproj", "{844AB192-74EC-4E97-87F8-F05E3F3B41C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetCareBooking.Common", "src\PetCareBooking.Common\PetCareBooking.Common.csproj", "{50A0949A-18CA-4A51-B0D3-DB67BCE94B27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetCareBooking.API", "src\PetCareBooking.API\PetCareBooking.API.csproj", "{61C7F0C5-6A3E-4377-96A3-6293FA1BB755}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetCareBooking.Web", "src\PetCareBooking.Web\PetCareBooking.Web.csproj", "{F030D8E0-BF6A-4AAC-894C-835A3C16833C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50C9EEEF-A62C-4484-A00B-6E9F4153B01E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50C9EEEF-A62C-4484-A00B-6E9F4153B01E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50C9EEEF-A62C-4484-A00B-6E9F4153B01E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50C9EEEF-A62C-4484-A00B-6E9F4153B01E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCCFD8A0-0783-476E-ABAA-5B0A54A007E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCCFD8A0-0783-476E-ABAA-5B0A54A007E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCCFD8A0-0783-476E-ABAA-5B0A54A007E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCCFD8A0-0783-476E-ABAA-5B0A54A007E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{844AB192-74EC-4E97-87F8-F05E3F3B41C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{844AB192-74EC-4E97-87F8-F05E3F3B41C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{844AB192-74EC-4E97-87F8-F05E3F3B41C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{844AB192-74EC-4E97-87F8-F05E3F3B41C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50A0949A-18CA-4A51-B0D3-DB67BCE94B27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50A0949A-18CA-4A51-B0D3-DB67BCE94B27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50A0949A-18CA-4A51-B0D3-DB67BCE94B27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50A0949A-18CA-4A51-B0D3-DB67BCE94B27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61C7F0C5-6A3E-4377-96A3-6293FA1BB755}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61C7F0C5-6A3E-4377-96A3-6293FA1BB755}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61C7F0C5-6A3E-4377-96A3-6293FA1BB755}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61C7F0C5-6A3E-4377-96A3-6293FA1BB755}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F030D8E0-BF6A-4AAC-894C-835A3C16833C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F030D8E0-BF6A-4AAC-894C-835A3C16833C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F030D8E0-BF6A-4AAC-894C-835A3C16833C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F030D8E0-BF6A-4AAC-894C-835A3C16833C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{50C9EEEF-A62C-4484-A00B-6E9F4153B01E} = {6E0B1B49-583F-4963-A8C5-FABECFA65BBE}
+		{FCCFD8A0-0783-476E-ABAA-5B0A54A007E4} = {6E0B1B49-583F-4963-A8C5-FABECFA65BBE}
+		{844AB192-74EC-4E97-87F8-F05E3F3B41C5} = {6E0B1B49-583F-4963-A8C5-FABECFA65BBE}
+		{50A0949A-18CA-4A51-B0D3-DB67BCE94B27} = {6E0B1B49-583F-4963-A8C5-FABECFA65BBE}
+		{61C7F0C5-6A3E-4377-96A3-6293FA1BB755} = {6E0B1B49-583F-4963-A8C5-FABECFA65BBE}
+		{F030D8E0-BF6A-4AAC-894C-835A3C16833C} = {6E0B1B49-583F-4963-A8C5-FABECFA65BBE}
+	EndGlobalSection
+EndGlobal

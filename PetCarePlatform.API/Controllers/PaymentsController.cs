@@ -125,19 +125,19 @@ namespace PetCarePlatform.API.Controllers
                 );
 
                 // Handle the event based on its type
-                if (stripeEvent.Type == Events.PaymentIntentSucceeded)
-                {
-                    var paymentIntent = stripeEvent.Data.Object as PaymentIntent;
-                    // Handle successful payment
-                    // In a real implementation, you would update the payment status in your database
-                    Console.WriteLine($"Payment succeeded: {paymentIntent.Id}");
-                }
-                else if (stripeEvent.Type == Events.PaymentIntentPaymentFailed)
-                {
-                    var paymentIntent = stripeEvent.Data.Object as PaymentIntent;
-                    // Handle failed payment
-                    Console.WriteLine($"Payment failed: {paymentIntent.Id}");
-                }
+                //if (stripeEvent.Type == Events.PaymentIntentSucceeded)
+                //{
+                //    var paymentIntent = stripeEvent.Data.Object as PaymentIntent;
+                //    // Handle successful payment
+                //    // In a real implementation, you would update the payment status in your database
+                //    Console.WriteLine($"Payment succeeded: {paymentIntent.Id}");
+                //}
+                //else if (stripeEvent.Type == Events.PaymentIntentPaymentFailed)
+                //{
+                //    var paymentIntent = stripeEvent.Data.Object as PaymentIntent;
+                //    // Handle failed payment
+                //    Console.WriteLine($"Payment failed: {paymentIntent.Id}");
+                //}
                 // Add more event types as needed
 
                 return Ok();

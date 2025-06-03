@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\prate\\Downloads\\PetCarePlatform\\PetCarePlatform\\PetCarePlatform.Infrastructure\\PetCarePlatform.Infrastructure.csproj": {}
+    "C:\\Users\\prate\\source\\repos\\pb3044\\PetCarePOC\\PetCarePlatform.Infrastructure\\PetCarePlatform.Infrastructure.csproj": {}
   },
   "projects": {
-    "C:\\Users\\prate\\Downloads\\PetCarePlatform\\PetCarePlatform\\PetCarePlatform.Core\\PetCarePlatform.Core.csproj": {
+    "C:\\Users\\prate\\source\\repos\\pb3044\\PetCarePOC\\PetCarePlatform.Core\\PetCarePlatform.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\prate\\Downloads\\PetCarePlatform\\PetCarePlatform\\PetCarePlatform.Core\\PetCarePlatform.Core.csproj",
+        "projectUniqueName": "C:\\Users\\prate\\source\\repos\\pb3044\\PetCarePOC\\PetCarePlatform.Core\\PetCarePlatform.Core.csproj",
         "projectName": "PetCarePlatform.Core",
-        "projectPath": "C:\\Users\\prate\\Downloads\\PetCarePlatform\\PetCarePlatform\\PetCarePlatform.Core\\PetCarePlatform.Core.csproj",
+        "projectPath": "C:\\Users\\prate\\source\\repos\\pb3044\\PetCarePOC\\PetCarePlatform.Core\\PetCarePlatform.Core.csproj",
         "packagesPath": "C:\\Users\\prate\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\prate\\Downloads\\PetCarePlatform\\PetCarePlatform\\PetCarePlatform.Core\\obj\\",
+        "outputPath": "C:\\Users\\prate\\source\\repos\\pb3044\\PetCarePOC\\PetCarePlatform.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -31,11 +31,7 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {
-              "C:\\Users\\prate\\Downloads\\PetCarePlatform\\PetCarePlatform\\PetCarePlatform.Infrastructure\\PetCarePlatform.Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\prate\\Downloads\\PetCarePlatform\\PetCarePlatform\\PetCarePlatform.Infrastructure\\PetCarePlatform.Infrastructure.csproj"
-              }
-            }
+            "projectReferences": {}
           }
         },
         "warningProperties": {
@@ -53,6 +49,20 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNet.Identity.EntityFramework": {
+              "target": "Package",
+              "version": "[2.2.4, )"
+            },
+            "Microsoft.Extensions.Identity.Core": {
+              "target": "Package",
+              "version": "[9.0.5, )"
+            },
+            "Microsoft.Extensions.Identity.Stores": {
+              "target": "Package",
+              "version": "[9.0.5, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -73,14 +83,14 @@
         }
       }
     },
-    "C:\\Users\\prate\\Downloads\\PetCarePlatform\\PetCarePlatform\\PetCarePlatform.Infrastructure\\PetCarePlatform.Infrastructure.csproj": {
+    "C:\\Users\\prate\\source\\repos\\pb3044\\PetCarePOC\\PetCarePlatform.Infrastructure\\PetCarePlatform.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\prate\\Downloads\\PetCarePlatform\\PetCarePlatform\\PetCarePlatform.Infrastructure\\PetCarePlatform.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\prate\\source\\repos\\pb3044\\PetCarePOC\\PetCarePlatform.Infrastructure\\PetCarePlatform.Infrastructure.csproj",
         "projectName": "PetCarePlatform.Infrastructure",
-        "projectPath": "C:\\Users\\prate\\Downloads\\PetCarePlatform\\PetCarePlatform\\PetCarePlatform.Infrastructure\\PetCarePlatform.Infrastructure.csproj",
+        "projectPath": "C:\\Users\\prate\\source\\repos\\pb3044\\PetCarePOC\\PetCarePlatform.Infrastructure\\PetCarePlatform.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\prate\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\prate\\Downloads\\PetCarePlatform\\PetCarePlatform\\PetCarePlatform.Infrastructure\\obj\\",
+        "outputPath": "C:\\Users\\prate\\source\\repos\\pb3044\\PetCarePOC\\PetCarePlatform.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -101,8 +111,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\prate\\Downloads\\PetCarePlatform\\PetCarePlatform\\PetCarePlatform.Core\\PetCarePlatform.Core.csproj": {
-                "projectPath": "C:\\Users\\prate\\Downloads\\PetCarePlatform\\PetCarePlatform\\PetCarePlatform.Core\\PetCarePlatform.Core.csproj"
+              "C:\\Users\\prate\\source\\repos\\pb3044\\PetCarePOC\\PetCarePlatform.Core\\PetCarePlatform.Core.csproj": {
+                "projectPath": "C:\\Users\\prate\\source\\repos\\pb3044\\PetCarePOC\\PetCarePlatform.Core\\PetCarePlatform.Core.csproj"
               }
             }
           }
@@ -123,9 +133,17 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.5, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
@@ -142,10 +160,6 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.5, )"
-            },
-            "Microsoft.Extensions.Identity.Core": {
-              "target": "Package",
-              "version": "[8.0.0, )"
             },
             "Stripe.net": {
               "target": "Package",

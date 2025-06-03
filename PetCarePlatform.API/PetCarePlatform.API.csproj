@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PetCarePlatform.Core\PetCarePlatform.Core.csproj" />
+    <ProjectReference Include="..\PetCarePlatform.Infrastructure\PetCarePlatform.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

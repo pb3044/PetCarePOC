@@ -1,0 +1,25 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/PetCarePlatform/config/applicationhost.config
+/.vs/PetCarePlatform/CopilotIndices/17.14.698.11175/CodeChunks.db
+/.vs/PetCarePlatform/CopilotIndices/17.14.698.11175/CodeChunks.db-shm
+/.vs/PetCarePlatform/CopilotIndices/17.14.698.11175/CodeChunks.db-wal
+/.vs/PetCarePlatform/CopilotIndices/17.14.698.11175/SemanticSymbols.db
+/.vs/PetCarePlatform/CopilotIndices/17.14.698.11175/SemanticSymbols.db-shm
+/.vs/PetCarePlatform/CopilotIndices/17.14.698.11175/SemanticSymbols.db-wal
+/.vs/PetCarePlatform/FileContentIndex/39838eca-e31a-422c-8232-6bb0d10f2660.vsidx
+/.vs/PetCarePlatform/v17/.suo
+/.vs/PetCarePlatform/v17/DocumentLayout.backup.json
+/.vs/PetCarePlatform/v17/DocumentLayout.json
+/.vs/PetCarePOC/CopilotIndices/17.14.698.11175/CodeChunks.db
+/.vs/PetCarePOC/CopilotIndices/17.14.698.11175/SemanticSymbols.db
+/.vs/PetCarePOC/v17/.wsuo
+/.vs/PetCarePOC/v17/DocumentLayout.backup.json
+/.vs/PetCarePOC/v17/DocumentLayout.json
+/.vs/ProjectEvaluation/petcareplatform.metadata.v9.bin
+/.vs/ProjectEvaluation/petcareplatform.projects.v9.bin
+/.vs/ProjectEvaluation/petcareplatform.strings.v9.bin
+/.vs/slnx.sqlite
+/.vs/VSWorkspaceState.json

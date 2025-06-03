@@ -25,14 +25,12 @@ namespace PetCarePlatform.Core.Models
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
         public string Bio { get; set; }
-        
-        // Navigation properties
         public virtual PetOwner PetOwner { get; set; }
         public virtual ServiceProvider ServiceProvider { get; set; }
         public virtual ICollection<Review> ReviewsGiven { get; set; }
         public virtual ICollection<Review> ReviewsReceived { get; set; }
-        public virtual ICollection<Message> MessagesSent { get; set; }
-        public virtual ICollection<Message> MessagesReceived { get; set; }
+        public virtual ICollection<Message> MessagesSent { get; set; } // Added this property
+        public virtual ICollection<Message> MessagesReceived { get; set; } // Added this property
         public virtual ICollection<Notification> Notifications { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
     }

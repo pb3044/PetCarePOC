@@ -48,12 +48,12 @@ namespace PetCarePlatform.API.Controllers
             return Ok(messages);
         }
 
-        [HttpGet("booking/{bookingId}")]
-        public async Task<IActionResult> GetMessagesByBooking(int bookingId)
-        {
-            var messages = await _messageService.GetMessagesByBookingAsync(bookingId);
-            return Ok(messages);
-        }
+        //[HttpGet("booking/{bookingId}")]
+        //public async Task<IActionResult> GetMessagesByBooking(int bookingId)
+        //{
+        //    var messages = await _messageService.GetMessagesByBookingAsync(bookingId);
+        //    return Ok(messages);
+        //}
 
         [HttpPost]
         public async Task<IActionResult> SendMessage([FromBody] SendMessageRequest request)

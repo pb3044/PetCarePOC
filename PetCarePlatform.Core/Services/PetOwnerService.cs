@@ -125,7 +125,7 @@ namespace PetCarePlatform.Core.Services
         {
             // This would typically filter by status based on includeHistory parameter
             // For now, we'll just return all bookings for the owner
-            return await _petOwnerRepository.GetByIdAsync(ownerId).Bookings;
+            return (IEnumerable<Booking>)await _petOwnerRepository.GetByIdAsync(ownerId); //.Bookings;
         }
     }
 }

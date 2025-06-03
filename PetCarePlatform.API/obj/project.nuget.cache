@@ -1,14 +1,17 @@
 {
   "version": 2,
-  "dgSpecHash": "ZnkfYFiFNJc=",
-  "success": false,
-  "projectFilePath": "C:\\Users\\prate\\Downloads\\PetCarePlatform\\PetCarePlatform\\PetCarePlatform.API\\PetCarePlatform.API.csproj",
+  "dgSpecHash": "LfKS0Zba0uA=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\prate\\source\\repos\\pb3044\\PetCarePOC\\PetCarePlatform.API\\PetCarePlatform.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\prate\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\prate\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
+    "C:\\Users\\prate\\.nuget\\packages\\entityframework\\6.1.0\\entityframework.6.1.0.nupkg.sha512",
+    "C:\\Users\\prate\\.nuget\\packages\\microsoft.aspnet.identity.core\\2.2.4\\microsoft.aspnet.identity.core.2.2.4.nupkg.sha512",
+    "C:\\Users\\prate\\.nuget\\packages\\microsoft.aspnet.identity.entityframework\\2.2.4\\microsoft.aspnet.identity.entityframework.2.2.4.nupkg.sha512",
     "C:\\Users\\prate\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.0\\microsoft.aspnetcore.authentication.jwtbearer.8.0.0.nupkg.sha512",
-    "C:\\Users\\prate\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\8.0.0\\microsoft.aspnetcore.cryptography.internal.8.0.0.nupkg.sha512",
-    "C:\\Users\\prate\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\8.0.0\\microsoft.aspnetcore.cryptography.keyderivation.8.0.0.nupkg.sha512",
+    "C:\\Users\\prate\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\9.0.5\\microsoft.aspnetcore.cryptography.internal.9.0.5.nupkg.sha512",
+    "C:\\Users\\prate\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\9.0.5\\microsoft.aspnetcore.cryptography.keyderivation.9.0.5.nupkg.sha512",
     "C:\\Users\\prate\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\8.0.0\\microsoft.aspnetcore.identity.entityframeworkcore.8.0.0.nupkg.sha512",
     "C:\\Users\\prate\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.16\\microsoft.aspnetcore.openapi.8.0.16.nupkg.sha512",
     "C:\\Users\\prate\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
@@ -25,8 +28,8 @@
     "C:\\Users\\prate\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\9.0.5\\microsoft.extensions.configuration.abstractions.9.0.5.nupkg.sha512",
     "C:\\Users\\prate\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\9.0.5\\microsoft.extensions.dependencyinjection.9.0.5.nupkg.sha512",
     "C:\\Users\\prate\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\9.0.5\\microsoft.extensions.dependencyinjection.abstractions.9.0.5.nupkg.sha512",
-    "C:\\Users\\prate\\.nuget\\packages\\microsoft.extensions.identity.core\\8.0.0\\microsoft.extensions.identity.core.8.0.0.nupkg.sha512",
-    "C:\\Users\\prate\\.nuget\\packages\\microsoft.extensions.identity.stores\\8.0.0\\microsoft.extensions.identity.stores.8.0.0.nupkg.sha512",
+    "C:\\Users\\prate\\.nuget\\packages\\microsoft.extensions.identity.core\\9.0.5\\microsoft.extensions.identity.core.9.0.5.nupkg.sha512",
+    "C:\\Users\\prate\\.nuget\\packages\\microsoft.extensions.identity.stores\\9.0.5\\microsoft.extensions.identity.stores.9.0.5.nupkg.sha512",
     "C:\\Users\\prate\\.nuget\\packages\\microsoft.extensions.logging\\9.0.5\\microsoft.extensions.logging.9.0.5.nupkg.sha512",
     "C:\\Users\\prate\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\9.0.5\\microsoft.extensions.logging.abstractions.9.0.5.nupkg.sha512",
     "C:\\Users\\prate\\.nuget\\packages\\microsoft.extensions.options\\9.0.5\\microsoft.extensions.options.9.0.5.nupkg.sha512",
@@ -48,6 +51,7 @@
     "C:\\Users\\prate\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.6.2\\swashbuckle.aspnetcore.swaggergen.6.6.2.nupkg.sha512",
     "C:\\Users\\prate\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.6.2\\swashbuckle.aspnetcore.swaggerui.6.6.2.nupkg.sha512",
     "C:\\Users\\prate\\.nuget\\packages\\system.clientmodel\\1.0.0\\system.clientmodel.1.0.0.nupkg.sha512",
+    "C:\\Users\\prate\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512",
     "C:\\Users\\prate\\.nuget\\packages\\system.configuration.configurationmanager\\8.0.0\\system.configuration.configurationmanager.8.0.0.nupkg.sha512",
     "C:\\Users\\prate\\.nuget\\packages\\system.diagnostics.diagnosticsource\\9.0.5\\system.diagnostics.diagnosticsource.9.0.5.nupkg.sha512",
     "C:\\Users\\prate\\.nuget\\packages\\system.diagnostics.eventlog\\8.0.0\\system.diagnostics.eventlog.8.0.0.nupkg.sha512",
@@ -69,12 +73,37 @@
   ],
   "logs": [
     {
-      "code": "NU1108",
-      "level": "Error",
-      "message": "Cycle detected. \r\n  PetCarePlatform.API -> PetCarePlatform.Core -> PetCarePlatform.Infrastructure -> PetCarePlatform.Core.",
-      "projectPath": "C:\\Users\\prate\\Downloads\\PetCarePlatform\\PetCarePlatform\\PetCarePlatform.API\\PetCarePlatform.API.csproj",
-      "filePath": "C:\\Users\\prate\\Downloads\\PetCarePlatform\\PetCarePlatform\\PetCarePlatform.API\\PetCarePlatform.API.csproj",
-      "libraryId": "PetCarePlatform.Core",
+      "code": "NU1701",
+      "level": "Warning",
+      "message": "Package 'EntityFramework 6.1.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
+      "projectPath": "C:\\Users\\prate\\source\\repos\\pb3044\\PetCarePOC\\PetCarePlatform.API\\PetCarePlatform.API.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\prate\\source\\repos\\pb3044\\PetCarePOC\\PetCarePlatform.API\\PetCarePlatform.API.csproj",
+      "libraryId": "EntityFramework",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "message": "Package 'Microsoft.AspNet.Identity.Core 2.2.4' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
+      "projectPath": "C:\\Users\\prate\\source\\repos\\pb3044\\PetCarePOC\\PetCarePlatform.API\\PetCarePlatform.API.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\prate\\source\\repos\\pb3044\\PetCarePOC\\PetCarePlatform.API\\PetCarePlatform.API.csproj",
+      "libraryId": "Microsoft.AspNet.Identity.Core",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "message": "Package 'Microsoft.AspNet.Identity.EntityFramework 2.2.4' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
+      "projectPath": "C:\\Users\\prate\\source\\repos\\pb3044\\PetCarePOC\\PetCarePlatform.API\\PetCarePlatform.API.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\prate\\source\\repos\\pb3044\\PetCarePOC\\PetCarePlatform.API\\PetCarePlatform.API.csproj",
+      "libraryId": "Microsoft.AspNet.Identity.EntityFramework",
       "targetGraphs": [
         "net8.0"
       ]

@@ -12,14 +12,12 @@ namespace PetCarePlatform.Core.Models
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public BookingStatus Status { get; set; }
-        public string Notes { get; set; }
-        public string SpecialInstructions { get; set; }
+        public string Notes { get; set; } = string.Empty; // Fix: Initialize with a default value
+        public string SpecialInstructions { get; set; } = string.Empty; // Fix: Initialize with a default value
         public decimal TotalPrice { get; set; }
         public int? PaymentId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        
-        // Navigation properties
         public virtual Service Service { get; set; }
         public virtual PetOwner Owner { get; set; }
         public virtual Pet Pet { get; set; }

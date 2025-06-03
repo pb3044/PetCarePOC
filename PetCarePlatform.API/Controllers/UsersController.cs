@@ -76,7 +76,7 @@ namespace PetCarePlatform.API.Controllers
                 }
                 else if (request.UserType == UserType.ServiceProvider)
                 {
-                    var serviceProvider = new ServiceProvider
+                    var serviceProvider = new Core.Models.ServiceProvider
                     {
                         UserId = createdUser.Id,
                         BusinessName = request.BusinessName,

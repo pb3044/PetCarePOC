@@ -19,7 +19,6 @@ namespace PetCarePlatform.Infrastructure.Data
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Message> Messages { get; set; }
-        public DbSet<Payment> Payments { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<PetPhoto> PetPhotos { get; set; }
         public DbSet<ServicePhoto> ServicePhotos { get; set; }
@@ -31,7 +30,7 @@ namespace PetCarePlatform.Infrastructure.Data
             base.OnModelCreating(builder);
 
             // Configure entity relationships and constraints
-            
+
             // PetOwner
             builder.Entity<PetOwner>()
                 .HasOne(po => po.User)
@@ -94,24 +93,24 @@ namespace PetCarePlatform.Infrastructure.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Message
-            builder.Entity<Message>()
-                .HasOne(m => m.Sender)
-                .WithMany(u => u.SentMessages)
-                .HasForeignKey(m => m.SenderId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.Entity<Message>()
+            //    .HasOne(m => m.Sender)
+            //    .WithMany(u => u.SentMessages)
+            //    .HasForeignKey(m => m.SenderId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Message>()
-                .HasOne(m => m.Receiver)
-                .WithMany(u => u.ReceivedMessages)
-                .HasForeignKey(m => m.ReceiverId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.Entity<Message>()
+            //    .HasOne(m => m.Receiver)
+            //    .WithMany(u => u.ReceivedMessages)
+            //    .HasForeignKey(m => m.ReceiverId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
-            // Payment
-            builder.Entity<Payment>()
-                .HasOne(p => p.Booking)
-                .WithOne(b => b.Payment)
-                .HasForeignKey<Payment>(p => p.BookingId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //// Payment
+            //builder.Entity<Payment>()
+            //    .HasOne(p => p.Booking)
+            //    .WithOne(b => b.Payment)
+            //    .HasForeignKey<Payment>(p => p.BookingId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             // Notification
             builder.Entity<Notification>()

@@ -1,0 +1,317 @@
+@{
+    ViewData["Title"] = "Booking Process";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Booking Process Steps -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title mb-4">Book Your Pet Care Service</h2>
+                    
+                    <!-- Progress Steps -->
+                    <div class="booking-progress mb-5">
+                        <div class="d-flex justify-content-between position-relative">
+                            <div class="progress" style="height: 2px; width: 100%; position: absolute; top: 25px; z-index: 1;">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: 33%;" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            
+                            <div class="step active text-center position-relative" style="z-index: 2;">
+                                <div class="step-icon rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-2" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-calendar-check"></i>
+                                </div>
+                                <div class="step-title">Details</div>
+                            </div>
+                            
+                            <div class="step text-center position-relative" style="z-index: 2;">
+                                <div class="step-icon rounded-circle bg-light d-flex align-items-center justify-content-center mx-auto mb-2" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-credit-card"></i>
+                                </div>
+                                <div class="step-title">Payment</div>
+                            </div>
+                            
+                            <div class="step text-center position-relative" style="z-index: 2;">
+                                <div class="step-icon rounded-circle bg-light d-flex align-items-center justify-content-center mx-auto mb-2" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-check-circle"></i>
+                                </div>
+                                <div class="step-title">Confirmation</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Booking Form -->
+                    <form id="bookingForm">
+                        <h4 class="mb-3">Service Details</h4>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="serviceDate" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="serviceDate" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="serviceTime" class="form-label">Time</label>
+                                <select class="form-select" id="serviceTime" required>
+                                    <option value="" selected disabled>Select a time</option>
+                                    <option>8:00 AM</option>
+                                    <option>9:00 AM</option>
+                                    <option>10:00 AM</option>
+                                    <option>11:00 AM</option>
+                                    <option>12:00 PM</option>
+                                    <option>1:00 PM</option>
+                                    <option>2:00 PM</option>
+                                    <option>3:00 PM</option>
+                                    <option>4:00 PM</option>
+                                    <option>5:00 PM</option>
+                                    <option>6:00 PM</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="serviceDuration" class="form-label">Duration</label>
+                                <select class="form-select" id="serviceDuration" required>
+                                    <option value="30">30 minutes - $15</option>
+                                    <option value="45">45 minutes - $18</option>
+                                    <option value="60" selected>60 minutes - $20</option>
+                                    <option value="90">90 minutes - $30</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="serviceFrequency" class="form-label">Frequency</label>
+                                <select class="form-select" id="serviceFrequency">
+                                    <option value="once" selected>One time</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="biweekly">Bi-weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <h4 class="mb-3">Pet Information</h4>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="petSelect" class="form-label">Select Pet</label>
+                                <select class="form-select" id="petSelect" required>
+                                    <option value="" selected disabled>Choose your pet</option>
+                                    <option value="1">Max (Golden Retriever)</option>
+                                    <option value="2">Bella (Labrador)</option>
+                                    <option value="3">Add a new pet</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="petNeeds" class="form-label">Special Needs</label>
+                                <select class="form-select" id="petNeeds" multiple>
+                                    <option>Medication required</option>
+                                    <option>Dietary restrictions</option>
+                                    <option>Anxiety issues</option>
+                                    <option>Senior pet care</option>
+                                    <option>Puppy training</option>
+                                </select>
+                                <div class="form-text">Hold Ctrl/Cmd to select multiple options</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="specialInstructions" class="form-label">Special Instructions</label>
+                            <textarea class="form-control" id="specialInstructions" rows="3" placeholder="Any specific instructions for the service provider?"></textarea>
+                        </div>
+                        
+                        <h4 class="mb-3">Location</h4>
+                        <div class="mb-4">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="locationOption" id="homeAddress" checked>
+                                <label class="form-check-label" for="homeAddress">
+                                    Use my home address
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="locationOption" id="differentAddress">
+                                <label class="form-check-label" for="differentAddress">
+                                    Use a different address
+                                </label>
+                            </div>
+                            
+                            <div id="addressFields" class="mt-3 d-none">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label for="address" class="form-label">Address</label>
+                                        <input type="text" class="form-control" id="address" placeholder="1234 Main St">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="city" class="form-label">City</label>
+                                        <input type="text" class="form-control" id="city" placeholder="City">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="province" class="form-label">Province</label>
+                                        <select class="form-select" id="province">
+                                            <option value="" selected disabled>Choose...</option>
+                                            <option>Alberta</option>
+                                            <option>British Columbia</option>
+                                            <option>Manitoba</option>
+                                            <option>New Brunswick</option>
+                                            <option>Newfoundland and Labrador</option>
+                                            <option>Nova Scotia</option>
+                                            <option>Ontario</option>
+                                            <option>Prince Edward Island</option>
+                                            <option>Quebec</option>
+                                            <option>Saskatchewan</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="postalCode" class="form-label">Postal Code</label>
+                                        <input type="text" class="form-control" id="postalCode" placeholder="A1A 1A1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-5">
+                            <a href="/Services/Details/1" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i> Back to Service
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                Continue to Payment <i class="bi bi-arrow-right ms-1"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Order Summary -->
+        <div class="col-lg-4">
+            <div class="card mb-4 sticky-top" style="top: 100px; z-index: 100;">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-4">
+                        <img src="/images/dog-walking-1.jpg" class="rounded me-3" width="60" height="60" alt="Service" style="object-fit: cover;">
+                        <div>
+                            <h6 class="mb-0">Professional Dog Walking</h6>
+                            <p class="text-muted mb-0">with Jane Doe</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Date & Time:</span>
+                            <span id="summaryDateTime">Select date & time</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Duration:</span>
+                            <span id="summaryDuration">60 minutes</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Pet:</span>
+                            <span id="summaryPet">Select pet</span>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Service Fee</span>
+                        <span id="summaryServiceFee">$20.00</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Platform Fee</span>
+                        <span id="summaryPlatformFee">$2.00</span>
+                    </div>
+                    <div class="d-flex justify-content-between fw-bold">
+                        <span>Total</span>
+                        <span id="summaryTotal">$22.00</span>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="alert alert-info mb-0">
+                        <i class="bi bi-info-circle me-2"></i> You won't be charged until the service provider accepts your booking request.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Toggle address fields
+            $('input[name="locationOption"]').change(function() {
+                if ($('#differentAddress').is(':checked')) {
+                    $('#addressFields').removeClass('d-none');
+                } else {
+                    $('#addressFields').addClass('d-none');
+                }
+            });
+            
+            // Update summary when form fields change
+            $('#serviceDate, #serviceTime').change(function() {
+                let date = $('#serviceDate').val();
+                let time = $('#serviceTime').val();
+                
+                if (date && time) {
+                    let formattedDate = new Date(date).toLocaleDateString('en-US', { 
+                        weekday: 'short', 
+                        month: 'short', 
+                        day: 'numeric' 
+                    });
+                    $('#summaryDateTime').text(formattedDate + ' at ' + time);
+                }
+            });
+            
+            $('#serviceDuration').change(function() {
+                let duration = $(this).val();
+                let price = 0;
+                
+                switch(duration) {
+                    case '30':
+                        price = 15;
+                        $('#summaryDuration').text('30 minutes');
+                        break;
+                    case '45':
+                        price = 18;
+                        $('#summaryDuration').text('45 minutes');
+                        break;
+                    case '60':
+                        price = 20;
+                        $('#summaryDuration').text('60 minutes');
+                        break;
+                    case '90':
+                        price = 30;
+                        $('#summaryDuration').text('90 minutes');
+                        break;
+                }
+                
+                let platformFee = Math.round(price * 0.1);
+                let total = price + platformFee;
+                
+                $('#summaryServiceFee').text('$' + price.toFixed(2));
+                $('#summaryPlatformFee').text('$' + platformFee.toFixed(2));
+                $('#summaryTotal').text('$' + total.toFixed(2));
+            });
+            
+            $('#petSelect').change(function() {
+                let petId = $(this).val();
+                let petName = $(this).find('option:selected').text();
+                
+                if (petId && petId !== '3') {
+                    $('#summaryPet').text(petName);
+                } else if (petId === '3') {
+                    // In a real app, this would open a modal to add a new pet
+                    $('#summaryPet').text('New pet');
+                }
+            });
+            
+            // Form submission
+            $('#bookingForm').submit(function(e) {
+                e.preventDefault();
+                // In a real app, this would submit the form data to the server
+                // and redirect to the payment page
+                window.location.href = '/Bookings/Payment';
+            });
+        });
+    </script>
+}

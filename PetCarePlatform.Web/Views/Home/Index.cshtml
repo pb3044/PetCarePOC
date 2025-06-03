@@ -1,0 +1,295 @@
+@{
+    ViewData["Title"] = "Home";
+}
+
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-4 mb-4">Find Trusted Pet Care in Your Neighborhood</h1>
+        <p class="lead mb-5">Connect with experienced pet sitters, dog walkers, groomers, and more.</p>
+        <div class="d-flex justify-content-center">
+            <a href="/Services" class="btn btn-primary btn-lg me-3">Find Services</a>
+            <a href="/Identity/Account/Register" class="btn btn-outline-light btn-lg">Become a Provider</a>
+        </div>
+    </div>
+</div>
+
+<!-- Search Box -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="search-box">
+                <form>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="serviceType" class="form-label">Service Type</label>
+                            <select id="serviceType" class="form-select">
+                                <option selected>All Services</option>
+                                <option>Pet Sitting</option>
+                                <option>Dog Walking</option>
+                                <option>Pet Boarding</option>
+                                <option>Pet Grooming</option>
+                                <option>Pet Training</option>
+                                <option>Veterinary Services</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" placeholder="Enter your address">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="date" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="date">
+                        </div>
+                        <div class="col-md-1 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Featured Services -->
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Popular Services</h2>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card service-card">
+                <img src="/images/dog-walking.jpg" class="card-img-top" alt="Dog Walking">
+                <div class="card-body">
+                    <h5 class="card-title">Dog Walking</h5>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-primary fw-bold">$15-25/hour</span>
+                        <span class="rating-stars">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-half"></i>
+                            <span class="text-muted ms-1">4.5</span>
+                        </span>
+                    </div>
+                    <p class="card-text">Professional dog walkers will ensure your furry friend gets the exercise they need.</p>
+                    <a href="/Services/Details/1" class="btn btn-outline-primary">View Details</a>
+                </div>
+                <div class="provider-badge">
+                    <img src="/images/provider1.jpg" class="rounded-circle me-1" width="20" height="20" alt="Provider">
+                    <span>Jane D.</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card service-card">
+                <img src="/images/pet-sitting.jpg" class="card-img-top" alt="Pet Sitting">
+                <div class="card-body">
+                    <h5 class="card-title">Pet Sitting</h5>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-primary fw-bold">$30-50/day</span>
+                        <span class="rating-stars">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i>
+                            <span class="text-muted ms-1">4.0</span>
+                        </span>
+                    </div>
+                    <p class="card-text">Experienced pet sitters will care for your pets in the comfort of your own home.</p>
+                    <a href="/Services/Details/2" class="btn btn-outline-primary">View Details</a>
+                </div>
+                <div class="provider-badge">
+                    <img src="/images/provider2.jpg" class="rounded-circle me-1" width="20" height="20" alt="Provider">
+                    <span>Mark S.</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card service-card">
+                <img src="/images/grooming.jpg" class="card-img-top" alt="Pet Grooming">
+                <div class="card-body">
+                    <h5 class="card-title">Pet Grooming</h5>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-primary fw-bold">$40-80/session</span>
+                        <span class="rating-stars">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <span class="text-muted ms-1">5.0</span>
+                        </span>
+                    </div>
+                    <p class="card-text">Professional groomers will keep your pet clean, healthy, and looking their best.</p>
+                    <a href="/Services/Details/3" class="btn btn-outline-primary">View Details</a>
+                </div>
+                <div class="provider-badge">
+                    <img src="/images/provider3.jpg" class="rounded-circle me-1" width="20" height="20" alt="Provider">
+                    <span>Sarah L.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mt-3">
+        <a href="/Services" class="btn btn-primary">View All Services</a>
+    </div>
+</div>
+
+<!-- How It Works -->
+<div class="container mt-5 py-5 bg-light rounded">
+    <h2 class="text-center mb-5">How It Works</h2>
+    <div class="row text-center">
+        <div class="col-md-3 mb-4">
+            <div class="feature-icon">
+                <i class="bi bi-search"></i>
+            </div>
+            <h5>Search</h5>
+            <p>Find trusted pet care providers in your neighborhood.</p>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="feature-icon">
+                <i class="bi bi-calendar-check"></i>
+            </div>
+            <h5>Book</h5>
+            <p>Schedule services that fit your needs and schedule.</p>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="feature-icon">
+                <i class="bi bi-credit-card"></i>
+            </div>
+            <h5>Pay</h5>
+            <p>Secure payments with our trusted payment system.</p>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="feature-icon">
+                <i class="bi bi-heart"></i>
+            </div>
+            <h5>Relax</h5>
+            <p>Enjoy peace of mind knowing your pet is in good hands.</p>
+        </div>
+    </div>
+    <div class="text-center mt-4">
+        <a href="/Home/HowItWorks" class="btn btn-outline-primary">Learn More</a>
+    </div>
+</div>
+
+<!-- Testimonials -->
+<div class="container mt-5">
+    <h2 class="text-center mb-4">What Pet Owners Say</h2>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card testimonial-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="/images/testimonial1.jpg" alt="Testimonial" class="testimonial-avatar">
+                        <div>
+                            <h5 class="card-title mb-0">Emily Johnson</h5>
+                            <div class="rating-stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="card-text">"I was nervous about leaving my cat with a sitter, but Mark was amazing! He sent photos and updates daily, and my cat was so happy when I returned."</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card testimonial-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="/images/testimonial2.jpg" alt="Testimonial" class="testimonial-avatar">
+                        <div>
+                            <h5 class="card-title mb-0">Michael Smith</h5>
+                            <div class="rating-stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="card-text">"Jane is the best dog walker we've ever had! Our energetic Lab loves her, and she's always reliable and professional. Highly recommend!"</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card testimonial-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="/images/testimonial3.jpg" alt="Testimonial" class="testimonial-avatar">
+                        <div>
+                            <h5 class="card-title mb-0">Sophia Williams</h5>
+                            <div class="rating-stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="card-text">"Sarah transformed my scruffy poodle into a gorgeous fluffball! Her grooming skills are incredible, and she was so gentle with my nervous dog."</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Become a Provider -->
+<div class="container mt-5">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h2>Become a Pet Care Provider</h2>
+            <p class="lead">Turn your love for pets into income. Join our community of trusted pet care professionals.</p>
+            <ul class="list-unstyled">
+                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Set your own schedule and rates</li>
+                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Build a client base in your neighborhood</li>
+                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Get paid securely and on time</li>
+                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Access to liability insurance</li>
+            </ul>
+            <a href="/Identity/Account/Register?userType=ServiceProvider" class="btn btn-primary mt-3">Apply Now</a>
+        </div>
+        <div class="col-md-6">
+            <img src="/images/become-provider.jpg" alt="Become a Provider" class="img-fluid rounded">
+        </div>
+    </div>
+</div>
+
+<!-- App Download -->
+<div class="container mt-5 py-5 bg-primary text-white rounded">
+    <div class="row align-items-center">
+        <div class="col-md-7">
+            <h2>Get the PetCare App</h2>
+            <p class="lead">Book services, message providers, and manage your pet care on the go.</p>
+            <div class="d-flex mt-4">
+                <a href="#" class="me-3">
+                    <img src="/images/app-store-badge.png" alt="App Store" height="50">
+                </a>
+                <a href="#">
+                    <img src="/images/google-play-badge.png" alt="Google Play" height="50">
+                </a>
+            </div>
+        </div>
+        <div class="col-md-5 text-center">
+            <img src="/images/app-mockup.png" alt="App Mockup" class="img-fluid" style="max-height: 400px;">
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Initialize any home page specific JavaScript here
+        $(document).ready(function() {
+            // Animation for service cards
+            $('.service-card').addClass('fade-in');
+        });
+    </script>
+}

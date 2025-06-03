@@ -1,0 +1,338 @@
+@{
+    ViewData["Title"] = "Service Details";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Service Images and Details -->
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div id="serviceImageCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#serviceImageCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#serviceImageCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#serviceImageCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="/images/dog-walking-1.jpg" class="d-block w-100" alt="Dog Walking Service" style="height: 400px; object-fit: cover;">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/images/dog-walking-2.jpg" class="d-block w-100" alt="Dog Walking Service" style="height: 400px; object-fit: cover;">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/images/dog-walking-3.jpg" class="d-block w-100" alt="Dog Walking Service" style="height: 400px; object-fit: cover;">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#serviceImageCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#serviceImageCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h1 class="card-title">Professional Dog Walking</h1>
+                        <span class="badge bg-primary rounded-pill fs-6">$20/hour</span>
+                    </div>
+                    
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rating-stars me-2">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-half"></i>
+                        </div>
+                        <span class="text-muted">4.5 (128 reviews)</span>
+                    </div>
+                    
+                    <p class="card-text">
+                        Our professional dog walking service ensures your furry friend gets the exercise and attention they need, even when you're busy. Our experienced dog walkers are trained in pet first aid and handling various dog breeds and temperaments.
+                    </p>
+                    
+                    <h5 class="mt-4">Service Details</h5>
+                    <ul class="list-group list-group-flush mb-4">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-clock me-2"></i> Duration</span>
+                            <span>30, 45, or 60 minutes</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-geo-alt me-2"></i> Service Area</span>
+                            <span>Within 10km of downtown</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-calendar-check me-2"></i> Availability</span>
+                            <span>Mon-Sun, 7am-8pm</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-shield-check me-2"></i> Insurance</span>
+                            <span>Fully insured</span>
+                        </li>
+                    </ul>
+                    
+                    <h5>What's Included</h5>
+                    <ul>
+                        <li>Personalized walking route based on your dog's needs</li>
+                        <li>Fresh water provided during walks</li>
+                        <li>Waste pickup and disposal</li>
+                        <li>Brief grooming after walk (brush, paw cleaning)</li>
+                        <li>Detailed report after each walk</li>
+                        <li>Photo updates during the walk</li>
+                    </ul>
+                    
+                    <h5 class="mt-4">About the Provider</h5>
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="/images/provider1.jpg" class="rounded-circle me-3" width="60" height="60" alt="Provider">
+                        <div>
+                            <h5 class="mb-0">Jane Doe</h5>
+                            <p class="text-muted mb-0">Professional Dog Walker</p>
+                            <div class="rating-stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                                <span class="text-muted ms-1">4.5</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        Jane has been a professional dog walker for over 5 years and has experience with all breeds and sizes. She's certified in pet first aid and is known for her calm, patient approach with even the most energetic dogs.
+                    </p>
+                    <a href="/Messages/Create?receiverId=1" class="btn btn-outline-primary">
+                        <i class="bi bi-chat-text me-1"></i> Message Jane
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Reviews Section -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Customer Reviews</h5>
+                    <div>
+                        <select class="form-select form-select-sm">
+                            <option selected>Most Recent</option>
+                            <option>Highest Rated</option>
+                            <option>Lowest Rated</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Review Item -->
+                    <div class="mb-4 pb-4 border-bottom">
+                        <div class="d-flex align-items-center mb-2">
+                            <img src="/images/user1.jpg" class="rounded-circle me-2" width="40" height="40" alt="User">
+                            <div>
+                                <h6 class="mb-0">Michael Brown</h6>
+                                <div class="d-flex align-items-center">
+                                    <div class="rating-stars me-2">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                    </div>
+                                    <small class="text-muted">May 15, 2025</small>
+                                </div>
+                            </div>
+                        </div>
+                        <p>Jane is amazing with my hyperactive Labrador! She's always on time, sends great photos during the walk, and my dog comes back happy and tired. Couldn't ask for a better dog walker.</p>
+                        <div class="d-flex mt-3">
+                            <img src="/images/review-photo1.jpg" class="rounded me-2" width="100" height="100" alt="Review Photo" style="object-fit: cover;">
+                            <img src="/images/review-photo2.jpg" class="rounded" width="100" height="100" alt="Review Photo" style="object-fit: cover;">
+                        </div>
+                    </div>
+                    
+                    <!-- Review Item -->
+                    <div class="mb-4 pb-4 border-bottom">
+                        <div class="d-flex align-items-center mb-2">
+                            <img src="/images/user2.jpg" class="rounded-circle me-2" width="40" height="40" alt="User">
+                            <div>
+                                <h6 class="mb-0">Sarah Johnson</h6>
+                                <div class="d-flex align-items-center">
+                                    <div class="rating-stars me-2">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                    <small class="text-muted">May 10, 2025</small>
+                                </div>
+                            </div>
+                        </div>
+                        <p>Very reliable service. Jane is great with my senior dog who needs a slower pace. She's attentive to his needs and always makes sure he's comfortable during walks.</p>
+                    </div>
+                    
+                    <!-- Review Item -->
+                    <div>
+                        <div class="d-flex align-items-center mb-2">
+                            <img src="/images/user3.jpg" class="rounded-circle me-2" width="40" height="40" alt="User">
+                            <div>
+                                <h6 class="mb-0">David Wilson</h6>
+                                <div class="d-flex align-items-center">
+                                    <div class="rating-stars me-2">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-half"></i>
+                                    </div>
+                                    <small class="text-muted">May 5, 2025</small>
+                                </div>
+                            </div>
+                        </div>
+                        <p>Jane has been walking my two dogs for months now, and they absolutely love her! She's professional, caring, and always goes the extra mile. The photo updates during walks are a great touch.</p>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <nav aria-label="Reviews pagination" class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Booking and Map Section -->
+        <div class="col-lg-4">
+            <!-- Booking Card -->
+            <div class="card mb-4 sticky-top" style="top: 100px; z-index: 100;">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Book This Service</h5>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="bookingDate" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="bookingDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bookingTime" class="form-label">Time</label>
+                            <select class="form-select" id="bookingTime" required>
+                                <option value="" selected disabled>Select a time</option>
+                                <option>7:00 AM</option>
+                                <option>8:00 AM</option>
+                                <option>9:00 AM</option>
+                                <option>10:00 AM</option>
+                                <option>11:00 AM</option>
+                                <option>12:00 PM</option>
+                                <option>1:00 PM</option>
+                                <option>2:00 PM</option>
+                                <option>3:00 PM</option>
+                                <option>4:00 PM</option>
+                                <option>5:00 PM</option>
+                                <option>6:00 PM</option>
+                                <option>7:00 PM</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="duration" class="form-label">Duration</label>
+                            <select class="form-select" id="duration" required>
+                                <option value="30">30 minutes - $15</option>
+                                <option value="45">45 minutes - $18</option>
+                                <option value="60" selected>60 minutes - $20</option>
+                                <option value="90">90 minutes - $30</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pet" class="form-label">Select Pet</label>
+                            <select class="form-select" id="pet" required>
+                                <option value="" selected disabled>Select your pet</option>
+                                <option value="1">Max (Golden Retriever)</option>
+                                <option value="2">Bella (Labrador)</option>
+                                <option value="3">Add a new pet</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="notes" class="form-label">Special Instructions</label>
+                            <textarea class="form-control" id="notes" rows="3" placeholder="Any special needs or instructions for your pet?"></textarea>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Book Now</button>
+                        </div>
+                    </form>
+                    
+                    <hr>
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Service Fee</span>
+                        <span>$20.00</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Platform Fee</span>
+                        <span>$2.00</span>
+                    </div>
+                    <div class="d-flex justify-content-between fw-bold">
+                        <span>Total</span>
+                        <span>$22.00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Map Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Service Location</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="map-container">
+                        <!-- This would be replaced with an actual Google Map -->
+                        <img src="/images/map-placeholder.jpg" class="img-fluid w-100 h-100" alt="Map" style="object-fit: cover;">
+                    </div>
+                    <div class="p-3">
+                        <p class="mb-1"><i class="bi bi-geo-alt me-2"></i> Service Area: Downtown Toronto</p>
+                        <p class="mb-0 text-muted small">Provider serves clients within 10km of downtown</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Calculate price based on duration selection
+            $('#duration').change(function() {
+                let duration = $(this).val();
+                let price = 0;
+                
+                switch(duration) {
+                    case '30':
+                        price = 15;
+                        break;
+                    case '45':
+                        price = 18;
+                        break;
+                    case '60':
+                        price = 20;
+                        break;
+                    case '90':
+                        price = 30;
+                        break;
+                }
+                
+                let platformFee = Math.round(price * 0.1);
+                let total = price + platformFee;
+                
+                $('.d-flex.justify-content-between.mb-2:first-child span:last-child').text('$' + price.toFixed(2));
+                $('.d-flex.justify-content-between.mb-2:last-child span:last-child').text('$' + platformFee.toFixed(2));
+                $('.d-flex.justify-content-between.fw-bold span:last-child').text('$' + total.toFixed(2));
+            });
+        });
+    </script>
+}

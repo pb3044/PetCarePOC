@@ -1,0 +1,309 @@
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Payment Process Steps -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title mb-4">Complete Your Booking</h2>
+                    
+                    <!-- Progress Steps -->
+                    <div class="booking-progress mb-5">
+                        <div class="d-flex justify-content-between position-relative">
+                            <div class="progress" style="height: 2px; width: 100%; position: absolute; top: 25px; z-index: 1;">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: 66%;" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            
+                            <div class="step completed text-center position-relative" style="z-index: 2;">
+                                <div class="step-icon rounded-circle bg-success text-white d-flex align-items-center justify-content-center mx-auto mb-2" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-check"></i>
+                                </div>
+                                <div class="step-title">Details</div>
+                            </div>
+                            
+                            <div class="step active text-center position-relative" style="z-index: 2;">
+                                <div class="step-icon rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-2" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-credit-card"></i>
+                                </div>
+                                <div class="step-title">Payment</div>
+                            </div>
+                            
+                            <div class="step text-center position-relative" style="z-index: 2;">
+                                <div class="step-icon rounded-circle bg-light d-flex align-items-center justify-content-center mx-auto mb-2" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-check-circle"></i>
+                                </div>
+                                <div class="step-title">Confirmation</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Form -->
+                    <form id="paymentForm">
+                        <h4 class="mb-3">Payment Method</h4>
+                        
+                        <div class="mb-4">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard" checked>
+                                <label class="form-check-label" for="creditCard">
+                                    <i class="bi bi-credit-card me-1"></i> Credit Card
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="paypal">
+                                <label class="form-check-label" for="paypal">
+                                    <i class="bi bi-paypal me-1"></i> PayPal
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div id="creditCardForm">
+                            <div class="row g-3 mb-4">
+                                <div class="col-12">
+                                    <label for="cardNumber" class="form-label">Card Number</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456" required>
+                                        <span class="input-group-text">
+                                            <i class="bi bi-credit-card"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label for="expiryDate" class="form-label">Expiry Date</label>
+                                    <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="cvv" class="form-label">CVV</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="cvv" placeholder="123" required>
+                                        <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="top" title="3-digit security code on the back of your card">
+                                            <i class="bi bi-question-circle"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="nameOnCard" class="form-label">Name on Card</label>
+                                <input type="text" class="form-control" id="nameOnCard" placeholder="John Doe" required>
+                            </div>
+                        </div>
+                        
+                        <div id="paypalForm" class="d-none">
+                            <div class="alert alert-info mb-4">
+                                <i class="bi bi-info-circle me-2"></i> You will be redirected to PayPal to complete your payment after clicking "Complete Booking".
+                            </div>
+                        </div>
+                        
+                        <h4 class="mb-3">Billing Address</h4>
+                        
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="sameAsHome" checked>
+                                <label class="form-check-label" for="sameAsHome">
+                                    Same as home address
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div id="billingAddressFields" class="d-none">
+                            <div class="row g-3 mb-4">
+                                <div class="col-12">
+                                    <label for="billingAddress" class="form-label">Address</label>
+                                    <input type="text" class="form-control" id="billingAddress" placeholder="1234 Main St">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="billingCity" class="form-label">City</label>
+                                    <input type="text" class="form-control" id="billingCity" placeholder="City">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="billingProvince" class="form-label">Province</label>
+                                    <select class="form-select" id="billingProvince">
+                                        <option value="" selected disabled>Choose...</option>
+                                        <option>Alberta</option>
+                                        <option>British Columbia</option>
+                                        <option>Manitoba</option>
+                                        <option>New Brunswick</option>
+                                        <option>Newfoundland and Labrador</option>
+                                        <option>Nova Scotia</option>
+                                        <option>Ontario</option>
+                                        <option>Prince Edward Island</option>
+                                        <option>Quebec</option>
+                                        <option>Saskatchewan</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="billingPostalCode" class="form-label">Postal Code</label>
+                                    <input type="text" class="form-control" id="billingPostalCode" placeholder="A1A 1A1">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="savePaymentInfo">
+                            <label class="form-check-label" for="savePaymentInfo">
+                                Save payment information for future bookings
+                            </label>
+                        </div>
+                        
+                        <div class="alert alert-success mb-4">
+                            <div class="d-flex">
+                                <div class="me-3">
+                                    <i class="bi bi-shield-lock fs-3"></i>
+                                </div>
+                                <div>
+                                    <h5 class="alert-heading">Secure Payment</h5>
+                                    <p class="mb-0">Your payment information is encrypted and securely processed. We do not store your full credit card details on our servers.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-5">
+                            <a href="/Bookings/Create" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i> Back to Details
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                Complete Booking <i class="bi bi-arrow-right ms-1"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Order Summary -->
+        <div class="col-lg-4">
+            <div class="card mb-4 sticky-top" style="top: 100px; z-index: 100;">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-4">
+                        <img src="/images/dog-walking-1.jpg" class="rounded me-3" width="60" height="60" alt="Service" style="object-fit: cover;">
+                        <div>
+                            <h6 class="mb-0">Professional Dog Walking</h6>
+                            <p class="text-muted mb-0">with Jane Doe</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Date & Time:</span>
+                            <span>Jun 5, 2025 at 3:00 PM</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Duration:</span>
+                            <span>60 minutes</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Pet:</span>
+                            <span>Max (Golden Retriever)</span>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Service Fee</span>
+                        <span>$20.00</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Platform Fee</span>
+                        <span>$2.00</span>
+                    </div>
+                    <div class="d-flex justify-content-between fw-bold">
+                        <span>Total</span>
+                        <span>$22.00</span>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="alert alert-info mb-0">
+                        <i class="bi bi-info-circle me-2"></i> You won't be charged until the service provider accepts your booking request.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+            
+            // Toggle payment method forms
+            $('input[name="paymentMethod"]').change(function() {
+                if ($('#creditCard').is(':checked')) {
+                    $('#creditCardForm').removeClass('d-none');
+                    $('#paypalForm').addClass('d-none');
+                } else {
+                    $('#creditCardForm').addClass('d-none');
+                    $('#paypalForm').removeClass('d-none');
+                }
+            });
+            
+            // Toggle billing address fields
+            $('#sameAsHome').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#billingAddressFields').addClass('d-none');
+                } else {
+                    $('#billingAddressFields').removeClass('d-none');
+                }
+            });
+            
+            // Form submission
+            $('#paymentForm').submit(function(e) {
+                e.preventDefault();
+                // In a real app, this would submit the payment information to the server
+                // and redirect to the confirmation page
+                window.location.href = '/Bookings/Confirmation';
+            });
+            
+            // Format credit card input
+            $('#cardNumber').on('input', function() {
+                var value = $(this).val().replace(/\D/g, '');
+                var formattedValue = '';
+                
+                for (var i = 0; i < value.length; i++) {
+                    if (i > 0 && i % 4 === 0) {
+                        formattedValue += ' ';
+                    }
+                    formattedValue += value[i];
+                }
+                
+                $(this).val(formattedValue);
+            });
+            
+            // Format expiry date input
+            $('#expiryDate').on('input', function() {
+                var value = $(this).val().replace(/\D/g, '');
+                var formattedValue = '';
+                
+                if (value.length > 0) {
+                    formattedValue = value.substring(0, 2);
+                    if (value.length > 2) {
+                        formattedValue += '/' + value.substring(2, 4);
+                    }
+                }
+                
+                $(this).val(formattedValue);
+            });
+            
+            // Limit CVV to 3 or 4 digits
+            $('#cvv').on('input', function() {
+                var value = $(this).val().replace(/\D/g, '');
+                $(this).val(value.substring(0, 4));
+            });
+        });
+    </script>
+}

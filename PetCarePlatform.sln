@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetCarePlatform.API", "PetCarePlatform.API\PetCarePlatform.API.csproj", "{E1E390B9-D2C6-4BB0-86F8-A48FDD5D02C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetCarePlatform.Core", "PetCarePlatform.Core\PetCarePlatform.Core.csproj", "{15B99835-E6D9-45F4-9269-A4DD5B2802D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetCarePlatform.Infrastructure", "PetCarePlatform.Infrastructure\PetCarePlatform.Infrastructure.csproj", "{60B69839-3569-440C-B0EE-553E47F54FAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetCarePlatform.Web", "PetCarePlatform.Web\PetCarePlatform.Web.csproj", "{5B16FF6F-D527-453D-A6F6-CE0C3C3256AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E1E390B9-D2C6-4BB0-86F8-A48FDD5D02C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1E390B9-D2C6-4BB0-86F8-A48FDD5D02C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1E390B9-D2C6-4BB0-86F8-A48FDD5D02C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1E390B9-D2C6-4BB0-86F8-A48FDD5D02C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15B99835-E6D9-45F4-9269-A4DD5B2802D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15B99835-E6D9-45F4-9269-A4DD5B2802D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15B99835-E6D9-45F4-9269-A4DD5B2802D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15B99835-E6D9-45F4-9269-A4DD5B2802D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60B69839-3569-440C-B0EE-553E47F54FAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60B69839-3569-440C-B0EE-553E47F54FAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60B69839-3569-440C-B0EE-553E47F54FAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60B69839-3569-440C-B0EE-553E47F54FAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B16FF6F-D527-453D-A6F6-CE0C3C3256AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B16FF6F-D527-453D-A6F6-CE0C3C3256AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B16FF6F-D527-453D-A6F6-CE0C3C3256AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B16FF6F-D527-453D-A6F6-CE0C3C3256AB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

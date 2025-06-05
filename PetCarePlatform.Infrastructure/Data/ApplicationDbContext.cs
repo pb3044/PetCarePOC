@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PetCarePlatform.Core.Models;
@@ -32,18 +32,35 @@ namespace PetCarePlatform.Infrastructure.Data
             // Configure entity relationships and constraints
 
             // PetOwner
-            builder.Entity<PetOwner>()
-                .HasOne(po => po.User)
-                .WithOne()
-                .HasForeignKey<PetOwner>(po => po.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //builder.Entity<PetOwner>()
+            //    .HasOne(po => po.User)
+            //    .WithOne()
+            //    .HasForeignKey<PetOwner>(po => po.UserId)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
-            // ServiceProvider
-            builder.Entity<ServiceProvider>()
-                .HasOne(sp => sp.User)
-                .WithOne()
-                .HasForeignKey<ServiceProvider>(sp => sp.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //// ServiceProvider
+            //builder.Entity<ServiceProvider>()
+            //    .HasOne(sp => sp.User)
+            //    .WithOne()
+            //    .HasForeignKey<ServiceProvider>(sp => sp.UserId)
+            //    .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<PetOwner>()
+    .HasMany(po => po.FavoriteProviders)
+    .WithMany(sp => sp.FavoritedByOwners)
+    .UsingEntity<Dictionary<string, object>>(
+        "PetOwnerServiceProvider",
+        j => j
+            .HasOne<ServiceProvider>()
+            .WithMany()
+            .HasForeignKey("FavoriteProvidersId")
+            .OnDelete(DeleteBehavior.NoAction),
+        j => j
+            .HasOne<PetOwner>()
+            .WithMany()
+            .HasForeignKey("FavoritedByOwnersId")
+            .OnDelete(DeleteBehavior.NoAction)
+    );
 
             // Pet
             builder.Entity<Pet>()
@@ -79,38 +96,69 @@ namespace PetCarePlatform.Infrastructure.Data
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired(false);
 
-            // Review
+            //// Review
+            //builder.Entity<Review>()
+            //    .HasOne(r => r.Booking)
+            //    .WithOne(b => b.Review)
+            //    .HasForeignKey<Review>(r => r.BookingId)
+            //    .OnDelete(DeleteBehavior.Restrict);
+
+            //builder.Entity<Review>()
+            //    .HasOne(r => r.Service)
+            //    .WithMany(s => s.Reviews)
+            //    .HasForeignKey(r => r.ServiceId)
+            //    .OnDelete(DeleteBehavior.Restrict);
+            // Review ↔ Booking (One-to-One)
             builder.Entity<Review>()
                 .HasOne(r => r.Booking)
                 .WithOne(b => b.Review)
                 .HasForeignKey<Review>(r => r.BookingId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Review ↔ Service (Many-to-One)
             builder.Entity<Review>()
                 .HasOne(r => r.Service)
                 .WithMany(s => s.Reviews)
                 .HasForeignKey(r => r.ServiceId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Review ↔ Reviewer (User)
+            builder.Entity<Review>()
+                .HasOne(r => r.Reviewer)
+                .WithMany(u => u.ReviewsGiven)
+                .HasForeignKey(r => r.ReviewerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Review ↔ Reviewee (User)
+            builder.Entity<Review>()
+                .HasOne(r => r.Reviewee)
+                .WithMany(u => u.ReviewsReceived)
+                .HasForeignKey(r => r.RevieweeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
             // Message
-            //builder.Entity<Message>()
-            //    .HasOne(m => m.Sender)
-            //    .WithMany(u => u.SentMessages)
-            //    .HasForeignKey(m => m.SenderId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Message>()
+                .HasOne(m => m.Sender)
+                .WithMany(u => u.SentMessages)
+                .HasForeignKey(m => m.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            //builder.Entity<Message>()
-            //    .HasOne(m => m.Receiver)
-            //    .WithMany(u => u.ReceivedMessages)
-            //    .HasForeignKey(m => m.ReceiverId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Message>()
+                .HasOne(m => m.Receiver)
+                .WithMany(u => u.ReceivedMessages)
+                .HasForeignKey(m => m.ReceiverId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            //// Payment
-            //builder.Entity<Payment>()
-            //    .HasOne(p => p.Booking)
-            //    .WithOne(b => b.Payment)
-            //    .HasForeignKey<Payment>(p => p.BookingId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            // Payment
+          
+            builder.Entity<PetCarePlatform.Core.Models.Payment>()
+     .HasOne(p => p.Booking)
+     .WithOne(b => b.Payment)
+     .HasForeignKey<PetCarePlatform.Core.Models.Payment>(p => p.BookingId)
+     .OnDelete(DeleteBehavior.Restrict);
+
+
 
             // Notification
             builder.Entity<Notification>()

@@ -26,7 +26,7 @@ namespace PetCarePlatform.Core.Models
         public DateTime UpdatedAt { get; set; }
         
         // Navigation properties
-        public virtual User User { get; set; }
+        public virtual ApplicationUser User { get; set; }
         public virtual ICollection<Service> Services { get; set; }
         public virtual ICollection<Booking> Bookings { get; set; }
         public virtual ICollection<AvailabilitySchedule> AvailabilitySchedules { get; set; }

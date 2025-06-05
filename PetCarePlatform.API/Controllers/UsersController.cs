@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using PetCarePlatform.Core.Interfaces;
 using PetCarePlatform.Core.Models;
-using System.Collections.Generic;
 
 namespace PetCarePlatform.API.Controllers
 {
@@ -47,7 +45,7 @@ namespace PetCarePlatform.API.Controllers
             try
             {
                 // Create user
-                var user = new User
+                var user = new ApplicationUser
                 {
                     Email = request.Email,
                     FirstName = request.FirstName,
@@ -250,11 +248,11 @@ namespace PetCarePlatform.API.Controllers
         public string Province { get; set; }
         public string PostalCode { get; set; }
         public UserType UserType { get; set; }
-        
+
         // Pet Owner specific fields
         public string PreferredServiceTypes { get; set; }
         public bool ReceiveMarketingEmails { get; set; }
-        
+
         // Service Provider specific fields
         public string BusinessName { get; set; }
         public string Description { get; set; }
@@ -275,7 +273,7 @@ namespace PetCarePlatform.API.Controllers
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
         public string Bio { get; set; }
-        
+
         // Profile specific updates
         public PetOwnerProfileUpdateRequest PetOwnerProfile { get; set; }
         public ServiceProviderProfileUpdateRequest ServiceProviderProfile { get; set; }

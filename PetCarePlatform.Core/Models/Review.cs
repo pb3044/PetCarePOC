@@ -18,8 +18,8 @@ namespace PetCarePlatform.Core.Models
         
         // Navigation properties
         public virtual Booking Booking { get; set; }
-        public virtual User Reviewer { get; set; }
-        public virtual User Reviewee { get; set; }
+        public virtual ApplicationUser Reviewer { get; set; }
+        public virtual ApplicationUser Reviewee { get; set; }
         public virtual Service Service { get; set; }
         public virtual ICollection<ReviewPhoto> Photos { get; set; }
     }

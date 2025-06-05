@@ -1,7 +1,6 @@
-using Microsoft.AspNet.Identity.EntityFramework;
+
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
+
 
 namespace PetCarePlatform.Core.Models
 {
@@ -21,19 +20,24 @@ namespace PetCarePlatform.Core.Models
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        
+
         // Navigation properties
         public virtual ICollection<Message> SentMessages { get; set; }
         public virtual ICollection<Message> ReceivedMessages { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
+        public virtual PetOwner PetOwner { get; set; }
+        public virtual ServiceProvider ServiceProvider { get; set; }
+        public virtual ICollection<Review> ReviewsGiven { get; set; } = new List<Review>();
+        public virtual ICollection<Review> ReviewsReceived { get; set; } = new List<Review>();
+        public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
     }
 
     public class ApplicationRole : IdentityRole<int>
     {
         public ApplicationRole() : base() { }
-        
+
         public ApplicationRole(string roleName) : base(roleName) { }
-        
+
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
     }

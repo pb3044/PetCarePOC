@@ -16,17 +16,17 @@ namespace PetCarePlatform.Core.Services
             _userRepository = userRepository;
         }
 
-        public async Task<User> GetUserByIdAsync(int id)
+        public async Task<ApplicationUser> GetUserByIdAsync(int id)
         {
             return await _userRepository.GetByIdAsync(id);
         }
 
-        public async Task<User> GetUserByEmailAsync(string email)
+        public async Task<ApplicationUser> GetUserByEmailAsync(string email)
         {
             return await _userRepository.GetByEmailAsync(email);
         }
 
-        public async Task<User> RegisterUserAsync(User user, string password)
+        public async Task<ApplicationUser> RegisterUserAsync(ApplicationUser user, string password)
         {
             // Check if email already exists
             if (await _userRepository.EmailExistsAsync(user.Email))
@@ -41,7 +41,7 @@ namespace PetCarePlatform.Core.Services
             user.CreatedAt = DateTime.UtcNow;
             user.UpdatedAt = DateTime.UtcNow;
             user.EmailConfirmed = false;
-            user.PhoneConfirmed = false;
+            //user.PhoneConfirmed = false;
             user.IsActive = true;
 
             // Create the user
@@ -59,7 +59,7 @@ namespace PetCarePlatform.Core.Services
             return VerifyPassword(password, user.PasswordHash);
         }
 
-        public async Task UpdateUserProfileAsync(User user)
+        public async Task UpdateUserProfileAsync(ApplicationUser user)
         {
             var existingUser = await _userRepository.GetByIdAsync(user.Id);
             if (existingUser == null)
@@ -201,6 +201,11 @@ namespace PetCarePlatform.Core.Services
         private bool VerifyPassword(string password, string hash)
         {
             return HashPassword(password) == hash;
+        }
+
+        Task IUserService.UpdateUserProfileAsync(ApplicationUser user)
+        {
+            throw new NotImplementedException();
         }
     }
 }

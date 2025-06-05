@@ -1,15 +1,14 @@
-using System.Threading.Tasks;
 using PetCarePlatform.Core.Models;
 
 namespace PetCarePlatform.Core.Interfaces
 {
     public interface IUserService
     {
-        Task<User> GetUserByIdAsync(int id);
-        Task<User> GetUserByEmailAsync(string email);
-        Task<User> RegisterUserAsync(User user, string password);
+        Task<ApplicationUser> GetUserByIdAsync(int id);
+        Task<ApplicationUser> GetUserByEmailAsync(string email);
+        Task<ApplicationUser> RegisterUserAsync(ApplicationUser user, string password);
         Task<bool> ValidateUserCredentialsAsync(string email, string password);
-        Task UpdateUserProfileAsync(User user);
+        Task UpdateUserProfileAsync(ApplicationUser user);
         Task ChangePasswordAsync(int userId, string currentPassword, string newPassword);
         Task RequestPasswordResetAsync(string email);
         Task ResetPasswordAsync(string email, string token, string newPassword);

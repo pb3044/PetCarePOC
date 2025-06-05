@@ -13,6 +13,6 @@ namespace PetCarePlatform.Core.Interfaces
         Task<Message> SendMessageAsync(Message message);
         Task MarkMessageAsReadAsync(int messageId);
         Task MarkAllMessagesAsReadAsync(int receiverId);
-        Task<IEnumerable<User>> GetConversationPartnersAsync(int userId);
+        Task<IEnumerable<ApplicationUser>> GetConversationPartnersAsync(int userId);
     }
 }

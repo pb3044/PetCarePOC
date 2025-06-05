@@ -16,7 +16,7 @@ namespace PetCarePlatform.Core.Models
         public DateTime? ReadAt { get; set; }
         
         // Navigation properties
-        public virtual User User { get; set; }
+        public virtual ApplicationUser User { get; set; }
     }
 
     public enum NotificationType

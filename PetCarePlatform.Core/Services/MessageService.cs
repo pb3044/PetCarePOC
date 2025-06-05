@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using PetCarePlatform.Core.Interfaces;
 using PetCarePlatform.Core.Models;
 
@@ -10,7 +7,7 @@ namespace PetCarePlatform.Core.Services
     {
         private readonly IMessageRepository _messageRepository;
         private readonly IUserRepository _userRepository;
-        
+
         public MessageService(IMessageRepository messageRepository, IUserRepository userRepository)
         {
             _messageRepository = messageRepository;
@@ -70,7 +67,7 @@ namespace PetCarePlatform.Core.Services
             await _messageRepository.MarkAllAsReadAsync(receiverId);
         }
 
-        public async Task<IEnumerable<User>> GetConversationPartnersAsync(int userId)
+        public async Task<IEnumerable<ApplicationUser>> GetConversationPartnersAsync(int userId)
         {
             // Get all messages sent by or received by the user
             var sentMessages = await _messageRepository.GetBySenderIdAsync(userId);
@@ -78,12 +75,12 @@ namespace PetCarePlatform.Core.Services
 
             // Extract unique user IDs
             var partnerIds = new HashSet<int>();
-            
+
             foreach (var message in sentMessages)
             {
                 partnerIds.Add(message.ReceiverId);
             }
-            
+
             foreach (var message in receivedMessages)
             {
                 partnerIds.Add(message.SenderId);
@@ -93,7 +90,7 @@ namespace PetCarePlatform.Core.Services
             partnerIds.Remove(userId);
 
             // Get user objects for each partner ID
-            var partners = new List<User>();
+            var partners = new List<ApplicationUser>();
             foreach (var partnerId in partnerIds)
             {
                 var partner = await _userRepository.GetByIdAsync(partnerId);

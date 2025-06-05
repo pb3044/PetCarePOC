@@ -20,7 +20,7 @@ namespace PetCarePlatform.Core.Models
         
         // Navigation properties
         public virtual Booking Booking { get; set; }
-        public virtual User User { get; set; }
+        public virtual ApplicationUser User { get; set; }
     }
 
     public enum PaymentStatus

@@ -15,8 +15,8 @@ namespace PetCarePlatform.Core.Models
         public DateTime? ReadAt { get; set; }
         
         // Navigation properties
-        public virtual User Sender { get; set; }
-        public virtual User Receiver { get; set; }
+        public virtual ApplicationUser Sender { get; set; }
+        public virtual ApplicationUser Receiver { get; set; }
         public virtual Booking Booking { get; set; }
     }
 }

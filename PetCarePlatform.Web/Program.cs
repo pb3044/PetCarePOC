@@ -6,6 +6,7 @@ using PetCarePlatform.Infrastructure.Identity;
 using PetCarePlatform.Core.Interfaces;
 using PetCarePlatform.Core.Services;
 using PetCarePlatform.Infrastructure.Location;
+using PetCarePlatform.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Add Identity Services
 builder.Services.AddIdentityServices(builder.Configuration);
+
+// Add Infrastructure Services (repositories)
+builder.Services.AddInfrastructureServices();
 
 // Register Core Services
 builder.Services.AddScoped<IBookingService, BookingService>();

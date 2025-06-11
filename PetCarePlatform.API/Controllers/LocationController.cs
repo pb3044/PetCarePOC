@@ -59,12 +59,12 @@ namespace PetCarePlatform.API.Controllers
             [FromQuery] double latitude,
             [FromQuery] double longitude,
             [FromQuery] double radiusKm = 10,
-            [FromQuery] string serviceType = null)
+            [FromQuery] string? serviceType = null)
         {
             try
             {
                 var providers = await _locationService.FindNearbyServiceProvidersAsync(
-                    latitude, longitude, radiusKm, serviceType);
+                    latitude, longitude, radiusKm, serviceType ?? string.Empty);
                 return Ok(providers);
             }
             catch (Exception ex)

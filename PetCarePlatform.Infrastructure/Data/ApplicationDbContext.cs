@@ -151,7 +151,7 @@ namespace PetCarePlatform.Infrastructure.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Payment
-          
+
             builder.Entity<PetCarePlatform.Core.Models.Payment>()
      .HasOne(p => p.Booking)
      .WithOne(b => b.Payment)

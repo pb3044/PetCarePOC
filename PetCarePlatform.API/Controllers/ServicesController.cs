@@ -42,26 +42,26 @@ namespace PetCarePlatform.API.Controllers
 
         [HttpGet("search")]
         public async Task<IActionResult> SearchServices(
-            [FromQuery] string keyword = null,
+            [FromQuery] string? keyword = null,
             [FromQuery] ServiceType? type = null,
             [FromQuery] double? latitude = null,
             [FromQuery] double? longitude = null,
             [FromQuery] int? radiusInKm = null,
             [FromQuery] decimal? minPrice = null,
             [FromQuery] decimal? maxPrice = null,
-            [FromQuery] string petTypes = null,
-            [FromQuery] string petSizes = null)
+            [FromQuery] string? petTypes = null,
+            [FromQuery] string? petSizes = null)
         {
             var services = await _serviceService.SearchServicesAsync(
-                keyword,
+                keyword ?? string.Empty, // Ensure non-null value
                 type,
                 latitude,
                 longitude,
                 radiusInKm,
                 minPrice,
                 maxPrice,
-                petTypes,
-                petSizes);
+                petTypes ?? string.Empty, // Ensure non-null value
+                petSizes ?? string.Empty); // Ensure non-null value
 
             return Ok(services);
         }

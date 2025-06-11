@@ -3,6 +3,7 @@ C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.Web\obj\Debug\net8
 C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.Web\obj\Debug\net8.0\PetCarePlatform.Web.AssemblyInfoInputs.cache
 C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.Web\obj\Debug\net8.0\PetCarePlatform.Web.AssemblyInfo.cs
 C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.Web\obj\Debug\net8.0\PetCarePlatform.Web.csproj.CoreCompileInputs.cache
+C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.Web\obj\Debug\net8.0\PetCarePlatform.Web.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.Web\obj\Debug\net8.0\PetCarePlatform.Web.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.Web\obj\Debug\net8.0\PetCarePlatform.Web.RazorAssemblyInfo.cache
 C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.Web\obj\Debug\net8.0\PetCarePlatform.Web.RazorAssemblyInfo.cs

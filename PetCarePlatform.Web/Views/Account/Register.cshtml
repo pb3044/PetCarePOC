@@ -1,0 +1,426 @@
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-user-plus me-2"></i>Create Your Account
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Register" method="post" enctype="multipart/form-data" id="registerForm">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <!-- Personal Information Section -->
+                        <div class="mb-4">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-user me-2"></i>Personal Information
+                            </h5>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="FirstName" class="form-label">
+                                        <i class="fas fa-user me-1"></i>First Name <span class="text-danger">*</span>
+                                    </label>
+                                    <input asp-for="FirstName" class="form-control" placeholder="Enter your first name" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="LastName" class="form-label">
+                                        <i class="fas fa-user me-1"></i>Last Name <span class="text-danger">*</span>
+                                    </label>
+                                    <input asp-for="LastName" class="form-control" placeholder="Enter your last name" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="UserName" class="form-label">
+                                        <i class="fas fa-user me-1"></i>UserName <span class="text-danger">*</span>
+                                    </label>
+                                    <input asp-for="UserName" class="form-control" placeholder="Enter username" />
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Email" class="form-label">
+                                    <i class="fas fa-envelope me-1"></i>Email Address <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="Email" class="form-control" placeholder="Enter your email address" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="PhoneNumber" class="form-label">
+                                    <i class="fas fa-phone me-1"></i>Phone Number
+                                </label>
+                                <input asp-for="PhoneNumber" class="form-control" placeholder="Enter your phone number" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="ProfilePhoto" class="form-label">
+                                    <i class="fas fa-camera me-1"></i>Profile Photo
+                                </label>
+                                <input asp-for="ProfilePhoto" class="form-control" type="file" accept="image/*" />
+                                <div class="form-text">Accepted formats: JPG, PNG, GIF (Max 5MB)</div>
+                                <span asp-validation-for="ProfilePhoto" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Account Security Section -->
+                        <div class="mb-4">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-lock me-2"></i>Account Security
+                            </h5>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Password" class="form-label">
+                                        <i class="fas fa-key me-1"></i>Password <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <input asp-for="Password" class="form-control" placeholder="Enter your password" />
+                                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-text">Minimum 6 characters with at least one uppercase letter and one digit</div>
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="ConfirmPassword" class="form-label">
+                                        <i class="fas fa-key me-1"></i>Confirm Password <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm your password" />
+                                        <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address Information Section -->
+                        <div class="mb-4">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-map-marker-alt me-2"></i>Address Information
+                            </h5>
+
+                            <div class="mb-3">
+                                <label asp-for="Address" class="form-label">
+                                    <i class="fas fa-home me-1"></i>Street Address <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="Address" class="form-control" placeholder="Enter your street address" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label asp-for="City" class="form-label">
+                                        <i class="fas fa-city me-1"></i>City <span class="text-danger">*</span>
+                                    </label>
+                                    <input asp-for="City" class="form-control" placeholder="Enter your city" />
+                                    <span asp-validation-for="City" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label asp-for="Province" class="form-label">
+                                        <i class="fas fa-flag me-1"></i>Province <span class="text-danger">*</span>
+                                    </label>
+                                    <select asp-for="Province" class="form-select">
+                                        <option value="">Select Province</option>
+                                        <option value="Alberta">Alberta</option>
+                                        <option value="British Columbia">British Columbia</option>
+                                        <option value="Manitoba">Manitoba</option>
+                                        <option value="New Brunswick">New Brunswick</option>
+                                        <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
+                                        <option value="Northwest Territories">Northwest Territories</option>
+                                        <option value="Nova Scotia">Nova Scotia</option>
+                                        <option value="Nunavut">Nunavut</option>
+                                        <option value="Ontario">Ontario</option>
+                                        <option value="Prince Edward Island">Prince Edward Island</option>
+                                        <option value="Quebec">Quebec</option>
+                                        <option value="Saskatchewan">Saskatchewan</option>
+                                        <option value="Yukon">Yukon</option>
+                                    </select>
+                                    <span asp-validation-for="Province" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label asp-for="PostalCode" class="form-label">
+                                        <i class="fas fa-mail-bulk me-1"></i>Postal Code <span class="text-danger">*</span>
+                                    </label>
+                                    <input asp-for="PostalCode" class="form-control" placeholder="A1A 1A1" pattern="[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d" />
+                                    <span asp-validation-for="PostalCode" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Latitude" class="form-label">
+                                        <i class="fas fa-map-pin me-1"></i>Latitude
+                                    </label>
+                                    <input asp-for="Latitude" class="form-control" placeholder="49.2827" step="any" />
+                                    <span asp-validation-for="Latitude" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Longitude" class="form-label">
+                                        <i class="fas fa-map-pin me-1"></i>Longitude
+                                    </label>
+                                    <input asp-for="Longitude" class="form-control" placeholder="-123.1207" step="any" />
+                                    <span asp-validation-for="Longitude" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <button type="button" class="btn btn-outline-info btn-sm" id="getLocationBtn">
+                                    <i class="fas fa-crosshairs me-1"></i>Get My Current Location
+                                </button>
+                                <div class="form-text">Click to automatically fill latitude and longitude</div>
+                            </div>
+                        </div>
+
+                        <!-- User Information Section -->
+                        <div class="mb-4">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-info-circle me-2"></i>User Information
+                            </h5>
+
+                            <div class="mb-3">
+                                <label asp-for="UserType" class="form-label">
+                                    <i class="fas fa-user-tag me-1"></i>User Type <span class="text-danger">*</span>
+                                </label>
+                                <select asp-for="UserType" class="form-select">
+                                    <option value="">Select User Type</option>
+                                    <option value="1">Pet Owner</option>
+                                    <option value="2">Service Provider</option>
+                                </select>
+                                <div class="form-text">
+                                    <strong>Pet Owner:</strong> Looking for pet services<br>
+                                    <strong>Service Provider:</strong> Offering pet services
+                                </div>
+                                <span asp-validation-for="UserType" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Bio" class="form-label">
+                                    <i class="fas fa-user-edit me-1"></i>Bio
+                                </label>
+                                <textarea asp-for="Bio" class="form-control" rows="4" placeholder="Tell us about yourself..."></textarea>
+                                <div class="form-text">Optional: Share a bit about yourself and your pets or services</div>
+                                <span asp-validation-for="Bio" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                                <i class="fas fa-user-plus me-2"></i>Create Account
+                            </button>
+                        </div>
+
+                        <!-- Login Link -->
+                        <div class="text-center mt-3">
+                            <p class="mb-0">
+                                Already have an account?
+                                <a asp-action="Login" class="text-decoration-none">
+                                    <i class="fas fa-sign-in-alt me-1"></i>Sign In
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Password toggle functionality
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            togglePasswordVisibility('Password', this);
+        });
+
+        document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+            togglePasswordVisibility('ConfirmPassword', this);
+        });
+
+        function togglePasswordVisibility(fieldId, button) {
+            const field = document.getElementById(fieldId);
+            const icon = button.querySelector('i');
+
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // Get current location functionality
+        document.getElementById('getLocationBtn').addEventListener('click', function() {
+            const button = this;
+            const originalText = button.innerHTML;
+
+            if (navigator.geolocation) {
+                button.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Getting Location...';
+                button.disabled = true;
+
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        document.getElementById('Latitude').value = position.coords.latitude.toFixed(6);
+                        document.getElementById('Longitude').value = position.coords.longitude.toFixed(6);
+
+                        button.innerHTML = '<i class="fas fa-check me-1"></i>Location Retrieved!';
+                        button.classList.remove('btn-outline-info');
+                        button.classList.add('btn-success');
+
+                        setTimeout(function() {
+                            button.innerHTML = originalText;
+                            button.classList.remove('btn-success');
+                            button.classList.add('btn-outline-info');
+                            button.disabled = false;
+                        }, 2000);
+                    },
+                    function(error) {
+                        let errorMessage = 'Unable to get location';
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                errorMessage = 'Location access denied';
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                errorMessage = 'Location unavailable';
+                                break;
+                            case error.TIMEOUT:
+                                errorMessage = 'Location request timeout';
+                                break;
+                        }
+
+                        button.innerHTML = '<i class="fas fa-exclamation-triangle me-1"></i>' + errorMessage;
+                        button.classList.remove('btn-outline-info');
+                        button.classList.add('btn-warning');
+
+                        setTimeout(function() {
+                            button.innerHTML = originalText;
+                            button.classList.remove('btn-warning');
+                            button.classList.add('btn-outline-info');
+                            button.disabled = false;
+                        }, 3000);
+                    }
+                );
+            } else {
+                alert('Geolocation is not supported by this browser.');
+            }
+        });
+
+        // Form validation and submission
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Creating Account...';
+            submitBtn.disabled = true;
+
+            // Re-enable button after 10 seconds in case of error
+            setTimeout(function() {
+                if (submitBtn.disabled) {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            }, 10000);
+        });
+
+        // File upload preview
+        document.getElementById('ProfilePhoto').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Validate file size (5MB limit)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File size must be less than 5MB');
+                    this.value = '';
+                    return;
+                }
+
+                // Validate file type
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Please select a valid image file (JPG, PNG, or GIF)');
+                    this.value = '';
+                    return;
+                }
+            }
+        });
+
+        // Postal code formatting (Canadian)
+        document.getElementById('PostalCode').addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            if (value.length > 3) {
+                value = value.substring(0, 3) + ' ' + value.substring(3, 6);
+            }
+            e.target.value = value;
+        });
+    </script>
+
+    <style>
+        .card {
+            border: none;
+            border-radius: 10px;
+        }
+
+        .card-header {
+            border-radius: 10px 10px 0 0 !important;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+        .text-danger {
+            font-size: 0.875em;
+        }
+
+        .border-bottom {
+            border-bottom: 2px solid #dee2e6 !important;
+        }
+
+        .btn-lg {
+            padding: 0.75rem 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .input-group .btn {
+            border-left: none;
+        }
+
+        .input-group .form-control:focus + .btn {
+            border-color: #0d6efd;
+        }
+
+        .form-text {
+            font-size: 0.8rem;
+        }
+
+        @@media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .card {
+                margin: 10px 0;
+            }
+        }
+    </style>
+}

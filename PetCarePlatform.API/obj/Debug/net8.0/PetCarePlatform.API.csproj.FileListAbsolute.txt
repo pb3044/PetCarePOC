@@ -168,3 +168,8 @@ C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.API\obj\Debug\net8
 C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.API\obj\Debug\net8.0\PetCarePlatform.API.pdb
 C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.API\obj\Debug\net8.0\PetCarePlatform.API.genruntimeconfig.cache
 C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.API\obj\Debug\net8.0\ref\PetCarePlatform.API.dll
+C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.API\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.API\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.API\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.API\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json

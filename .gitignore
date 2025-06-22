@@ -132,3 +132,6 @@
 /.vs/PetCarePlatform/FileContentIndex/66dd0c5f-3dbe-4afc-93e6-14f16b570599.vsidx
 /.vs/PetCarePlatform/FileContentIndex/7888034f-f89c-4ddc-a331-183c0f03963a.vsidx
 /.vs/PetCarePlatform/FileContentIndex/d5b45f23-1c0b-43ed-ba54-a0262c47ad51.vsidx
+/.vs/PetCarePlatform
+/PetCarePlatform.API/obj/Debug/net8.0/staticwebassets
+/PetCarePlatform.Web/obj/Debug/net8.0

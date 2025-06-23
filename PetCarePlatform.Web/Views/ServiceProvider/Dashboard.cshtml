@@ -1,0 +1,197 @@
+﻿@{
+    ViewData["Title"] = "Service Provider Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">Service Provider Dashboard</h1>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">@ViewBag.TotalBookings</h4>
+                            <p class="card-text">Total Bookings</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-calendar-check fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">@ViewBag.PendingRequests</h4>
+                            <p class="card-text">Pending Requests</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-clock fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">@ViewBag.ActiveServices</h4>
+                            <p class="card-text">Active Services</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-paw fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">$@ViewBag.MonthlyEarnings</h4>
+                            <p class="card-text">This Month</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-dollar-sign fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity & Upcoming Appointments -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Recent Booking Requests</h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.RecentRequests != null && ((IEnumerable<dynamic>)ViewBag.RecentRequests).Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Pet Owner</th>
+                                        <th>Service</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var request in ViewBag.RecentRequests)
+                                    {
+                                        <tr>
+                                            <td>@request.PetOwnerName</td>
+                                            <td>@request.ServiceName</td>
+                                            <td>@request.RequestDate.ToString("MMM dd, yyyy")</td>
+                                            <td>
+                                                <span class="badge badge-@(request.Status == "Pending" ? "warning" : request.Status == "Accepted" ? "success" : "danger")">
+                                                    @request.Status
+                                                </span>
+                                            </td>
+                                            <td>
+                                                @if (request.Status == "Pending")
+                                                {
+                                                    <a href="@Url.Action("Details", "BookingRequests", new { id = request.Id })" class="btn btn-sm btn-outline-primary">
+                                                        View Details
+                                                    </a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No recent booking requests.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Today's Schedule</h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.TodaySchedule != null && ((IEnumerable<dynamic>)ViewBag.TodaySchedule).Any())
+                    {
+                        @foreach (var appointment in ViewBag.TodaySchedule)
+                        {
+                            <div class="d-flex justify-content-between align-items-center mb-3 p-2 border rounded">
+                                <div>
+                                    <strong>@appointment.ServiceName</strong><br>
+                                    <small class="text-muted">@appointment.PetOwnerName</small><br>
+                                    <small class="text-info">@appointment.Time</small>
+                                </div>
+                                <div>
+                                    <span class="badge badge-primary">@appointment.Status</span>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted">No appointments scheduled for today.</p>
+                    }
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="@Url.Action("Index", "MyServices")" class="btn btn-outline-primary">
+                            <i class="fas fa-cog"></i> Manage Services
+                        </a>
+                        <a href="@Url.Action("Index", "BookingRequests")" class="btn btn-outline-success">
+                            <i class="fas fa-envelope"></i> View All Requests
+                        </a>
+                        <a href="@Url.Action("Index", "Schedule")" class="btn btn-outline-info">
+                            <i class="fas fa-calendar"></i> View Schedule
+                        </a>
+                        <a href="@Url.Action("Edit", "Profile")" class="btn btn-outline-warning">
+                            <i class="fas fa-user-edit"></i> Update Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto-refresh dashboard every 5 minutes
+        setTimeout(function() {
+            location.reload();
+        }, 300000);
+    </script>
+}

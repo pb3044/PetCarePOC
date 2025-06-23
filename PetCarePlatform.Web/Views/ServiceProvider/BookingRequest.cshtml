@@ -1,0 +1,253 @@
+﻿@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "Booking Requests";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>Booking Requests</h1>
+                <div class="btn-group" role="group">
+                    <input type="radio" class="btn-check" name="statusFilter" id="all" value="all" checked>
+                    <label class="btn btn-outline-primary" for="all">All</label>
+
+                    <input type="radio" class="btn-check" name="statusFilter" id="pending" value="pending">
+                    <label class="btn btn-outline-warning" for="pending">Pending</label>
+
+                    <input type="radio" class="btn-check" name="statusFilter" id="accepted" value="accepted">
+                    <label class="btn btn-outline-success" for="accepted">Accepted</label>
+
+                    <input type="radio" class="btn-check" name="statusFilter" id="completed" value="completed">
+                    <label class="btn btn-outline-info" for="completed">Completed</label>
+
+                    <input type="radio" class="btn-check" name="statusFilter" id="cancelled" value="cancelled">
+                    <label class="btn btn-outline-danger" for="cancelled">Cancelled</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Requests Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    @if (Model != null && Model.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="bookingRequestsTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Pet Owner</th>
+                                        <th>Service</th>
+                                        <th>Pet Details</th>
+                                        <th>Scheduled</th>
+                                        <th>Duration</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var request in Model)
+                                    {
+                                        <tr data-status="@request.Status.ToLower()">
+                                            <td>
+                                                <small class="text-muted">@request.RequestDate.ToString("MMM dd")</small><br>
+                                                <small>@request.RequestDate.ToString("yyyy")</small>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-sm bg-primary rounded-circle me-2 d-flex align-items-center justify-content-center">
+                                                        <i class="fas fa-user text-white"></i>
+                                                    </div>
+                                                    <div>
+                                                        <strong>@request.PetOwnerName</strong><br>
+                                                        <small class="text-muted">@request.PetOwnerEmail</small><br>
+                                                        <small class="text-muted">@request.PetOwnerPhone</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <strong>@request.ServiceName</strong><br>
+                                                <small class="text-muted">@request.ServiceDescription</small>
+                                            </td>
+                                            <td>
+                                                <strong>@request.PetName</strong><br>
+                                                <small class="text-muted">@request.PetBreed (@request.PetAge years)</small><br>
+                                                @if (!string.IsNullOrEmpty(request.SpecialRequirements))
+                                                {
+                                                    <small class="text-warning">
+                                                        <i class="fas fa-exclamation-triangle"></i> Special requirements
+                                                    </small>
+                                                }
+                                            </td>
+                                            <td>
+                                                <strong>@request.ScheduledDate.ToString("MMM dd, yyyy")</strong><br>
+                                                <small>@request.ScheduledTime.ToString("hh:mm tt")</small>
+                                            </td>
+                                            <td>@request.Duration minutes</td>
+                                            <td class="text-success"><strong>$@request.Price</strong></td>
+                                            <td>
+                                                <span class="badge badge-@(request.Status == "Pending" ? "warning" :
+                                                                                                                               request.Status == "Accepted" ? "success" :
+                                                                                                                               request.Status == "Completed" ? "info" :
+                                                                                                                               request.Status == "Cancelled" ? "danger" : "secondary")">
+                                            @request.Status
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <button class="btn btn-sm btn-outline-primary"
+                                                    onclick="viewDetails(@request.Id)"
+                                                    title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+
+                                            @if (request.Status == "Pending")
+                                                    {
+                                                        <button class="btn btn-sm btn-outline-success"
+                                                                onclick="acceptRequest(@request.Id)"
+                                                                title="Accept">
+                                                            <i class="fas fa-check"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-danger"
+                                                                onclick="rejectRequest(@request.Id)"
+                                                                title="Reject">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    }
+                                                    else if (request.Status == "Accepted")
+                                                    {
+                                                        <button class="btn btn-sm btn-outline-info"
+                                                                onclick="markCompleted(@request.Id)"
+                                                                title="Mark Completed">
+                                                            <i class="fas fa-flag-checkered"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-warning"
+                                                                onclick="sendMessage(@request.Id)"
+                                                                title="Message Owner">
+                                                            <i class="fas fa-comment"></i>
+                                                        </button>
+                                                    }
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                            <h4 class="text-muted">No Booking Requests</h4>
+                            <p class="text-muted">You haven't received any booking requests yet. Make sure your services are active and visible to pet owners.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Booking Details Modal -->
+<div class="modal fade" id="bookingDetailsModal" tabindex="-1" aria-labelledby="bookingDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bookingDetailsModalLabel">Booking Request Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="bookingDetailsContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+            <div class="modal-footer" id="bookingDetailsActions">
+                <!-- Actions will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Filter booking requests by status
+        $('input[name="statusFilter"]').on('change', function() {
+            const selectedStatus = $(this).val();
+            const rows = $('#bookingRequestsTable tbody tr');
+
+            if (selectedStatus === 'all') {
+                rows.show();
+            } else {
+                rows.hide();
+                rows.filter('[data-status="' + selectedStatus + '"]').show();
+            }
+        });
+
+        function viewDetails(bookingId) {
+            $.ajax({
+                url: '@Url.Action("GetBookingDetails", "BookingRequests")',
+                type: 'GET',
+                data: { id: bookingId },
+                success: function(data) {
+                    $('#bookingDetailsContent').html(data.content);
+                    $('#bookingDetailsActions').html(data.actions);
+                    $('#bookingDetailsModal').modal('show');
+                },
+                error: function() {
+                    alert('Error loading booking details.');
+                }
+            });
+        }
+
+        function acceptRequest(bookingId) {
+            if (confirm('Are you sure you want to accept this booking request?')) {
+                updateBookingStatus(bookingId, 'Accepted');
+            }
+        }
+
+        function rejectRequest(bookingId) {
+            const reason = prompt('Please provide a reason for rejection (optional):');
+            if (reason !== null) {
+                updateBookingStatus(bookingId, 'Rejected', reason);
+            }
+        }
+
+        function markCompleted(bookingId) {
+            if (confirm('Are you sure you want to mark this booking as completed?')) {
+                updateBookingStatus(bookingId, 'Completed');
+            }
+        }
+
+        function updateBookingStatus(bookingId, status, reason = '') {
+            $.ajax({
+                url: '@Url.Action("UpdateStatus", "BookingRequests")',
+                type: 'POST',
+                data: {
+                    id: bookingId,
+                    status: status,
+                    reason: reason
+                },
+                success: function(result) {
+                    if (result.success) {
+                        location.reload();
+                    } else {
+                        alert('Error: ' + result.message);
+                    }
+                },
+                error: function() {
+                    alert('An error occurred while updating the booking status.');
+                }
+            });
+        }
+
+        function sendMessage(bookingId) {
+            // Implement messaging functionality
+            window.location.href = '@Url.Action("SendMessage", "BookingRequests")/' + bookingId;
+        }
+    </script>
+}

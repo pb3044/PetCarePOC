@@ -1,0 +1,512 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "My Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>My Profile</h1>
+                <div class="btn-group" role="group">
+                    <button class="btn btn-outline-primary active" data-bs-toggle="tab" data-bs-target="#personalInfo">
+                        Personal Info
+                    </button>
+                    <button class="btn btn-outline-primary" data-bs-toggle="tab" data-bs-target="#businessInfo">
+                        Business Info
+                    </button>
+                    <button class="btn btn-outline-primary" data-bs-toggle="tab" data-bs-target="#availability">
+                        Availability
+                    </button>
+                    <button class="btn btn-outline-primary" data-bs-toggle="tab" data-bs-target="#reviews">
+                        Reviews
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="tab-content">
+                <!-- Personal Information Tab -->
+                <div class="tab-pane fade show active" id="personalInfo">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Personal Information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="personalInfoForm">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="firstName" class="form-label">First Name</label>
+                                                <input type="text" class="form-control" id="firstName" name="FirstName" 
+                                                       value="@Model?.FirstName" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="lastName" class="form-label">Last Name</label>
+                                                <input type="text" class="form-control" id="lastName" name="LastName" 
+                                                       value="@Model?.LastName" required>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="email" class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="email" name="Email" 
+                                                       value="@Model?.Email" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="phone" class="form-label">Phone Number</label>
+                                                <input type="tel" class="form-control" id="phone" name="Phone" 
+                                                       value="@Model?.Phone" required>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="address" class="form-label">Address</label>
+                                            <input type="text" class="form-control" id="address" name="Address" 
+                                                   value="@Model?.Address">
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="city" class="form-label">City</label>
+                                                <input type="text" class="form-control" id="city" name="City" 
+                                                       value="@Model?.City">
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <label for="province" class="form-label">Province</label>
+                                                <select class="form-select" id="province" name="Province">
+                                                    @* <option value="BC" @@(Model?.Province == "BC" ? "selected" : "")>British Columbia</option>
+                                                    <option value="AB" @@(Model?.Province == "AB" ? "selected" : "")>Alberta</option>
+                                                    <option value="SK" @@(Model?.Province == "SK" ? "selected" : "")>Saskatchewan</option>
+                                                    <option value="MB" @(Model?.Province == "MB" ? "selected" : "")>Manitoba</option>
+                                                    <option value="ON" @(Model?.Province == "ON" ? "selected" : "")>Ontario</option>
+                                                    <option value="QC" @(Model?.Province == "QC" ? "selected" : "")>Quebec</option>
+                                                    <option value="NB" @(Model?.Province == "NB" ? "selected" : "")>New Brunswick</option>
+                                                    <option value="NS" @(Model?.Province == "NS" ? "selected" : "")>Nova Scotia</option>
+                                                    <option value="PE" @(Model?.Province == "PE" ? "selected" : "")>Prince Edward Island</option>
+                                                    <option value="NL" @(Model?.Province == "NL" ? "selected" : "")>Newfoundland and Labrador</option>
+                                                    <option value="YT" @(Model?.Province == "YT" ? "selected" : "")>Yukon</option>
+                                                    <option value="NT" @(Model?.Province == "NT" ? "selected" : "")>Northwest Territories</option>
+                                                    <option value="NU" @(Model?.Province == "NU" ? "selected" : "")>Nunavut</option> *@
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <label for="postalCode" class="form-label">Postal Code</label>
+                                                <input type="text" class="form-control" id="postalCode" name="PostalCode" 
+                                                       value="@Model?.PostalCode" pattern="[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                                            <input type="date" class="form-control" id="dateOfBirth" name="DateOfBirth" 
+                                                   value="@Model?.DateOfBirth?.ToString("yyyy-MM-dd")">
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="bio" class="form-label">Bio</label>
+                                            <textarea class="form-control" id="bio" name="Bio" rows="4" 
+                                                      placeholder="Tell us about yourself...">@Model?.Bio</textarea>
+                                        </div>
+                                        
+                                        <div class="d-flex justify-content-end">
+                                            <button type="submit" class="btn btn-primary">Update Personal Info</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Profile Picture</h5>
+                                </div>
+                                <div class="card-body text-center">
+                                    <div class="mb-3">
+                                        <img src="@(Model?.ProfilePicture ?? "/images/default-avatar.png")" 
+                                             alt="Profile Picture" class="rounded-circle" width="150" height="150">
+                                    </div>
+                                    <form id="profilePictureForm" enctype="multipart/form-data">
+                                        <div class="mb-3">
+                                            <input type="file" class="form-control" id="profilePicture" 
+                                                   name="ProfilePicture" accept="image/*">
+                                        </div>
+                                        <button type="submit" class="btn btn-outline-primary">Upload Picture</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business Information Tab -->
+                <div class="tab-pane fade" id="businessInfo">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Business Information</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="businessInfoForm">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="businessName" class="form-label">Business Name</label>
+                                        <input type="text" class="form-control" id="businessName" name="BusinessName" 
+                                               value="@Model?.BusinessName">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="businessType" class="form-label">Business Type</label>
+                                        <select class="form-select" id="businessType" name="BusinessType">
+                                            <option value="">Select Business Type</option>
+                                            @* <option value="Sole Proprietorship" @(Model?.BusinessType == "Sole Proprietorship" ? "selected" : "")>Sole Proprietorship</option>
+                                            <option value="Partnership" @(Model?.BusinessType == "Partnership" ? "selected" : "")>Partnership</option>
+                                            <option value="Corporation" @(Model?.BusinessType == "Corporation" ? "selected" : "")>Corporation</option>
+                                            <option value="LLC" @(Model?.BusinessType == "LLC" ? "selected" : "")>LLC</option> *@
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="businessNumber" class="form-label">Business Number</label>
+                                        <input type="text" class="form-control" id="businessNumber" name="BusinessNumber" 
+                                               value="@Model?.BusinessNumber">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="taxNumber" class="form-label">Tax Number</label>
+                                        <input type="text" class="form-control" id="taxNumber" name="TaxNumber" 
+                                               value="@Model?.TaxNumber">
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="businessAddress" class="form-label">Business Address</label>
+                                    <input type="text" class="form-control" id="businessAddress" name="BusinessAddress" 
+                                           value="@Model?.BusinessAddress">
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="businessCity" class="form-label">City</label>
+                                        <input type="text" class="form-control" id="businessCity" name="BusinessCity" 
+                                               value="@Model?.BusinessCity">
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="businessProvince" class="form-label">Province</label>
+                                        <select class="form-select" id="businessProvince" name="BusinessProvince">
+                                            @* <option value="BC" @(Model?.BusinessProvince == "BC" ? "selected" : "")>British Columbia</option>
+                                            <option value="AB" @(Model?.BusinessProvince == "AB" ? "selected" : "")>Alberta</option>
+                                            <option value="SK" @(Model?.BusinessProvince == "SK" ? "selected" : "")>Saskatchewan</option>
+                                            <option value="MB" @(Model?.BusinessProvince == "MB" ? "selected" : "")>Manitoba</option>
+                                            <option value="ON" @(Model?.BusinessProvince == "ON" ? "selected" : "")>Ontario</option>
+                                            <option value="QC" @(Model?.BusinessProvince == "QC" ? "selected" : "")>Quebec</option>
+                                            <option value="NB" @(Model?.BusinessProvince == "NB" ? "selected" : "")>New Brunswick</option>
+                                            <option value="NS" @(Model?.BusinessProvince == "NS" ? "selected" : "")>Nova Scotia</option>
+                                            <option value="PE" @(Model?.BusinessProvince == "PE" ? "selected" : "")>Prince Edward Island</option>
+                                            <option value="NL" @(Model?.BusinessProvince == "NL" ? "selected" : "")>Newfoundland and Labrador</option>
+                                            <option value="YT" @(Model?.BusinessProvince == "YT" ? "selected" : "")>Yukon</option>
+                                            <option value="NT" @(Model?.BusinessProvince == "NT" ? "selected" : "")>Northwest Territories</option>
+                                            <option value="NU" @(Model?.BusinessProvince == "NU" ? "selected" : "")>Nunavut</option> *@
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="businessPostalCode" class="form-label">Postal Code</label>
+                                        <input type="text" class="form-control" id="businessPostalCode" name="BusinessPostalCode" 
+                                               value="@Model?.BusinessPostalCode" pattern="[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d">
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="businessPhone" class="form-label">Business Phone</label>
+                                        <input type="tel" class="form-control" id="businessPhone" name="BusinessPhone" 
+                                               value="@Model?.BusinessPhone">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="businessEmail" class="form-label">Business Email</label>
+                                        <input type="email" class="form-control" id="businessEmail" name="BusinessEmail" 
+                                               value="@Model?.BusinessEmail">
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="businessWebsite" class="form-label">Website</label>
+                                    <input type="url" class="form-control" id="businessWebsite" name="BusinessWebsite" 
+                                           value="@Model?.BusinessWebsite" placeholder="https://www.example.com">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="businessDescription" class="form-label">Business Description</label>
+                                    <textarea class="form-control" id="businessDescription" name="BusinessDescription" rows="4" 
+                                              placeholder="Describe your business...">@Model?.BusinessDescription</textarea>
+                                </div>
+                                
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary">Update Business Info</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Availability Tab -->
+                <div class="tab-pane fade" id="availability">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Availability Schedule</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="availabilityForm">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="timeZone" class="form-label">Time Zone</label>
+                                        <select class="form-select" id="timeZone" name="TimeZone">
+                                            @* <option value="Pacific/Vancouver" @(Model?.TimeZone == "Pacific/Vancouver" ? "selected" : "")>Pacific Time (Vancouver)</option>
+                                            <option value="America/Edmonton" @(Model?.TimeZone == "America/Edmonton" ? "selected" : "")>Mountain Time (Edmonton)</option>
+                                            <option value="America/Regina" @(Model?.TimeZone == "America/Regina" ? "selected" : "")>Central Time (Regina)</option>
+                                            <option value="America/Winnipeg" @(Model?.TimeZone == "America/Winnipeg" ? "selected" : "")>Central Time (Winnipeg)</option>
+                                            <option value="America/Toronto" @(Model?.TimeZone == "America/Toronto" ? "selected" : "")>Eastern Time (Toronto)</option>
+                                            <option value="America/Halifax" @(Model?.TimeZone == "America/Halifax" ? "selected" : "")>Atlantic Time (Halifax)</option>
+                                            <option value="America/St_Johns" @(Model?.TimeZone == "America/St_Johns" ? "selected" : "")>Newfoundland Time</option> *@
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="bookingBuffer" class="form-label">Booking Buffer (minutes)</label>
+                                        <select class="form-select" id="bookingBuffer" name="BookingBuffer">
+                                            @* <option value="0" @(Model?.BookingBuffer == 0 ? "selected" : "")>No buffer</option>
+                                            <option value="15" @(Model?.BookingBuffer == 15 ? "selected" : "")>15 minutes</option>
+                                            <option value="30" @(Model?.BookingBuffer == 30 ? "selected" : "")>30 minutes</option>
+                                            <option value="60" @(Model?.BookingBuffer == 60 ? "selected" : "")>1 hour</option> *@
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <h6>Weekly Schedule</h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Day</th>
+                                                    <th>Available</th>
+                                                    <th>Start Time</th>
+                                                    <th>End Time</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var day in new[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" })
+                                                {
+                                                    <tr>
+                                                        <td>@day</td>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" 
+                                                                       id="available@(day)" name="Available@(day)" 
+                                                                       @(Model?.GetType().GetProperty($"Available{day}")?.GetValue(Model) == true ? "checked" : "")>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <input type="time" class="form-control" 
+                                                                   id="startTime@(day)" name="StartTime@(day)" 
+                                                                   value="@Model?.GetType().GetProperty($"StartTime{day}")?.GetValue(Model)">
+                                                        </td>
+                                                        <td>
+                                                            <input type="time" class="form-control" 
+                                                                   id="endTime@(day)" name="EndTime@(day)" 
+                                                                   value="@Model?.GetType().GetProperty($"EndTime{day}")?.GetValue(Model)">
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="specialNotes" class="form-label">Special Notes</label>
+                                    <textarea class="form-control" id="specialNotes" name="SpecialNotes" rows="3" 
+                                              placeholder="Any special availability notes...">@Model?.SpecialNotes</textarea>
+                                </div>
+                                
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary">Update Availability</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reviews Tab -->
+                <div class="tab-pane fade" id="reviews">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Review Summary</h5>
+                                </div>
+                                <div class="card-body text-center">
+                                    <div class="mb-3">
+                                        <h2 class="text-primary">@(Model?.AverageRating?.ToString("F1") ?? "0.0")</h2>
+                                        <div class="text-warning mb-2">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                @if (i <= (Model?.AverageRating ?? 0))
+                                                {
+                                                    <i class="fas fa-star"></i>
+                                                }
+                                                else if (i - 0.5 <= (Model?.AverageRating ?? 0))
+                                                {
+                                                    <i class="fas fa-star-half-alt"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="far fa-star"></i>
+                                                }
+                                            }
+                                        </div>
+                                        <p class="text-muted">Based on @(Model?.TotalReviews ?? 0) reviews</p>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        @for (int star = 5; star >= 1; star--)
+                                        {
+                                            <div class="d-flex align-items-center mb-1">
+                                                <span class="me-2">@star</span>
+                                                <i class="fas fa-star text-warning me-2"></i>
+                                                <div class="progress flex-grow-1 me-2" style="height: 10px;">
+                                                    <div class="progress-bar" role="progressbar" 
+                                                         style="width: @(Model?.GetType().GetProperty($"Rating{star}Stars")?.GetValue(Model) ?? 0)%"></div>
+                                                </div>
+                                                <span class="text-muted">@(Model?.GetType().GetProperty($"Rating{star}Count")?.GetValue(Model) ?? 0)</span>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">Recent Reviews</h5>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm active" data-filter="all">All</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" data-filter="5">5 Stars</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" data-filter="4">4 Stars</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" data-filter="3">3 Stars</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" data-filter="2">2 Stars</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" data-filter="1">1 Star</button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div id="reviewsList">
+                                        @if (Model?.Reviews != null)
+                                        {
+                                            @foreach (var review in Model.Reviews)
+                                            {
+                                                <div class="border-bottom pb-3 mb-3" data-rating="@review.Rating">
+                                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                                        <div>
+                                                            <h6 class="mb-1">@review.CustomerName</h6>
+                                                            <div class="text-warning mb-1">
+                                                                @for (int i = 1; i <= 5; i++)
+                                                                {
+                                                                    @if (i <= review.Rating)
+                                                                    {
+                                                                        <i class="fas fa-star"></i>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <i class="far fa-star"></i>
+                                                                    }
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <small class="text-muted">@review.Date?.ToString("MMM dd, yyyy")</small>
+                                                    </div>
+                                                    <p class="mb-0">@review.Comment</p>
+                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="text-center py-5">
+                                                <i class="fas fa-star fa-3x text-muted mb-3"></i>
+                                                <h6 class="text-muted">No reviews yet</h6>
+                                                <p class="text-muted">Your reviews will appear here once customers start rating your services.</p>
+                                            </div>
+                                        }
+                                    </div>
+                                    
+                                    @if (Model?.Reviews != null && Model.Reviews.Count > 10)
+                                    {
+                                        <div class="text-center mt-3">
+                                            <button class="btn btn-outline-primary" id="loadMoreReviews">Load More Reviews</button>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Handle form submissions
+            $('#personalInfoForm').on('submit', function(e) {
+                e.preventDefault();
+                // Add your form submission logic here
+                console.log('Personal info form submitted');
+            });
+            
+            $('#businessInfoForm').on('submit', function(e) {
+                e.preventDefault();
+                // Add your form submission logic here
+                console.log('Business info form submitted');
+            });
+            
+            $('#availabilityForm').on('submit', function(e) {
+                e.preventDefault();
+                // Add your form submission logic here
+                console.log('Availability form submitted');
+            });
+            
+            $('#profilePictureForm').on('submit', function(e) {
+                e.preventDefault();
+                // Add your file upload logic here
+                console.log('Profile picture form submitted');
+            });
+            
+            // Handle review filtering
+            $('[data-filter]').on('click', function() {
+                var filter = $(this).data('filter');
+                $('[data-filter]').removeClass('active');
+                $(this).addClass('active');
+                
+                if (filter === 'all') {
+                    $('[data-rating]').show();
+                } else {
+                    $('[data-rating]').hide();
+                    $('[data-rating="' + filter + '"]').show();
+                }
+            });
+            
+            // Handle load more reviews
+            $('#loadMoreReviews').on('click', function() {
+                // Add your load more logic here
+                console.log('Load more reviews clicked');
+            });
+        });
+    </script>
+}

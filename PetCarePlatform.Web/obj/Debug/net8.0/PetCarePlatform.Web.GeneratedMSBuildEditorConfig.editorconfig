@@ -64,6 +64,26 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGV0T3duZXJcUHJvZmlsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/prate/source/repos/pb3044/PetCarePOC/PetCarePlatform.Web/Views/ServiceProvider/BookingRequest.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVByb3ZpZGVyXEJvb2tpbmdSZXF1ZXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/prate/source/repos/pb3044/PetCarePOC/PetCarePlatform.Web/Views/ServiceProvider/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVByb3ZpZGVyXERhc2hib2FyZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/prate/source/repos/pb3044/PetCarePOC/PetCarePlatform.Web/Views/ServiceProvider/MyServices.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVByb3ZpZGVyXE15U2VydmljZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/prate/source/repos/pb3044/PetCarePOC/PetCarePlatform.Web/Views/ServiceProvider/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVByb3ZpZGVyXFByb2ZpbGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/prate/source/repos/pb3044/PetCarePOC/PetCarePlatform.Web/Views/ServiceProvider/Schedule.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVByb3ZpZGVyXFNjaGVkdWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/prate/source/repos/pb3044/PetCarePOC/PetCarePlatform.Web/Views/Services/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZXNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

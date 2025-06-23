@@ -1,0 +1,529 @@
+﻿@{
+    ViewData["Title"] = "My Bookings";
+    Layout = "~/Views/Shared/_PetOwnerLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="mb-1">
+                        <i class="fas fa-calendar text-primary me-2"></i>My Bookings
+                    </h2>
+                    <p class="text-muted mb-0">Track your service appointments and history</p>
+                </div>
+                <a href="/PetOwner/BookService" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Book New Service
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <ul class="nav nav-pills nav-fill" id="bookingTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="upcoming-tab" data-bs-toggle="pill" data-bs-target="#upcoming" type="button" role="tab">
+                        <i class="fas fa-clock me-2"></i>Upcoming (3)
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="completed-tab" data-bs-toggle="pill" data-bs-target="#completed" type="button" role="tab">
+                        <i class="fas fa-check-circle me-2"></i>Completed (12)
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="cancelled-tab" data-bs-toggle="pill" data-bs-target="#cancelled" type="button" role="tab">
+                        <i class="fas fa-times-circle me-2"></i>Cancelled (2)
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="bookingTabContent">
+        <!-- Upcoming Bookings -->
+        <div class="tab-pane fade show active" id="upcoming" role="tabpanel">
+            <div class="row g-4">
+                <!-- Upcoming Booking 1 -->
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-2 text-center">
+                                    <div class="date-block">
+                                        <div class="month">JAN</div>
+                                        <div class="day">25</div>
+                                        <div class="time">10:00 AM</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-cut text-primary fa-lg me-3"></i>
+                                        <div>
+                                            <h5 class="mb-1">Dog Grooming Service</h5>
+                                            <p class="text-muted mb-0">Paws & Claws Grooming Studio</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-dog text-warning me-2"></i>
+                                        <span class="me-3">Max (Golden Retriever)</span>
+                                        <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                                        <span>123 Pet Street, Downtown</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <h4 class="text-success mb-0">$85.00</h4>
+                                    <span class="badge bg-success">Confirmed</span>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            Actions
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#" onclick="viewBookingDetails(1)"><i class="fas fa-eye me-2"></i>View Details</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="rescheduleBooking(1)"><i class="fas fa-calendar me-2"></i>Reschedule</a></li>
+                                            <li><a class="dropdown-item text-danger" href="#" onclick="cancelBooking(1)"><i class="fas fa-times me-2"></i>Cancel</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Booking 2 -->
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-2 text-center">
+                                    <div class="date-block">
+                                        <div class="month">JAN</div>
+                                        <div class="day">28</div>
+                                        <div class="time">2:00 PM</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-walking text-success fa-lg me-3"></i>
+                                        <div>
+                                            <h5 class="mb-1">Dog Walking Service</h5>
+                                            <p class="text-muted mb-0">Happy Tails Dog Walking</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-cat text-warning me-2"></i>
+                                        <span class="me-3">Luna (Persian Cat)</span>
+                                        <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                                        <span>Central Park Area</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <h4 class="text-warning mb-0">$30.00</h4>
+                                    <span class="badge bg-warning">Pending</span>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            Actions
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#" onclick="viewBookingDetails(2)"><i class="fas fa-eye me-2"></i>View Details</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="rescheduleBooking(2)"><i class="fas fa-calendar me-2"></i>Reschedule</a></li>
+                                            <li><a class="dropdown-item text-danger" href="#" onclick="cancelBooking(2)"><i class="fas fa-times me-2"></i>Cancel</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Booking 3 -->
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-2 text-center">
+                                    <div class="date-block">
+                                        <div class="month">FEB</div>
+                                        <div class="day">02</div>
+                                        <div class="time">11:30 AM</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-stethoscope text-danger fa-lg me-3"></i>
+                                        <div>
+                                            <h5 class="mb-1">Veterinary Checkup</h5>
+                                            <p class="text-muted mb-0">City Animal Hospital</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-dog text-warning me-2"></i>
+                                        <span class="me-3">Buddy (Labrador Mix)</span>
+                                        <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                                        <span>456 Health Ave, Medical District</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <h4 class="text-info mb-0">$120.00</h4>
+                                    <span class="badge bg-info">Scheduled</span>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            Actions
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#" onclick="viewBookingDetails(3)"><i class="fas fa-eye me-2"></i>View Details</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="rescheduleBooking(3)"><i class="fas fa-calendar me-2"></i>Reschedule</a></li>
+                                            <li><a class="dropdown-item text-danger" href="#" onclick="cancelBooking(3)"><i class="fas fa-times me-2"></i>Cancel</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Completed Bookings -->
+        <div class="tab-pane fade" id="completed" role="tabpanel">
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-2 text-center">
+                                    <div class="date-block completed">
+                                        <div class="month">JAN</div>
+                                        <div class="day">15</div>
+                                        <div class="time">Completed</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-cut text-primary fa-lg me-3"></i>
+                                        <div>
+                                            <h5 class="mb-1">Full Grooming Package</h5>
+                                            <p class="text-muted mb-0">Paws & Claws Grooming Studio</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-dog text-warning me-2"></i>
+                                        <span class="me-3">Max (Golden Retriever)</span>
+                                        <div class="ms-auto">
+                                            <div class="rating">
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <span class="ms-1 text-muted">(5.0)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <h4 class="text-success mb-0">$95.00</h4>
+                                    <span class="badge bg-success">Completed</span>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            Actions
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#" onclick="viewBookingDetails(4)"><i class="fas fa-eye me-2"></i>View Details</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="rebookService(4)"><i class="fas fa-redo me-2"></i>Book Again</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="downloadReceipt(4)"><i class="fas fa-download me-2"></i>Download Receipt</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- More completed bookings would go here -->
+                <div class="col-12 text-center">
+                    <button class="btn btn-outline-primary" onclick="loadMoreBookings()">
+                        <i class="fas fa-plus me-2"></i>Load More Bookings
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cancelled Bookings -->
+        <div class="tab-pane fade" id="cancelled" role="tabpanel">
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm opacity-75">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-2 text-center">
+                                    <div class="date-block cancelled">
+                                        <div class="month">JAN</div>
+                                        <div class="day">10</div>
+                                        <div class="time">Cancelled</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-spa text-info fa-lg me-3"></i>
+                                        <div>
+                                            <h5 class="mb-1 text-muted">Pet Spa Treatment</h5>
+                                            <p class="text-muted mb-0">Luxury Pet Spa</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-cat text-warning me-2"></i>
+                                        <span class="me-3 text-muted">Luna (Persian Cat)</span>
+                                        <span class="badge bg-danger">Cancelled by Customer</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <h4 class="text-muted mb-0">$75.00</h4>
+                                    <span class="badge bg-secondary">Refunded</span>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="rebookService(5)">
+                                        <i class="fas fa-redo me-2"></i>Book Again
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Booking Details Modal -->
+<div class="modal fade" id="bookingDetailsModal" tabindex="-1" aria-labelledby="bookingDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bookingDetailsModalLabel">
+                    <i class="fas fa-info-circle text-primary me-2"></i>Booking Details
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="bookingDetailsContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="modalActionButton">
+                    <i class="fas fa-calendar me-2"></i>Reschedule
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .date-block {
+        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        color: white;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        text-align: center;
+        min-width: 80px;
+    }
+
+        .date-block.completed {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+        }
+
+        .date-block.cancelled {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        }
+
+        .date-block .month {
+            font-size: 0.75rem;
+            font-weight: bold;
+            opacity: 0.9;
+        }
+
+        .date-block .day {
+            font-size: 1.5rem;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .date-block .time {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+        }
+
+    .nav-pills .nav-link {
+        background-color: transparent;
+        border: 1px solid #dee2e6;
+        color: #6c757d;
+        margin: 0 0.125rem;
+    }
+
+        .nav-pills .nav-link:hover {
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+    .card {
+        transition: all 0.3s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
+
+    .rating i {
+        font-size: 0.875rem;
+    }
+
+    .dropdown-menu {
+        border: none;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    @@media (max-width: 768px) {
+        .date-block
+
+    {
+        margin-bottom: 1rem;
+    }
+
+    .col-md-2.text-end {
+        text-align: start !important;
+        margin-top: 1rem;
+    }
+
+    }
+</style>
+
+<script>
+    function viewBookingDetails(bookingId) {
+        // Sample booking data - in real app, this would come from your backend
+        const bookings = {
+            1: {
+                id: 1,
+                service: 'Dog Grooming Service',
+                provider: 'Paws & Claws Grooming Studio',
+                pet: 'Max (Golden Retriever)',
+                date: 'January 25, 2025',
+                time: '10:00 AM - 12:00 PM',
+                location: '123 Pet Street, Downtown',
+                price: '$85.00',
+                status: 'Confirmed',
+                notes: 'Full grooming package including bath, nail trim, and brushing'
+            },
+            4: {
+                id: 4,
+                service: 'Full Grooming Package',
+                provider: 'Paws & Claws Grooming Studio',
+                pet: 'Max (Golden Retriever)',
+                date: 'January 15, 2025',
+                time: '10:00 AM - 12:00 PM',
+                location: '123 Pet Street, Downtown',
+                price: '$95.00',
+                status: 'Completed',
+                rating: 5,
+                notes: 'Excellent service! Max looked amazing and the staff was very professional.'
+            }
+        };
+
+        const booking = bookings[bookingId] || bookings[1];
+
+        const content = `
+            <div class="row g-3">
+                <div class="col-12">
+                    <div class="card bg-light border-0">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="text-primary mb-3">Service Information</h6>
+                                    <p><strong>Service:</strong> ${booking.service}</p>
+                                    <p><strong>Provider:</strong> ${booking.provider}</p>
+                                    <p><strong>Pet:</strong> ${booking.pet}</p>
+                                    <p><strong>Price:</strong> <span class="text-success fw-bold">${booking.price}</span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-primary mb-3">Appointment Details</h6>
+                                    <p><strong>Date:</strong> ${booking.date}</p>
+                                    <p><strong>Time:</strong> ${booking.time}</p>
+                                    <p><strong>Location:</strong> ${booking.location}</p>
+                                    <p><strong>Status:</strong> <span class="badge bg-${booking.status === 'Completed' ? 'success' : 'primary'}">${booking.status}</span></p>
+                                </div>
+                            </div>
+                            ${booking.rating ? `
+                            <div class="mt-3">
+                                <h6 class="text-primary mb-2">Your Rating</h6>
+                                <div class="rating">
+                                    ${'<i class="fas fa-star text-warning"></i>'.repeat(booking.rating)}
+                                    <span class="ms-2">(${booking.rating}.0)</span>
+                                </div>
+                            </div>
+                            ` : ''}
+                            <div class="mt-3">
+                                <h6 class="text-primary mb-2">Notes</h6>
+                                <p class="text-muted">${booking.notes}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('bookingDetailsContent').innerHTML = content;
+
+        // Update modal action button based on booking status
+        const actionButton = document.getElementById('modalActionButton');
+        if (booking.status === 'Completed') {
+            actionButton.innerHTML = '<i class="fas fa-redo me-2"></i>Book Again';
+            actionButton.onclick = () => rebookService(bookingId);
+        } else {
+            actionButton.innerHTML = '<i class="fas fa-calendar me-2"></i>Reschedule';
+            actionButton.onclick = () => rescheduleBooking(bookingId);
+        }
+
+        new bootstrap.Modal(document.getElementById('bookingDetailsModal')).show();
+    }
+
+    function rescheduleBooking(bookingId) {
+        alert(`Reschedule functionality for booking ${bookingId} would open date/time picker here`);
+    }
+
+    function cancelBooking(bookingId) {
+        if (confirm('Are you sure you want to cancel this booking?')) {
+            alert(`Booking ${bookingId} would be cancelled here`);
+        }
+    }
+
+    function rebookService(bookingId) {
+        alert(`Rebook functionality for booking ${bookingId} would redirect to booking form with pre-filled data`);
+    }
+
+    function loadMoreBookings() {
+        alert('Load more bookings functionality would load additional completed bookings here');
+    }
+
+    function downloadReceipt(bookingId) {
+        alert(`Download receipt for booking ${bookingId} would generate PDF here`);
+    }
+</script>

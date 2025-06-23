@@ -44,6 +44,26 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/prate/source/repos/pb3044/PetCarePOC/PetCarePlatform.Web/Views/PetOwner/BookService.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGV0T3duZXJcQm9va1NlcnZpY2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/prate/source/repos/pb3044/PetCarePOC/PetCarePlatform.Web/Views/PetOwner/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGV0T3duZXJcRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/prate/source/repos/pb3044/PetCarePOC/PetCarePlatform.Web/Views/PetOwner/MyBookings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGV0T3duZXJcTXlCb29raW5ncy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/prate/source/repos/pb3044/PetCarePOC/PetCarePlatform.Web/Views/PetOwner/MyPets.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGV0T3duZXJcTXlQZXRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/prate/source/repos/pb3044/PetCarePOC/PetCarePlatform.Web/Views/PetOwner/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGV0T3duZXJcUHJvZmlsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/prate/source/repos/pb3044/PetCarePOC/PetCarePlatform.Web/Views/Services/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZXNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -54,6 +74,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/prate/source/repos/pb3044/PetCarePOC/PetCarePlatform.Web/Views/Shared/_LoginPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/prate/source/repos/pb3044/PetCarePOC/PetCarePlatform.Web/Views/Shared/_PetOwnerLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9QZXRPd25lckxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/prate/source/repos/pb3044/PetCarePOC/PetCarePlatform.Web/Views/Shared/_ValidationScriptsPartial.cshtml]

@@ -1,0 +1,498 @@
+﻿@{
+    ViewData["Title"] = "My Profile";
+    Layout = "~/Views/Shared/_PetOwnerLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-1">
+                <i class="fas fa-user text-primary me-2"></i>My Profile
+            </h2>
+            <p class="text-muted mb-0">Manage your account information and preferences</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Profile Picture & Basic Info -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="profile-picture-container mb-3">
+                        <div class="profile-picture">
+                            <i class="fas fa-user fa-4x text-muted"></i>
+                        </div>
+                        <button class="btn btn-sm btn-primary profile-picture-btn" onclick="uploadProfilePicture()">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+                    <h5 class="mb-1">@User.Identity.Name</h5>
+                    <p class="text-muted mb-3">Pet Owner</p>
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <div class="border-end">
+                                <h6 class="text-primary mb-0">3</h6>
+                                <small class="text-muted">Pets</small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="border-end">
+                                <h6 class="text-success mb-0">17</h6>
+                                <small class="text-muted">Bookings</small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <h6 class="text-warning mb-0">4.9</h6>
+                            <small class="text-muted">Rating</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-transparent border-0">
+                    <h6 class="mb-0">
+                        <i class="fas fa-bolt text-primary me-2"></i>Quick Actions
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-primary btn-sm" onclick="changePassword()">
+                            <i class="fas fa-key me-2"></i>Change Password
+                        </button>
+                        <button class="btn btn-outline-info btn-sm" onclick="manageNotifications()">
+                            <i class="fas fa-bell me-2"></i>Notification Settings
+                        </button>
+                        <button class="btn btn-outline-success btn-sm" onclick="downloadData()">
+                            <i class="fas fa-download me-2"></i>Download My Data
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="deleteAccount()">
+                            <i class="fas fa-trash me-2"></i>Delete Account
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Form -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">
+                            <i class="fas fa-edit text-primary me-2"></i>Personal Information
+                        </h6>
+                        <button class="btn btn-sm btn-outline-primary" id="editBtn" onclick="toggleEdit()">
+                            <i class="fas fa-edit me-1"></i>Edit
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form id="profileForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="firstName" class="form-label">First Name *</label>
+                                <input type="text" class="form-control" id="firstName" value="John" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lastName" class="form-label">Last Name *</label>
+                                <input type="text" class="form-control" id="lastName" value="Smith" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="email" value="john.smith@email.com" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" value="+1 (250) 555-0123" disabled>
+                            </div>
+                            <div class="col-12">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="address" value="123 Oak Bay Avenue" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" class="form-control" id="city" value="Victoria" disabled>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="province" class="form-label">Province</label>
+                                <select class="form-select" id="province" disabled>
+                                    <option value="BC" selected>British Columbia</option>
+                                    <option value="AB">Alberta</option>
+                                    <option value="ON">Ontario</option>
+                                    <option value="QC">Quebec</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="postalCode" class="form-label">Postal Code</label>
+                                <input type="text" class="form-control" id="postalCode" value="V8R 1E4" disabled>
+                            </div>
+                            <div class="col-12">
+                                <label for="bio" class="form-label">About Me</label>
+                                <textarea class="form-control" id="bio" rows="4" disabled placeholder="Tell us about yourself and your experience with pets...">I'm a passionate pet owner with over 10 years of experience caring for dogs and cats. I love spending time outdoors with my furry friends and believe in providing the best care possible for all pets.</textarea>
+                            </div>
+                        </div>
+
+                        <!-- Emergency Contact Section -->
+                        <hr class="my-4">
+                        <h6 class="text-primary mb-3">
+                            <i class="fas fa-phone-alt me-2"></i>Emergency Contact
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="emergencyName" class="form-label">Contact Name</label>
+                                <input type="text" class="form-control" id="emergencyName" value="Jane Smith" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="emergencyPhone" class="form-label">Contact Phone</label>
+                                <input type="tel" class="form-control" id="emergencyPhone" value="+1 (250) 555-0456" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="emergencyRelation" class="form-label">Relationship</label>
+                                <input type="text" class="form-control" id="emergencyRelation" value="Spouse" disabled>
+                            </div>
+                        </div>
+
+                        <!-- Preferences Section -->
+                        <hr class="my-4">
+                        <h6 class="text-primary mb-3">
+                            <i class="fas fa-cog me-2"></i>Preferences
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="preferredVet" class="form-label">Preferred Veterinarian</label>
+                                <input type="text" class="form-control" id="preferredVet" value="Oak Bay Animal Hospital" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="vetPhone" class="form-label">Vet Phone Number</label>
+                                <input type="tel" class="form-control" id="vetPhone" value="+1 (250) 555-0789" disabled>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Communication Preferences</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="emailNotifications" checked disabled>
+                                    <label class="form-check-label" for="emailNotifications">
+                                        Email notifications for bookings and updates
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="smsNotifications" checked disabled>
+                                    <label class="form-check-label" for="smsNotifications">
+                                        SMS notifications for urgent matters
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="marketingEmails" disabled>
+                                    <label class="form-check-label" for="marketingEmails">
+                                        Marketing emails and promotions
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Save Button (only visible when editing) -->
+                        <div class="mt-4" id="saveSection" style="display: none;">
+                            <button type="button" class="btn btn-primary me-2" onclick="saveProfile()">
+                                <i class="fas fa-save me-1"></i>Save Changes
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="cancelEdit()">
+                                <i class="fas fa-times me-1"></i>Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- My Pets Section -->
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-transparent border-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">
+                            <i class="fas fa-paw text-primary me-2"></i>My Pets
+                        </h6>
+                        <button class="btn btn-sm btn-outline-primary" onclick="addPet()">
+                            <i class="fas fa-plus me-1"></i>Add Pet
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <!-- Pet 1 -->
+                        <div class="col-md-6">
+                            <div class="card border border-primary-subtle">
+                                <div class="card-body p-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="pet-avatar me-3">
+                                            <i class="fas fa-dog fa-2x text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Buddy</h6>
+                                            <small class="text-muted">Golden Retriever • Male • 3 years</small>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-1">
+                                        <button class="btn btn-sm btn-outline-primary flex-fill" onclick="viewPet(1)">
+                                            <i class="fas fa-eye me-1"></i>View
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success flex-fill" onclick="editPet(1)">
+                                            <i class="fas fa-edit me-1"></i>Edit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pet 2 -->
+                        <div class="col-md-6">
+                            <div class="card border border-info-subtle">
+                                <div class="card-body p-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="pet-avatar me-3">
+                                            <i class="fas fa-cat fa-2x text-info"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Whiskers</h6>
+                                            <small class="text-muted">Persian Cat • Female • 5 years</small>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-1">
+                                        <button class="btn btn-sm btn-outline-primary flex-fill" onclick="viewPet(2)">
+                                            <i class="fas fa-eye me-1"></i>View
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success flex-fill" onclick="editPet(2)">
+                                            <i class="fas fa-edit me-1"></i>Edit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pet 3 -->
+                        <div class="col-md-6">
+                            <div class="card border border-warning-subtle">
+                                <div class="card-body p-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="pet-avatar me-3">
+                                            <i class="fas fa-dove fa-2x text-warning"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Charlie</h6>
+                                            <small class="text-muted">Parakeet • Male • 2 years</small>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-1">
+                                        <button class="btn btn-sm btn-outline-primary flex-fill" onclick="viewPet(3)">
+                                            <i class="fas fa-eye me-1"></i>View
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success flex-fill" onclick="editPet(3)">
+                                            <i class="fas fa-edit me-1"></i>Edit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-transparent border-0">
+                    <h6 class="mb-0">
+                        <i class="fas fa-history text-primary me-2"></i>Recent Activity
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-success"></div>
+                            <div class="timeline-content">
+                                <h6 class="mb-1">Booking Completed</h6>
+                                <p class="mb-1 small">Dog walking service for Buddy completed successfully</p>
+                                <small class="text-muted">2 days ago</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-info"></div>
+                            <div class="timeline-content">
+                                <h6 class="mb-1">Profile Updated</h6>
+                                <p class="mb-1 small">Emergency contact information updated</p>
+                                <small class="text-muted">1 week ago</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-primary"></div>
+                            <div class="timeline-content">
+                                <h6 class="mb-1">New Pet Added</h6>
+                                <p class="mb-1 small">Charlie the Parakeet was added to your profile</p>
+                                <small class="text-muted">2 weeks ago</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS -->
+<style>
+    .profile-picture-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .profile-picture {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid #fff;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+    }
+
+    .profile-picture-btn {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .pet-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: rgba(13, 110, 253, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+    }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #dee2e6;
+        }
+
+    .timeline-item {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .timeline-marker {
+        position: absolute;
+        left: -23px;
+        top: 5px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 3px solid #fff;
+        box-shadow: 0 0 0 2px #dee2e6;
+    }
+
+    .timeline-content {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 3px solid #dee2e6;
+    }
+</style>
+
+<!-- JavaScript Functions -->
+<script>
+    let isEditing = false;
+
+    function toggleEdit() {
+        isEditing = !isEditing;
+        const inputs = document.querySelectorAll('#profileForm input, #profileForm select, #profileForm textarea');
+        const checkboxes = document.querySelectorAll('#profileForm input[type="checkbox"]');
+        const editBtn = document.getElementById('editBtn');
+        const saveSection = document.getElementById('saveSection');
+
+        if (isEditing) {
+            inputs.forEach(input => input.disabled = false);
+            checkboxes.forEach(checkbox => checkbox.disabled = false);
+            editBtn.innerHTML = '<i class="fas fa-times me-1"></i>Cancel';
+            editBtn.className = 'btn btn-sm btn-outline-danger';
+            saveSection.style.display = 'block';
+        } else {
+            inputs.forEach(input => input.disabled = true);
+            checkboxes.forEach(checkbox => checkbox.disabled = true);
+            editBtn.innerHTML = '<i class="fas fa-edit me-1"></i>Edit';
+            editBtn.className = 'btn btn-sm btn-outline-primary';
+            saveSection.style.display = 'none';
+        }
+    }
+
+    function saveProfile() {
+        // Add your save logic here
+        alert('Profile saved successfully!');
+        toggleEdit();
+    }
+
+    function cancelEdit() {
+        // Reset form values to original state
+        toggleEdit();
+    }
+
+    function uploadProfilePicture() {
+        // Add profile picture upload logic
+        alert('Profile picture upload functionality');
+    }
+
+    function changePassword() {
+        // Redirect to change password page
+        alert('Redirect to change password');
+    }
+
+    function manageNotifications() {
+        // Open notification settings modal
+        alert('Open notification settings');
+    }
+
+    function downloadData() {
+        // Download user data
+        alert('Download user data');
+    }
+
+    function deleteAccount() {
+        if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+            alert('Account deletion process');
+        }
+    }
+
+    function addPet() {
+        // Redirect to add pet page
+        alert('Redirect to add pet page');
+    }
+
+    function viewPet(petId) {
+        // Redirect to pet details page
+        alert('View pet ' + petId);
+    }
+
+    function editPet(petId) {
+        // Redirect to edit pet page
+        alert('Edit pet ' + petId);
+    }
+</script>

@@ -57,6 +57,21 @@ namespace PetCarePlatform.Web.Controllers
                 var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    //if pet owner, redirect to pet owner's dashboard
+                    //if service provider, redirect to service provider's dashboard
+                    //if admin, redirect to admin dashboard
+                    if (user.UserType == UserType.PetOwner)                    {
+                        
+                        return RedirectToAction("Dashboard", "PetOwner");
+                    }
+                    else if (user.UserType == UserType.ServiceProvider)
+                    {
+                        return RedirectToAction("Dashboard", "ServiceProvider");
+                    }
+                    else if (user.UserType == UserType.Admin)
+                    {
+                        return RedirectToAction("Dashboard", "Admin");
+                    }
                     return RedirectToLocal(returnUrl);
                 }
                 else

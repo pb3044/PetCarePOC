@@ -26,6 +26,8 @@
 
   <ItemGroup>
     <Folder Include="Views\Account\" />
+    <Folder Include="Views\Admin\" />
+    <Folder Include="Views\ServiceProvider\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

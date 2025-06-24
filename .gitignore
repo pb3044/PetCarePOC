@@ -191,3 +191,12 @@
 /PetCarePlatform.Web/obj/Debug/net8.0/PetCarePlatform.Web.GeneratedMSBuildEditorConfig.editorconfig
 /PetCarePlatform.Core/obj/Debug/net8.0/PetCarePlatform.Core.csproj.AssemblyReference.cache
 /PetCarePlatform.Core/obj/Debug/net8.0/PetCarePlatform.Core.GeneratedMSBuildEditorConfig.editorconfig
+/PetCarePlatform.Core/obj/PetCarePlatform.Core.csproj.nuget.dgspec.json
+/PetCarePlatform.Core/obj/PetCarePlatform.Core.csproj.nuget.g.props
+/PetCarePlatform.Core/obj/Debug/net8.0/PetCarePlatform.Core.csproj.FileListAbsolute.txt
+/PetCarePlatform.Core/obj/project.assets.json
+/PetCarePlatform.Core/obj/project.nuget.cache
+/PetCarePlatform.Web/bin/Debug/net8.0/PetCarePlatform.Web.staticwebassets.runtime.json
+/PetCarePlatform.Web/obj/Debug/net8.0/PetCarePlatform.Web.csproj.CoreCompileInputs.cache
+/PetCarePlatform.Web/obj/Debug/net8.0/PetCarePlatform.Web.genruntimeconfig.cache
+/PetCarePlatform.Web/obj/Debug/net8.0/staticwebassets.development.json

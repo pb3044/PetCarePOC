@@ -1,0 +1,358 @@
+﻿@{
+    ViewData["Title"] = "Earnings & Payments";
+    Layout = "~/Views/Shared/_ServiceProviderLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>Earnings & Payments</h1>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-primary">
+                        <i class="fas fa-download"></i> Export Data
+                    </button>
+                    <button type="button" class="btn btn-primary">
+                        <i class="fas fa-credit-card"></i> Payment Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">$@ViewBag.TotalEarnings</h4>
+                            <p class="card-text">Total Earnings</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-dollar-sign fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">$@ViewBag.ThisMonthEarnings</h4>
+                            <p class="card-text">This Month</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-calendar-alt fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">$@ViewBag.PendingPayments</h4>
+                            <p class="card-text">Pending Payments</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-clock fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">@ViewBag.CompletedServices</h4>
+                            <p class="card-text">Services Completed</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts and Analytics -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Monthly Earnings Trend</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="earningsChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Earnings by Service</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="serviceEarningsChart" width="300" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter and Time Period Selection -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="periodFilter" class="form-label">Time Period</label>
+                            <select class="form-select" id="periodFilter">
+                                <option value="this-month">This Month</option>
+                                <option value="last-month">Last Month</option>
+                                <option value="last-3-months">Last 3 Months</option>
+                                <option value="last-6-months">Last 6 Months</option>
+                                <option value="this-year">This Year</option>
+                                <option value="custom">Custom Range</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="startDate" class="form-label">Start Date</label>
+                            <input type="date" class="form-control" id="startDate">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="endDate" class="form-label">End Date</label>
+                            <input type="date" class="form-control" id="endDate">
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary w-100" onclick="applyFilter()">
+                                <i class="fas fa-filter"></i> Apply Filter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment History -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Payment History</h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.PaymentHistory != null && ((IEnumerable<dynamic>)ViewBag.PaymentHistory).Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Customer</th>
+                                        <th>Service</th>
+                                        <th>Amount</th>
+                                        <th>Platform Fee</th>
+                                        <th>Net Earnings</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var payment in ViewBag.PaymentHistory)
+                                    {
+                                        <tr>
+                                            <td>@payment.Date.ToString("MMM dd, yyyy")</td>
+                                            <td>@payment.CustomerName</td>
+                                            <td>@payment.ServiceName</td>
+                                            <td>$@payment.Amount</td>
+                                            <td class="text-danger">-$@payment.PlatformFee</td>
+                                            <td class="text-success"><strong>$@payment.NetEarnings</strong></td>
+                                            <td>
+                                                <span class="badge badge-@(payment.Status == "Paid" ? "success" : payment.Status == "Pending" ? "warning" : "danger")">
+                                                    @payment.Status
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary" onclick="viewPaymentDetails(@payment.Id)">
+                                                    <i class="fas fa-eye"></i> Details
+                                                </button>
+                                                @if (payment.Status == "Paid")
+                                                {
+                                                    <button class="btn btn-sm btn-outline-secondary" onclick="downloadInvoice(@payment.Id)">
+                                                        <i class="fas fa-download"></i> Invoice
+                                                    </button>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination -->
+                        <nav aria-label="Payment history pagination">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fas fa-dollar-sign fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No payment history</h5>
+                            <p class="text-muted">Complete services to start earning money.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Details Modal -->
+<div class="modal fade" id="paymentDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Payment Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="paymentDetailsContent">
+                <!-- Payment details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="downloadInvoice()">Download Invoice</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Earnings Chart
+        const earningsCtx = document.getElementById('earningsChart').getContext('2d');
+        const earningsChart = new Chart(earningsCtx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(ViewBag.EarningsChartLabels ?? new string[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun" })),
+                datasets: [{
+                    label: 'Monthly Earnings',
+                    data: @Html.Raw(Json.Serialize(ViewBag.EarningsChartData ?? new decimal[] { 1200, 1800, 2400, 2100, 2800, 3200 })),
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Service Earnings Pie Chart
+        const serviceCtx = document.getElementById('serviceEarningsChart').getContext('2d');
+        const serviceChart = new Chart(serviceCtx, {
+            type: 'doughnut',
+            data: {
+                labels: @Html.Raw(Json.Serialize(ViewBag.ServiceEarningsLabels ?? new string[] { "Dog Walking", "Pet Sitting", "Grooming", "Training" })),
+                datasets: [{
+                    data: @Html.Raw(Json.Serialize(ViewBag.ServiceEarningsData ?? new decimal[] { 3500, 2800, 1200, 800 })),
+                    backgroundColor: [
+                        '#FF6384',
+                        '#36A2EB',
+                        '#FFCE56',
+                        '#4BC0C0'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        function applyFilter() {
+            const period = document.getElementById('periodFilter').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            // Implement filter logic
+            console.log('Applying filter:', period, startDate, endDate);
+            // Reload page with filter parameters or make AJAX call
+        }
+
+        function viewPaymentDetails(paymentId) {
+            // Load payment details via AJAX
+            console.log('Loading payment details for:', paymentId);
+            
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('paymentDetailsModal'));
+            modal.show();
+        }
+
+        function downloadInvoice(paymentId) {
+            // Implement invoice download
+            console.log('Downloading invoice for payment:', paymentId);
+        }
+
+        // Period filter change handler
+        document.getElementById('periodFilter').addEventListener('change', function() {
+            const customFields = document.getElementById('startDate').parentElement.nextElementSibling;
+            if (this.value === 'custom') {
+                document.getElementById('startDate').parentElement.style.display = 'block';
+                customFields.style.display = 'block';
+            } else {
+                document.getElementById('startDate').parentElement.style.display = 'none';
+                customFields.style.display = 'none';
+            }
+        });
+    </script>
+}

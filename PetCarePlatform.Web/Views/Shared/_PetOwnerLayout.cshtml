@@ -65,9 +65,14 @@
                                 </a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
-                            <li>
+                           @*  <li>
                                 <a class="dropdown-item" href="/Account/Logout">
                                     <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                </a>
+                            </li> *@
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="document.getElementById('logoutForm').submit(); return false;">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
                                 </a>
                             </li>
                         </ul>
@@ -139,6 +144,8 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <form id="logoutForm" asp-controller="Account" asp-action="Logout" method="post" style="display: none;">
+    </form>
 </body>
 </html>
 

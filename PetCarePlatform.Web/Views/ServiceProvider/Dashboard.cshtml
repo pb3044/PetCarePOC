@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Service Provider Dashboard";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_ServiceProviderLayout.cshtml";
 }
 
 <div class="container-fluid">
@@ -113,7 +113,7 @@
                                             <td>
                                                 @if (request.Status == "Pending")
                                                 {
-                                                    <a href="@Url.Action("Details", "BookingRequests", new { id = request.Id })" class="btn btn-sm btn-outline-primary">
+                                                    <a href="@Url.Action("Details", "BookingRequest", new { id = request.Id })" class="btn btn-sm btn-outline-primary">
                                                         View Details
                                                     </a>
                                                 }
@@ -171,7 +171,7 @@
                         <a href="@Url.Action("Index", "MyServices")" class="btn btn-outline-primary">
                             <i class="fas fa-cog"></i> Manage Services
                         </a>
-                        <a href="@Url.Action("Index", "BookingRequests")" class="btn btn-outline-success">
+                        <a href="@Url.Action("Index", "BookingRequest")" class="btn btn-outline-success">
                             <i class="fas fa-envelope"></i> View All Requests
                         </a>
                         <a href="@Url.Action("Index", "Schedule")" class="btn btn-outline-info">

@@ -34,6 +34,24 @@ namespace PetCarePlatform.Web.Controllers
         {
             return View();
         }
+
+        public IActionResult BookingRequest()
+        {
+            return View();
+        }
+
+        public IActionResult Reviews()
+        {
+            return View();
+        }
+        public IActionResult Earnings()
+        {
+            return View();
+        }
+        public IActionResult Reports()
+        {
+            return View();
+        }
     }
 
 }

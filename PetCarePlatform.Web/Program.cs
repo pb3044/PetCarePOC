@@ -1,12 +1,11 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using PetCarePlatform.Core.Models;
-using PetCarePlatform.Infrastructure.Data;
-using PetCarePlatform.Infrastructure.Identity;
 using PetCarePlatform.Core.Interfaces;
 using PetCarePlatform.Core.Services;
-using PetCarePlatform.Infrastructure.Location;
 using PetCarePlatform.Infrastructure;
+using PetCarePlatform.Infrastructure.Data;
+using PetCarePlatform.Infrastructure.Identity;
+using PetCarePlatform.Infrastructure.Location;
+using PetCarePlatform.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +37,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ILocationService, GoogleMapsService>();
 
+builder.Services.AddAutoMapper(typeof(MapperConfig));
 // Configure HttpClient for external services
 builder.Services.AddHttpClient();
 

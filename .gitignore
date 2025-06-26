@@ -203,3 +203,5 @@
 /PetCarePlatform.Web/bin/Debug/net8.0/AutoMapper.dll
 /PetCarePlatform.Web/obj/PetCarePlatform.Web.csproj.nuget.g.props
 /PetCarePlatform.Web/bin/Debug/net8.0/PetCarePlatform.Web.deps.json
+/PetCarePlatform.Web/obj/Debug/net8.0/ApiEndpoints.json
+/PetCarePlatform.Web/bin/Debug/net8.0/appsettings.json

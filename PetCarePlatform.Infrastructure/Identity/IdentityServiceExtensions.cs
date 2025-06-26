@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PetCarePlatform.Core.Models;
 using PetCarePlatform.Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PetCarePlatform.Infrastructure.Identity
 {
@@ -35,7 +36,7 @@ namespace PetCarePlatform.Infrastructure.Identity
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-            // Configure Cookie Authentication (instead of JWT)
+            // Configure Cookie Authentication
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
@@ -44,6 +45,8 @@ namespace PetCarePlatform.Infrastructure.Identity
                 options.LogoutPath = "/Account/Logout";
                 options.AccessDeniedPath = "/Account/AccessDenied";
                 options.SlidingExpiration = true;
+                options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.SameAsRequest;
+                options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Lax;
             });
 
             // Add Authorization policies

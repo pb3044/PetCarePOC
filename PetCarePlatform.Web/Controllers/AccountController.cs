@@ -1,10 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using PetCarePlatform.Core.Models;
-using PetCarePlatform.Infrastructure.Identity;
-using System;
-using System.ComponentModel.DataAnnotations;
 using PetCarePlatform.Web.Models;
 
 namespace PetCarePlatform.Web.Controllers
@@ -60,8 +56,9 @@ namespace PetCarePlatform.Web.Controllers
                     //if pet owner, redirect to pet owner's dashboard
                     //if service provider, redirect to service provider's dashboard
                     //if admin, redirect to admin dashboard
-                    if (user.UserType == UserType.PetOwner)                    {
-                        
+                    if (user.UserType == UserType.PetOwner)
+                    {
+
                         return RedirectToAction("Dashboard", "PetOwner");
                     }
                     else if (user.UserType == UserType.ServiceProvider)
@@ -94,7 +91,7 @@ namespace PetCarePlatform.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            
+
             if (ModelState.IsValid)
             {
                 // Check if email already exists
@@ -111,11 +108,11 @@ namespace PetCarePlatform.Web.Controllers
                 {
                     try
                     {
-                       // profilePhotoUrl = await _fileUploadService.UploadFileAsync(model.ProfilePhoto, "profiles");
+                        // profilePhotoUrl = await _fileUploadService.UploadFileAsync(model.ProfilePhoto, "profiles");
                     }
                     catch (Exception ex)
                     {
-                       // _logger.LogError(ex, "Error uploading profile photo");
+                        // _logger.LogError(ex, "Error uploading profile photo");
                         ModelState.AddModelError("ProfilePhoto", "Error uploading profile photo. Please try again.");
                         return View(model);
                     }
@@ -214,6 +211,6 @@ namespace PetCarePlatform.Web.Controllers
     //    public bool RememberMe { get; set; }
     //}
 
-   
+
 }
 

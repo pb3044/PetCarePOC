@@ -34,7 +34,6 @@ builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 // Register Infrastructure Services
-builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ILocationService, GoogleMapsService>();
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));

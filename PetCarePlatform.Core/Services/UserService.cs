@@ -207,5 +207,10 @@ namespace PetCarePlatform.Core.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task GetUserByIdAsync(string? userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

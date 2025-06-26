@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using PetCarePlatform.Core.Interfaces;
 using PetCarePlatform.Core.Models;
 
@@ -10,7 +7,7 @@ namespace PetCarePlatform.Core.Services
     {
         private readonly IPetOwnerRepository _petOwnerRepository;
         private readonly IPetRepository _petRepository;
-        
+
         public PetOwnerService(IPetOwnerRepository petOwnerRepository, IPetRepository petRepository)
         {
             _petOwnerRepository = petOwnerRepository;
@@ -127,5 +124,6 @@ namespace PetCarePlatform.Core.Services
             // For now, we'll just return all bookings for the owner
             return (IEnumerable<Booking>)await _petOwnerRepository.GetByIdAsync(ownerId); //.Bookings;
         }
+
     }
 }

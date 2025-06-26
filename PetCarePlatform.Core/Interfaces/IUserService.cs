@@ -16,5 +16,6 @@ namespace PetCarePlatform.Core.Interfaces
         Task<bool> IsEmailConfirmedAsync(string email);
         Task DeactivateUserAsync(int id);
         Task ReactivateUserAsync(int id);
+        Task GetUserByIdAsync(string? userId);
     }
 }

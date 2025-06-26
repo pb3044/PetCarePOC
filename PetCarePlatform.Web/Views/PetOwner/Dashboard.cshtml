@@ -1,5 +1,6 @@
-﻿@{
-    ViewData["Title"] = "Pet Owner Dashboard";
+﻿@model PetCarePlatform.Web.ViewModels.PetOwnerDashboardViewModel
+@{
+    ViewData["Title"] = "PetOwnerDashboard";
     Layout = "~/Views/Shared/_PetOwnerLayout.cshtml";
 }
 
@@ -11,7 +12,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h2 class="mb-1">Welcome back, @User.Identity.Name!</h2>
+                            <h2 class="mb-1">Welcome back, @Model.FirstName + @Model.LastName!</h2>
                             <p class="mb-0">Manage your pets and bookings from your dashboard</p>
                         </div>
                         <div class="text-end">
@@ -31,7 +32,7 @@
                     <div class="text-primary mb-2">
                         <i class="fas fa-dog fa-2x"></i>
                     </div>
-                    <h3 class="fw-bold text-primary">3</h3>
+                    <h3 class="fw-bold text-primary">@Model.TotalPets</h3>
                     <p class="text-muted mb-0">My Pets</p>
                 </div>
             </div>
@@ -42,7 +43,7 @@
                     <div class="text-success mb-2">
                         <i class="fas fa-calendar-check fa-2x"></i>
                     </div>
-                    <h3 class="fw-bold text-success">2</h3>
+                    <h3 class="fw-bold text-success">@Model.UpcomingBookings</h3>
                     <p class="text-muted mb-0">Upcoming Bookings</p>
                 </div>
             </div>
@@ -53,7 +54,7 @@
                     <div class="text-warning mb-2">
                         <i class="fas fa-clock fa-2x"></i>
                     </div>
-                    <h3 class="fw-bold text-warning">1</h3>
+                    <h3 class="fw-bold text-warning">@Model.PendingRequests</h3>
                     <p class="text-muted mb-0">Pending Requests</p>
                 </div>
             </div>
@@ -64,7 +65,7 @@
                     <div class="text-info mb-2">
                         <i class="fas fa-star fa-2x"></i>
                     </div>
-                    <h3 class="fw-bold text-info">4.8</h3>
+                    <h3 class="fw-bold text-info">@Model.AverageRating</h3>
                     <p class="text-muted mb-0">Avg Rating</p>
                 </div>
             </div>
@@ -77,24 +78,14 @@
         <div class="col-lg-4">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-header bg-transparent border-0 pb-0">
-                    <h5 class="card-title mb-0">
-                        <i class="fas fa-bolt text-primary me-2"></i>Quick Actions
-                    </h5>
+                    <h5 class="card-title mb-0"><i class="fas fa-bolt text-primary me-2"></i>Quick Actions</h5>
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
-                        <a href="/PetOwner/BookService" class="btn btn-primary">
-                            <i class="fas fa-plus me-2"></i>Book New Service
-                        </a>
-                        <a href="/PetOwner/MyPets" class="btn btn-outline-secondary">
-                            <i class="fas fa-paw me-2"></i>Manage My Pets
-                        </a>
-                        <a href="/Services" class="btn btn-outline-info">
-                            <i class="fas fa-search me-2"></i>Browse Services
-                        </a>
-                        <a href="/PetOwner/Profile" class="btn btn-outline-success">
-                            <i class="fas fa-user me-2"></i>Update Profile
-                        </a>
+                        <a href="/PetOwner/BookService" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Book New Service</a>
+                        <a href="/PetOwner/MyPets" class="btn btn-outline-secondary"><i class="fas fa-paw me-2"></i>Manage My Pets</a>
+                        <a href="/Services" class="btn btn-outline-info"><i class="fas fa-search me-2"></i>Browse Services</a>
+                        <a href="/PetOwner/Profile" class="btn btn-outline-success"><i class="fas fa-user me-2"></i>Update Profile</a>
                     </div>
                 </div>
             </div>
@@ -105,9 +96,7 @@
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-header bg-transparent border-0 pb-0">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0">
-                            <i class="fas fa-calendar text-primary me-2"></i>Recent Bookings
-                        </h5>
+                        <h5 class="card-title mb-0"><i class="fas fa-calendar text-primary me-2"></i>Recent Bookings</h5>
                         <a href="/PetOwner/MyBookings" class="btn btn-sm btn-outline-primary">View All</a>
                     </div>
                 </div>
@@ -124,69 +113,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-cut text-primary me-2"></i>
-                                            <span>Dog Grooming</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar-sm bg-light rounded-circle me-2 d-flex align-items-center justify-content-center">
-                                                <i class="fas fa-dog text-muted"></i>
-                                            </div>
-                                            <span>Max</span>
-                                        </div>
-                                    </td>
-                                    <td>Jan 25, 2025</td>
-                                    <td><span class="badge bg-success">Confirmed</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">View</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-walking text-success me-2"></i>
-                                            <span>Dog Walking</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar-sm bg-light rounded-circle me-2 d-flex align-items-center justify-content-center">
-                                                <i class="fas fa-cat text-muted"></i>
-                                            </div>
-                                            <span>Luna</span>
-                                        </div>
-                                    </td>
-                                    <td>Jan 28, 2025</td>
-                                    <td><span class="badge bg-warning">Pending</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">View</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-stethoscope text-danger me-2"></i>
-                                            <span>Vet Visit</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar-sm bg-light rounded-circle me-2 d-flex align-items-center justify-content-center">
-                                                <i class="fas fa-dog text-muted"></i>
-                                            </div>
-                                            <span>Buddy</span>
-                                        </div>
-                                    </td>
-                                    <td>Feb 02, 2025</td>
-                                    <td><span class="badge bg-info">Scheduled</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">View</button>
-                                    </td>
-                                </tr>
+                                @foreach (var booking in Model.RecentBookings)
+                                {
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-concierge-bell text-primary me-2"></i>
+                                                    <span>@booking.Service?.Title</span>
+                                                </div>
+                                            </td>
+                                            <td>@booking.Pet?.Name</td>
+                                            <td>@booking.StartTime.ToString("MMM dd, yyyy")</td>
+                                            <td>
+                                                <span class="badge bg-secondary">@booking.Status.ToString()</span>
+                                            </td>
+                                            <td><button class="btn btn-sm btn-outline-primary">View</button></td>
+                                        </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -202,83 +145,56 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-transparent border-0 pb-0">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0">
-                            <i class="fas fa-heart text-danger me-2"></i>My Pets
-                        </h5>
+                        <h5 class="card-title mb-0"><i class="fas fa-heart text-danger me-2"></i>My Pets</h5>
                         <a href="/PetOwner/MyPets" class="btn btn-sm btn-outline-primary">Manage</a>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="card bg-light border-0">
-                                <div class="card-body text-center py-3">
-                                    <div class="mb-2">
-                                        <i class="fas fa-dog fa-2x text-primary"></i>
+                        @foreach (var pet in Model.Pets)
+                        {
+                                <div class="col-md-6">
+                                    <div class="card bg-light border-0">
+                                        <div class="card-body text-center py-3">
+                                            <div class="mb-2">
+                                                <i class="fas fa-dog fa-2x text-primary"></i>
+                                            </div>
+                                            <h6 class="mb-1">@pet.Name</h6>
+                                            <small class="text-muted">@pet.Breed</small>
+                                        </div>
                                     </div>
-                                    <h6 class="mb-1">Max</h6>
-                                    <small class="text-muted">Golden Retriever</small>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card bg-light border-0">
-                                <div class="card-body text-center py-3">
-                                    <div class="mb-2">
-                                        <i class="fas fa-cat fa-2x text-warning"></i>
-                                    </div>
-                                    <h6 class="mb-1">Luna</h6>
-                                    <small class="text-muted">Persian Cat</small>
-                                </div>
-                            </div>
-                        </div>
+                        }
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Favorite Services -->
+        <!-- Favorite Providers -->
         <div class="col-lg-6">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-transparent border-0 pb-0">
-                    <h5 class="card-title mb-0">
-                        <i class="fas fa-star text-warning me-2"></i>Favorite Services
-                    </h5>
+                    <h5 class="card-title mb-0"><i class="fas fa-star text-warning me-2"></i>Favorite Services</h5>
                 </div>
                 <div class="card-body">
                     <div class="list-group list-group-flush">
-                        <div class="list-group-item border-0 px-0">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-cut text-primary me-3"></i>
-                                    <div>
-                                        <h6 class="mb-0">Paws & Claws Grooming</h6>
-                                        <small class="text-muted">Professional grooming</small>
+                        @foreach (var provider in Model.FavoriteProviders)
+                        {
+                                <div class="list-group-item border-0 px-0">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-user-md text-primary me-3"></i>
+                                            <div>
+                                                <h6 class="mb-0">@provider.BusinessName</h6>
+                                                <small class="text-muted">@provider.Description</small>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <span class="text-warning"><i class="fas fa-star"></i> @provider.AverageRating</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="text-end">
-                                    <span class="text-warning">
-                                        <i class="fas fa-star"></i> 4.9
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="list-group-item border-0 px-0">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-walking text-success me-3"></i>
-                                    <div>
-                                        <h6 class="mb-0">Happy Tails Walking</h6>
-                                        <small class="text-muted">Daily dog walking</small>
-                                    </div>
-                                </div>
-                                <div class="text-end">
-                                    <span class="text-warning">
-                                        <i class="fas fa-star"></i> 4.8
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -291,19 +207,59 @@
         width: 32px;
         height: 32px;
         font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: #f0f0f0;
     }
 
     .card {
-        transition: transform 0.2s ease-in-out;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        border-radius: 0.5rem;
     }
 
         .card:hover {
             transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
         }
+
+    .card-title {
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
 
     .table th {
         font-weight: 600;
         font-size: 0.875rem;
         color: #6c757d;
     }
+
+    .badge {
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 0.35em 0.6em;
+        border-radius: 0.35rem;
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+
+    .list-group-item h6 {
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+    }
+
+    .list-group-item small {
+        font-size: 0.75rem;
+    }
+
+    .btn-outline-primary:hover,
+    .btn-outline-info:hover,
+    .btn-outline-success:hover,
+    .btn-outline-secondary:hover {
+        color: white;
+    } 
+    
 </style>

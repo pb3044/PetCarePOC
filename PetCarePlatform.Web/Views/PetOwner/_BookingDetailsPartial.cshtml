@@ -1,0 +1,19 @@
+@model PetCarePlatform.Core.Models.Booking
+
+<div class="modal-header">
+    <h5 class="modal-title">Booking Details</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+<div class="modal-body">
+    <p><strong>Service:</strong> @Model.Service?.Title</p>
+    <p><strong>Provider:</strong> @Model.Service?.Provider?.BusinessName</p>
+    <p><strong>Pet:</strong> @Model.Pet?.Name (@Model.Pet?.Breed)</p>
+    <p><strong>Date:</strong> @Model.StartTime.ToString("f")</p>
+    <p><strong>End Time:</strong> @Model.EndTime.ToString("t")</p>
+    <p><strong>Status:</strong> @Model.Status</p>
+    <p><strong>Special Instructions:</strong> @Model.SpecialInstructions</p>
+    <p><strong>Total Price:</strong> $@Model.TotalPrice.ToString("F2")</p>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+</div> 

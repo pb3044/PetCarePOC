@@ -29,6 +29,7 @@ namespace PetCarePlatform.Core.Models
     public enum BookingStatus
     {
         Requested,
+        Pending,
         Confirmed,
         InProgress,
         Completed,

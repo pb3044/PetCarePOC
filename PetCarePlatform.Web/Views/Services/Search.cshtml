@@ -1,0 +1,273 @@
+@model PetCarePlatform.Web.Models.SearchServicesViewModel
+@{
+    ViewData["Title"] = "Search Services";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="h3 mb-4">Search Services</h1>
+        </div>
+    </div>
+
+    <!-- Search Form -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-4">
+                            <label for="keyword" class="form-label">Search</label>
+                            <input type="text" class="form-control" id="keyword" name="keyword" value="@Model.Keyword" placeholder="Service name or description...">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="type" class="form-label">Service Type</label>
+                            <select class="form-select" id="type" name="type">
+                                <option value="">All Types</option>
+                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.DogWalking)
+                                {
+                                    <option value="0" selected>Dog Walking</option>
+                                }
+                                else
+                                {
+                                    <option value="0">Dog Walking</option>
+                                }
+                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.PetSitting)
+                                {
+                                    <option value="1" selected>Pet Sitting</option>
+                                }
+                                else
+                                {
+                                    <option value="1">Pet Sitting</option>
+                                }
+                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.Boarding)
+                                {
+                                    <option value="2" selected>Boarding</option>
+                                }
+                                else
+                                {
+                                    <option value="2">Boarding</option>
+                                }
+                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.DayCare)
+                                {
+                                    <option value="3" selected>Day Care</option>
+                                }
+                                else
+                                {
+                                    <option value="3">Day Care</option>
+                                }
+                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.Grooming)
+                                {
+                                    <option value="4" selected>Grooming</option>
+                                }
+                                else
+                                {
+                                    <option value="4">Grooming</option>
+                                }
+                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.Training)
+                                {
+                                    <option value="5" selected>Training</option>
+                                }
+                                else
+                                {
+                                    <option value="5">Training</option>
+                                }
+                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.PetTaxi)
+                                {
+                                    <option value="6" selected>Pet Taxi</option>
+                                }
+                                else
+                                {
+                                    <option value="6">Pet Taxi</option>
+                                }
+                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.Veterinary)
+                                {
+                                    <option value="7" selected>Veterinary</option>
+                                }
+                                else
+                                {
+                                    <option value="7">Veterinary</option>
+                                }
+                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.VeterinaryVisit)
+                                {
+                                    <option value="8" selected>Veterinary Visit</option>
+                                }
+                                else
+                                {
+                                    <option value="8">Veterinary Visit</option>
+                                }
+                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.Other)
+                                {
+                                    <option value="9" selected>Other</option>
+                                }
+                                else
+                                {
+                                    <option value="9">Other</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="minPrice" class="form-label">Min Price</label>
+                            <input type="number" class="form-control" id="minPrice" name="minPrice" value="@Model.MinPrice" placeholder="$0">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="maxPrice" class="form-label">Max Price</label>
+                            <input type="number" class="form-control" id="maxPrice" name="maxPrice" value="@Model.MaxPrice" placeholder="$1000">
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary me-2">
+                                <i class="fas fa-search me-2"></i>Search
+                            </button>
+                            <a href="@Url.Action("Search", "Services")" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Clear
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Results -->
+    <div class="row">
+        <div class="col-12">
+            @if (Model.Results != null && Model.Results.Any())
+            {
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5>Search Results (@Model.Results.Count() services found)</h5>
+                    <div class="d-flex align-items-center">
+                        <label for="sortBy" class="form-label me-2 mb-0">Sort by:</label>
+                        <select class="form-select form-select-sm" id="sortBy" style="width: auto;">
+                            <option value="relevance">Relevance</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="rating">Rating</option>
+                            <option value="distance">Distance</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row" id="searchResults">
+                    @foreach (var service in Model.Results)
+                    {
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h5 class="card-title mb-0">@service.Title</h5>
+                                        <span class="badge bg-primary">@service.Type.ToString()</span>
+                                    </div>
+                                    
+                                    <p class="card-text text-muted small mb-2">
+                                        <i class="fas fa-map-marker-alt me-1"></i>@service.Location
+                                    </p>
+                                    
+                                    <p class="card-text">@(service.Description?.Length > 100 ? service.Description.Substring(0, 100) + "..." : service.Description)</p>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="text-primary fw-bold">
+                                            $@service.BasePrice.ToString("F2") <small class="text-muted">@service.PriceUnit</small>
+                                        </div>
+                                        <div class="text-muted small">
+                                            <i class="fas fa-paw me-1"></i>Max @service.MaxPetsPerBooking pets
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-footer bg-transparent border-top-0">
+                                    <div class="d-grid">
+                                        <a href="@Url.Action("Details", "Services", new { id = service.Id })" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-info-circle me-2"></i>View Details
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else if (Model.Results != null)
+            {
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-info-circle me-2"></i>
+                    No services found matching your search criteria. Try adjusting your filters.
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Quick Filters -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h5 class="mb-3">Quick Filters</h5>
+            <div class="row">
+                <div class="col-md-2 col-6 mb-2">
+                    <a href="@Url.Action("Search", "Services", new { type = 0 })" class="btn btn-outline-primary w-100">
+                        <i class="fas fa-dog me-2"></i>Dog Walking
+                    </a>
+                </div>
+                <div class="col-md-2 col-6 mb-2">
+                    <a href="@Url.Action("Search", "Services", new { type = 1 })" class="btn btn-outline-primary w-100">
+                        <i class="fas fa-home me-2"></i>Pet Sitting
+                    </a>
+                </div>
+                <div class="col-md-2 col-6 mb-2">
+                    <a href="@Url.Action("Search", "Services", new { type = 4 })" class="btn btn-outline-primary w-100">
+                        <i class="fas fa-cut me-2"></i>Grooming
+                    </a>
+                </div>
+                <div class="col-md-2 col-6 mb-2">
+                    <a href="@Url.Action("Search", "Services", new { type = 5 })" class="btn btn-outline-primary w-100">
+                        <i class="fas fa-graduation-cap me-2"></i>Training
+                    </a>
+                </div>
+                <div class="col-md-2 col-6 mb-2">
+                    <a href="@Url.Action("Search", "Services", new { type = 7 })" class="btn btn-outline-primary w-100">
+                        <i class="fas fa-stethoscope me-2"></i>Veterinary
+                    </a>
+                </div>
+                <div class="col-md-2 col-6 mb-2">
+                    <a href="@Url.Action("Search", "Services", new { minPrice = 0, maxPrice = 25 })" class="btn btn-outline-success w-100">
+                        <i class="fas fa-dollar-sign me-2"></i>Under $25
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Auto-submit form when filters change
+            $('#type, #minPrice, #maxPrice').change(function() {
+                if ($('#keyword').val() || $('#type').val() || $('#minPrice').val() || $('#maxPrice').val()) {
+                    $('form').submit();
+                }
+            });
+
+            // Sort functionality
+            $('#sortBy').change(function() {
+                const sortBy = $(this).val();
+                const results = $('#searchResults .col-lg-4').get();
+                
+                results.sort(function(a, b) {
+                    const priceA = parseFloat($(a).find('.text-primary').text().replace('$', ''));
+                    const priceB = parseFloat($(b).find('.text-primary').text().replace('$', ''));
+                    
+                    switch(sortBy) {
+                        case 'price-low':
+                            return priceA - priceB;
+                        case 'price-high':
+                            return priceB - priceA;
+                        default:
+                            return 0;
+                    }
+                });
+                
+                $('#searchResults').html(results);
+            });
+        });
+    </script>
+} 

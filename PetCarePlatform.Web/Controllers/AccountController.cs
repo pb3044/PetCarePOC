@@ -195,6 +195,11 @@ namespace PetCarePlatform.Web.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 
     //public class LoginViewModel

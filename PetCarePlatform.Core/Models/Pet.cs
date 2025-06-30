@@ -40,6 +40,8 @@ namespace PetCarePlatform.Core.Models
         Bird,
         Fish,
         SmallAnimal,
+        Rabbit,
+        Hamster,
         Reptile,
         Other
     }

@@ -120,9 +120,15 @@ namespace PetCarePlatform.Core.Services
 
         public async Task<IEnumerable<Booking>> GetOwnerBookingsAsync(int ownerId, bool includeHistory = false)
         {
+            var petOwner = await _petOwnerRepository.GetByIdAsync(ownerId);
+            if (petOwner == null)
+            {
+                return new List<Booking>();
+            }
+            
             // This would typically filter by status based on includeHistory parameter
             // For now, we'll just return all bookings for the owner
-            return (IEnumerable<Booking>)await _petOwnerRepository.GetByIdAsync(ownerId); //.Bookings;
+            return petOwner.Bookings ?? new List<Booking>();
         }
 
     }

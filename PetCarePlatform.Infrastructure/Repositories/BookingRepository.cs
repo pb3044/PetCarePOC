@@ -15,6 +15,7 @@ namespace PetCarePlatform.Infrastructure.Repositories
         {
             return await _dbSet
                 .Include(b => b.Service)
+                    .ThenInclude(s => s.Provider)
                 .Include(b => b.Owner)
                 .Include(b => b.Pet)
                 .Include(b => b.Payment)
@@ -26,6 +27,7 @@ namespace PetCarePlatform.Infrastructure.Repositories
         {
             return await _dbSet
                 .Include(b => b.Service)
+                    .ThenInclude(s => s.Provider)
                 .Include(b => b.Owner)
                 .Include(b => b.Pet)
                 .OrderByDescending(b => b.CreatedAt)
@@ -37,6 +39,7 @@ namespace PetCarePlatform.Infrastructure.Repositories
             return await _dbSet
                 .Where(b => b.OwnerId == ownerId)
                 .Include(b => b.Service)
+                    .ThenInclude(s => s.Provider)
                 .Include(b => b.Pet)
                 .Include(b => b.Payment)
                 .Include(b => b.Review)
@@ -49,6 +52,7 @@ namespace PetCarePlatform.Infrastructure.Repositories
             return await _dbSet
                 .Where(b => b.Service.ProviderId == providerId)
                 .Include(b => b.Service)
+                    .ThenInclude(s => s.Provider)
                 .Include(b => b.Owner)
                 .Include(b => b.Pet)
                 .Include(b => b.Payment)
@@ -61,6 +65,8 @@ namespace PetCarePlatform.Infrastructure.Repositories
         {
             return await _dbSet
                 .Where(b => b.ServiceId == serviceId)
+                .Include(b => b.Service)
+                    .ThenInclude(s => s.Provider)
                 .Include(b => b.Owner)
                 .Include(b => b.Pet)
                 .Include(b => b.Payment)
@@ -74,6 +80,7 @@ namespace PetCarePlatform.Infrastructure.Repositories
             return await _dbSet
                 .Where(b => b.Status == status)
                 .Include(b => b.Service)
+                    .ThenInclude(s => s.Provider)
                 .Include(b => b.Owner)
                 .Include(b => b.Pet)
                 .OrderByDescending(b => b.CreatedAt)
@@ -88,6 +95,7 @@ namespace PetCarePlatform.Infrastructure.Repositories
                            && b.StartTime > currentDate
                            && b.Status != BookingStatus.Cancelled)
                 .Include(b => b.Service)
+                    .ThenInclude(s => s.Provider)
                 .Include(b => b.Owner)
                 .Include(b => b.Pet)
                 .OrderBy(b => b.StartTime)
@@ -98,6 +106,17 @@ namespace PetCarePlatform.Infrastructure.Repositories
         {
             return !await _dbSet
                 .AnyAsync(b => b.ServiceId == serviceId
+                              && b.Status != BookingStatus.Cancelled
+                              && ((b.StartTime <= startTime && b.EndTime > startTime)
+                                  || (b.StartTime < endTime && b.EndTime >= endTime)
+                                  || (b.StartTime >= startTime && b.EndTime <= endTime)));
+        }
+
+        public async Task<bool> IsTimeSlotAvailableAsync(int serviceId, DateTime startTime, DateTime endTime, int excludeBookingId)
+        {
+            return !await _dbSet
+                .AnyAsync(b => b.ServiceId == serviceId
+                              && b.Id != excludeBookingId
                               && b.Status != BookingStatus.Cancelled
                               && ((b.StartTime <= startTime && b.EndTime > startTime)
                                   || (b.StartTime < endTime && b.EndTime >= endTime)

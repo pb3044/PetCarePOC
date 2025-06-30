@@ -1,0 +1,64 @@
+@model PetCarePlatform.Core.Models.Pet
+@{
+    ViewData["Title"] = "Pet Details";
+    Layout = "~/Views/Shared/_PetOwnerLayout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2><i class="fas fa-dog text-primary me-2"></i>@Model.Name - Details</h2>
+            <a href="/PetOwner/MyPets" class="btn btn-link">&larr; Back to My Pets</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Basic Info</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Breed:</strong> @Model.Breed</li>
+                        <li class="list-group-item"><strong>Type:</strong> @Model.Type</li>
+                        <li class="list-group-item"><strong>Age:</strong> @Model.Age</li>
+                        <li class="list-group-item"><strong>Size:</strong> @Model.Size</li>
+                        <li class="list-group-item"><strong>Gender:</strong> @Model.Gender</li>
+                        <li class="list-group-item"><strong>Is Neutered:</strong> @(Model.IsNeutered ? "Yes" : "No")</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Medical & Special Needs</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Medical Info:</strong> @Model.MedicalInformation</li>
+                        <li class="list-group-item"><strong>Special Needs:</strong> @Model.SpecialNeeds</li>
+                        <li class="list-group-item"><strong>Temperament:</strong> @Model.Temperament</li>
+                        <li class="list-group-item"><strong>Feeding Instructions:</strong> @Model.FeedingInstructions</li>
+                        <li class="list-group-item"><strong>Exercise Needs:</strong> @Model.ExerciseNeeds</li>
+                        <li class="list-group-item"><strong>Behavioral Notes:</strong> @Model.BehavioralNotes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Emergency & Vet Info</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Emergency Contact:</strong> @Model.EmergencyContactName (@Model.EmergencyContactPhone)</li>
+                        <li class="list-group-item"><strong>Veterinarian:</strong> @Model.VeterinarianName (@Model.VeterinarianPhone)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Created/Updated</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Created At:</strong> @Model.CreatedAt.ToString("g")</li>
+                        <li class="list-group-item"><strong>Updated At:</strong> @Model.UpdatedAt.ToString("g")</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

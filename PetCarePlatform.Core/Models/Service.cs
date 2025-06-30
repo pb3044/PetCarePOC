@@ -38,6 +38,7 @@ namespace PetCarePlatform.Core.Models
         Grooming,
         Training,
         PetTaxi,
+        Veterinary,
         VeterinaryVisit,
         Other
     }

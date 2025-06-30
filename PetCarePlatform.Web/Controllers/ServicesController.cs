@@ -22,8 +22,22 @@ namespace PetCarePlatform.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var services = await _serviceService.GetAllServicesAsync();
-            return View(services);
+            try
+            {
+                var services = await _serviceService.GetAllServicesAsync();
+                // Add some debugging information
+                ViewBag.ServiceCount = services?.Count() ?? 0;
+                return View(services);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (in a real app, you'd use a proper logging framework)
+                System.Diagnostics.Debug.WriteLine($"Error in ServicesController.Index: {ex.Message}");
+                
+                // Return a view with error information
+                ViewBag.ErrorMessage = "An error occurred while loading services. Please try again later.";
+                return View(new List<Service>());
+            }
         }
 
         public async Task<IActionResult> Details(int id)

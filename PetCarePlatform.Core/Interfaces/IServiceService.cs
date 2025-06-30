@@ -8,6 +8,7 @@ namespace PetCarePlatform.Core.Interfaces
     {
         Task<Service> GetServiceByIdAsync(int id);
         Task<IEnumerable<Service>> GetAllServicesAsync();
+        Task<IEnumerable<Service>> GetServicesByProviderIdAsync(int providerId);
         Task<IEnumerable<Service>> SearchServicesAsync(
             string keyword = null,
             ServiceType? type = null,

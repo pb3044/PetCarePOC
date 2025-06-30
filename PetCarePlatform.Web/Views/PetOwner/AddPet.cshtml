@@ -1,0 +1,201 @@
+@model PetCarePlatform.Web.Models.AddPetViewModel
+@{
+    ViewData["Title"] = "Add New Pet";
+    Layout = "~/Views/Shared/_PetOwnerLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <h6>Add New Pet</h6>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddPet" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Name" class="control-label">Pet Name *</label>
+                                    <input asp-for="Name" class="form-control" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Type" class="control-label">Pet Type *</label>
+                                    <select asp-for="Type" class="form-control" asp-items="Html.GetEnumSelectList<PetCarePlatform.Core.Models.PetType>()">
+                                        <option value="">Select Pet Type</option>
+                                    </select>
+                                    <span asp-validation-for="Type" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Breed" class="control-label">Breed</label>
+                                    <input asp-for="Breed" class="form-control" />
+                                    <span asp-validation-for="Breed" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Age" class="control-label">Age (years)</label>
+                                    <input asp-for="Age" class="form-control" type="number" min="0" max="30" />
+                                    <span asp-validation-for="Age" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Size" class="control-label">Size</label>
+                                    <select asp-for="Size" class="form-control">
+                                        <option value="">Select Size</option>
+                                        <option value="Small">Small</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="Large">Large</option>
+                                        <option value="Extra Large">Extra Large</option>
+                                    </select>
+                                    <span asp-validation-for="Size" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Gender" class="control-label">Gender</label>
+                                    <select asp-for="Gender" class="form-control">
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                    <span asp-validation-for="Gender" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input asp-for="IsNeutered" class="form-check-input" />
+                                        <label asp-for="IsNeutered" class="form-check-label">Is Neutered/Spayed</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label asp-for="MedicalInformation" class="control-label">Medical Information</label>
+                                    <textarea asp-for="MedicalInformation" class="form-control" rows="3" placeholder="Any medical conditions, allergies, medications, etc."></textarea>
+                                    <span asp-validation-for="MedicalInformation" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label asp-for="SpecialNeeds" class="control-label">Special Needs</label>
+                                    <textarea asp-for="SpecialNeeds" class="form-control" rows="3" placeholder="Any special care requirements, dietary restrictions, etc."></textarea>
+                                    <span asp-validation-for="SpecialNeeds" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label asp-for="Temperament" class="control-label">Temperament</label>
+                                    <textarea asp-for="Temperament" class="form-control" rows="2" placeholder="Describe your pet's personality and behavior"></textarea>
+                                    <span asp-validation-for="Temperament" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label asp-for="FeedingInstructions" class="control-label">Feeding Instructions</label>
+                                    <textarea asp-for="FeedingInstructions" class="form-control" rows="2" placeholder="Feeding schedule, food preferences, etc."></textarea>
+                                    <span asp-validation-for="FeedingInstructions" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label asp-for="ExerciseNeeds" class="control-label">Exercise Needs</label>
+                                    <textarea asp-for="ExerciseNeeds" class="form-control" rows="2" placeholder="Exercise requirements, activity level, etc."></textarea>
+                                    <span asp-validation-for="ExerciseNeeds" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label asp-for="BehavioralNotes" class="control-label">Behavioral Notes</label>
+                                    <textarea asp-for="BehavioralNotes" class="form-control" rows="2" placeholder="Any behavioral quirks, training notes, etc."></textarea>
+                                    <span asp-validation-for="BehavioralNotes" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="EmergencyContactName" class="control-label">Emergency Contact Name</label>
+                                    <input asp-for="EmergencyContactName" class="form-control" />
+                                    <span asp-validation-for="EmergencyContactName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="EmergencyContactPhone" class="control-label">Emergency Contact Phone</label>
+                                    <input asp-for="EmergencyContactPhone" class="form-control" />
+                                    <span asp-validation-for="EmergencyContactPhone" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="VeterinarianName" class="control-label">Veterinarian Name</label>
+                                    <input asp-for="VeterinarianName" class="form-control" />
+                                    <span asp-validation-for="VeterinarianName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="VeterinarianPhone" class="control-label">Veterinarian Phone</label>
+                                    <input asp-for="VeterinarianPhone" class="form-control" />
+                                    <span asp-validation-for="VeterinarianPhone" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Add Pet</button>
+                                <a asp-action="MyPets" class="btn btn-secondary">Cancel</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

@@ -27,6 +27,11 @@ namespace PetCarePlatform.Core.Services
             return await _serviceRepository.GetAllAsync();
         }
 
+        public async Task<IEnumerable<Service>> GetServicesByProviderIdAsync(int providerId)
+        {
+            return await _serviceRepository.GetByProviderIdAsync(providerId);
+        }
+
         public async Task<IEnumerable<Service>> SearchServicesAsync(
             string keyword = null, 
             ServiceType? type = null, 

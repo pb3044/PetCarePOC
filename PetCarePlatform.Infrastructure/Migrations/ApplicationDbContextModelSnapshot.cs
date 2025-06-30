@@ -17,7 +17,7 @@ namespace PetCarePlatform.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.5")
+                .HasAnnotation("ProductVersion", "8.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -343,13 +343,7 @@ namespace PetCarePlatform.Infrastructure.Migrations
                     b.Property<int?>("PetId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PetId1")
-                        .HasColumnType("int");
-
                     b.Property<int>("ServiceId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ServiceProviderId")
                         .HasColumnType("int");
 
                     b.Property<string>("SpecialInstructions")
@@ -363,6 +357,7 @@ namespace PetCarePlatform.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalPrice")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -374,11 +369,7 @@ namespace PetCarePlatform.Infrastructure.Migrations
 
                     b.HasIndex("PetId");
 
-                    b.HasIndex("PetId1");
-
                     b.HasIndex("ServiceId");
-
-                    b.HasIndex("ServiceProviderId");
 
                     b.ToTable("Bookings");
                 });
@@ -475,6 +466,7 @@ namespace PetCarePlatform.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("BookingId")
@@ -487,9 +479,11 @@ namespace PetCarePlatform.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("PlatformFee")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("ProviderPayout")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ReceiptUrl")
@@ -516,7 +510,7 @@ namespace PetCarePlatform.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Payment");
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("PetCarePlatform.Core.Models.Pet", b =>
@@ -776,6 +770,7 @@ namespace PetCarePlatform.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("BasePrice")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -1022,23 +1017,15 @@ namespace PetCarePlatform.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("PetCarePlatform.Core.Models.Pet", "Pet")
-                        .WithMany()
+                        .WithMany("Bookings")
                         .HasForeignKey("PetId")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("PetCarePlatform.Core.Models.Pet", null)
-                        .WithMany("Bookings")
-                        .HasForeignKey("PetId1");
 
                     b.HasOne("PetCarePlatform.Core.Models.Service", "Service")
                         .WithMany("Bookings")
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("PetCarePlatform.Core.Models.ServiceProvider", null)
-                        .WithMany("Bookings")
-                        .HasForeignKey("ServiceProviderId");
 
                     b.Navigation("Owner");
 
@@ -1292,8 +1279,6 @@ namespace PetCarePlatform.Infrastructure.Migrations
             modelBuilder.Entity("PetCarePlatform.Core.Models.ServiceProvider", b =>
                 {
                     b.Navigation("AvailabilitySchedules");
-
-                    b.Navigation("Bookings");
 
                     b.Navigation("Services");
                 });

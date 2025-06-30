@@ -1,0 +1,143 @@
+@using PetCarePlatform.Core.Models
+@model IEnumerable<Service>
+@{
+    ViewData["Title"] = "Services";
+    Layout = "~/Views/Shared/_PetOwnerLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <!-- Error Messages -->
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>@ViewBag.ErrorMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-1">Available Services</h1>
+                    <p class="text-muted mb-0">Find the perfect service for your pet</p>
+                    @if (ViewBag.ServiceCount != null)
+                    {
+                        <small class="text-muted">@ViewBag.ServiceCount services found</small>
+                    }
+                </div>
+                <div>
+                    <a href="@Url.Action("BookService", "PetOwner")" class="btn btn-primary">
+                        <i class="fas fa-calendar-plus me-2"></i>Book a Service
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="row g-4">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var service in Model)
+            {
+                <div class="col-lg-6 col-xl-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-transparent border-0 pb-0">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="service-icon">
+                                    @{
+                                        var icon = service.Type switch
+                                        {
+                                            ServiceType.DogWalking => "walking",
+                                            ServiceType.PetSitting => "home",
+                                            ServiceType.Boarding => "bed",
+                                            ServiceType.DayCare => "dog",
+                                            ServiceType.Grooming => "cut",
+                                            ServiceType.Training => "graduation-cap",
+                                            ServiceType.PetTaxi => "taxi",
+                                            ServiceType.Veterinary => "stethoscope",
+                                            _ => "paw"
+                                        };
+                                    }
+                                    <i class="fas fa-@icon text-primary fa-2x"></i>
+                                </div>
+                                <span class="badge bg-success">Available</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title mb-2">@service.Title</h5>
+                            <p class="card-text text-muted small mb-3">@service.Description</p>
+                            
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <small class="text-muted d-block">Price</small>
+                                    <strong class="text-primary">$@service.BasePrice.ToString("F2")</strong>
+                                    <small class="text-muted">@service.PriceUnit</small>
+                                </div>
+                                <div class="col-6">
+                                    <small class="text-muted d-block">Location</small>
+                                    <strong>@service.Location</strong>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <small class="text-muted d-block">Service Type</small>
+                                <span class="badge bg-light text-dark">@service.Type.ToString()</span>
+                            </div>
+                            
+                            @if (!string.IsNullOrEmpty(service.AcceptedPetTypes))
+                            {
+                                <div class="mb-3">
+                                    <small class="text-muted d-block">Pet Types</small>
+                                    <span class="badge bg-info me-1">@service.AcceptedPetTypes</span>
+                                </div>
+                            }
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pt-0">
+                            <div class="d-grid gap-2">
+                                <a href="@Url.Action("Details", "Services", new { id = service.Id })" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-info-circle me-2"></i>View Details
+                                </a>
+                                <a href="@Url.Action("BookService", "PetOwner", new { serviceId = service.Id })" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-calendar-plus me-2"></i>Book Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No services available</h5>
+                        <p class="text-muted">There are currently no services available. Please check back later.</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@functions {
+    private string GetServiceIcon(ServiceType serviceType)
+    {
+        return serviceType switch
+        {
+            ServiceType.DogWalking => "walking",
+            ServiceType.PetSitting => "home",
+            ServiceType.Boarding => "bed",
+            ServiceType.DayCare => "dog",
+            ServiceType.Grooming => "cut",
+            ServiceType.Training => "graduation-cap",
+            ServiceType.PetTaxi => "taxi",
+            ServiceType.Veterinary => "stethoscope",
+            _ => "paw"
+        };
+    }
+} 

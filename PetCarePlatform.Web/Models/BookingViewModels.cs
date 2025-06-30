@@ -33,5 +33,66 @@ namespace PetCarePlatform.Web.Models
         public bool CanCancel { get; set; }
         public bool CanReview { get; set; }
     }
+
+    public class BookServiceViewModel
+    {
+        // Only the essential fields for booking creation are required
+        [Required]
+        public int ServiceId { get; set; }
+
+        [Required(ErrorMessage = "Please select a pet")]
+        public int PetId { get; set; }
+
+        [Required(ErrorMessage = "Please select a date")]
+        [DataType(DataType.Date)]
+        public DateTime BookingDate { get; set; }
+
+        [Required(ErrorMessage = "Please select a start time")]
+        public string StartTime { get; set; }
+
+        [Required(ErrorMessage = "Please select an end time")]
+        public string EndTime { get; set; }
+
+        // Display-only fields - NOT required, NOT posted from form
+        public string ServiceTitle { get; set; } = string.Empty;
+        public string ServiceDescription { get; set; } = string.Empty;
+        public decimal ServicePrice { get; set; }
+        public string ServicePriceUnit { get; set; } = string.Empty;
+        public string ProviderName { get; set; } = string.Empty;
+        public string ServiceLocation { get; set; } = string.Empty;
+
+        // Optional field
+        [StringLength(500, ErrorMessage = "Special instructions cannot exceed 500 characters")]
+        public string SpecialInstructions { get; set; } = string.Empty;
+
+        // For dropdown population
+        public IEnumerable<Pet> UserPets { get; set; } = new List<Pet>();
+        public IEnumerable<Service> AvailableServices { get; set; } = new List<Service>();
+    }
+
+    public class EditBookingViewModel
+    {
+        public int Id { get; set; }
+        
+        [Required(ErrorMessage = "Please select a date")]
+        [DataType(DataType.Date)]
+        public DateTime BookingDate { get; set; }
+
+        [Required(ErrorMessage = "Please select a start time")]
+        public string StartTime { get; set; }
+
+        [Required(ErrorMessage = "Please select an end time")]
+        public string EndTime { get; set; }
+
+        [StringLength(500, ErrorMessage = "Special instructions cannot exceed 500 characters")]
+        public string SpecialInstructions { get; set; }
+
+        // Display-only fields (no validation attributes)
+        public string ServiceTitle { get; set; }
+        public string ProviderName { get; set; }
+        public string PetName { get; set; }
+        public decimal TotalPrice { get; set; }
+        public BookingStatus Status { get; set; }
+    }
 }
 

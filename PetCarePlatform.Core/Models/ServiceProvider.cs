@@ -28,7 +28,6 @@ namespace PetCarePlatform.Core.Models
         // Navigation properties
         public virtual ApplicationUser User { get; set; }
         public virtual ICollection<Service> Services { get; set; }
-        public virtual ICollection<Booking> Bookings { get; set; }
         public virtual ICollection<AvailabilitySchedule> AvailabilitySchedules { get; set; }
         public virtual ICollection<PetOwner> FavoritedByOwners { get; set; }
     }

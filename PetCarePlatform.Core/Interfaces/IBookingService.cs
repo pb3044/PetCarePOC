@@ -13,7 +13,9 @@ namespace PetCarePlatform.Core.Interfaces
         Task<IEnumerable<Booking>> GetUpcomingBookingsAsync(int userId);
         Task<Booking> CreateBookingAsync(Booking booking);
         Task<bool> IsTimeSlotAvailableAsync(int serviceId, DateTime startTime, DateTime endTime);
+        Task<bool> IsTimeSlotAvailableAsync(int serviceId, DateTime startTime, DateTime endTime, int excludeBookingId);
         Task UpdateBookingStatusAsync(int id, BookingStatus status);
+        Task UpdateBookingAsync(Booking booking);
         Task CancelBookingAsync(int id, string cancellationReason);
         Task<bool> CanBeReviewedAsync(int bookingId);
         Task<decimal> CalculateBookingPriceAsync(int serviceId, DateTime startTime, DateTime endTime, int petId);

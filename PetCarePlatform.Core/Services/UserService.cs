@@ -203,11 +203,6 @@ namespace PetCarePlatform.Core.Services
             return HashPassword(password) == hash;
         }
 
-        Task IUserService.UpdateUserProfileAsync(ApplicationUser user)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task GetUserByIdAsync(string? userId)
         {
             throw new NotImplementedException();

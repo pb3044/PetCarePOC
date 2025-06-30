@@ -1,48 +1,84 @@
-﻿@{
+﻿@using PetCarePlatform.Core.Models
+@model PetCarePlatform.Web.Models.BookServiceViewModel
+@{
     ViewData["Title"] = "Book a Service";
     Layout = "~/Views/Shared/_PetOwnerLayout.cshtml";
 }
 
 <div class="container-fluid py-4">
-    <!-- Page Header -->
+    <!-- Error/Success Messages -->
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>@TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["Warning"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>@TempData["Warning"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Header -->
     <div class="row mb-4">
         <div class="col-12">
-            <h2 class="mb-1">
-                <i class="fas fa-calendar-plus text-primary me-2"></i>Book a Service
-            </h2>
-            <p class="text-muted mb-0">Find and book the perfect care service for your pets</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-1">Book a Service</h1>
+                    <p class="text-muted mb-0">Find and book the perfect service for your pet</p>
+                </div>
+                <div>
+                    <a href="@Url.Action("Index", "Services")" class="btn btn-outline-primary">
+                        <i class="fas fa-search me-2"></i>Browse All Services
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Filters and Search -->
+    <!-- Filters -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <div class="row g-3 align-items-end">
+                    <h6 class="card-title mb-3">
+                        <i class="fas fa-filter me-2"></i>Filter Services
+                    </h6>
+                    <div class="row g-3">
                         <div class="col-md-3">
                             <label for="serviceType" class="form-label">Service Type</label>
                             <select class="form-select" id="serviceType" onchange="filterServices()">
-                                <option value="">All Services</option>
-                                <option value="0">Dog Walking</option>
-                                <option value="1">Pet Sitting</option>
-                                <option value="2">Cat Boarding</option>
-                                <option value="3">Doggy Daycare</option>
-                                <option value="4">Mobile Pet Grooming</option>
-                                <option value="5">Puppy Socialization Classes</option>
-                                <option value="6">Pet Taxi Service</option>
-                                <option value="7">Emergency Pet Care</option>
+                                <option value="">All Types</option>
+                                @{
+                                    var serviceTypes = Model.AvailableServices?.Select(s => s.Type).Distinct().OrderBy(t => t.ToString()).ToList() ?? new List<ServiceType>();
+                                    foreach (var serviceType in serviceTypes)
+                                    {
+                                        <option value="@((int)serviceType)">@serviceType.ToString().Replace("_", " ")</option>
+                                    }
+                                }
                             </select>
                         </div>
                         <div class="col-md-3">
                             <label for="location" class="form-label">Location</label>
                             <select class="form-select" id="location" onchange="filterServices()">
                                 <option value="">All Locations</option>
-                                <option value="Downtown Victoria">Downtown Victoria</option>
-                                <option value="Oak Bay, BC">Oak Bay, BC</option>
-                                <option value="Saanich, BC">Saanich, BC</option>
-                                <option value="Esquimalt, BC">Esquimalt, BC</option>
-                                <option value="James Bay, Victoria">James Bay, Victoria</option>
+                                @{
+                                    var locations = Model.AvailableServices?.Select(s => s.Location).Distinct().OrderBy(l => l).ToList() ?? new List<string>();
+                                    foreach (var location in locations)
+                                    {
+                                        <option value="@location">@location</option>
+                                    }
+                                }
                             </select>
                         </div>
                         <div class="col-md-3">
@@ -68,311 +104,87 @@
 
     <!-- Services Grid -->
     <div class="row g-4" id="servicesGrid">
-        <!-- Dog Walking Service -->
-        <div class="col-lg-6 col-xl-4 service-card" data-type="0" data-location="Downtown Victoria" data-price="25">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-transparent border-0 pb-0">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div class="service-icon">
-                            <i class="fas fa-walking text-primary fa-2x"></i>
-                        </div>
-                        <span class="badge bg-success">Available</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title mb-2">Dog Walking</h5>
-                    <p class="card-text text-muted small mb-3">Professional dog walking service in your neighborhood. Your furry friend gets exercise while you're busy.</p>
-
-                    <div class="service-details mb-3">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Price:</span>
-                            <strong class="text-primary">$25.00 per walk</strong>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Location:</span>
-                            <span>Downtown Victoria</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Duration:</span>
-                            <span>30-60 minutes</span>
-                        </div>
-                    </div>
-
-                    <div class="rating mb-3">
-                        <div class="d-flex align-items-center">
-                            <div class="stars me-2">
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
+        @if (Model.AvailableServices != null && Model.AvailableServices.Any())
+        {
+            foreach (var service in Model.AvailableServices)
+            {
+                <div class="col-lg-6 col-xl-4 service-card" 
+                     data-type="@((int)service.Type)" 
+                     data-location="@service.Location" 
+                     data-price="@service.BasePrice">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-transparent border-0 pb-0">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="service-icon">
+                                    @{
+                                        var icon = service.Type switch
+                                        {
+                                            ServiceType.DogWalking => "walking",
+                                            ServiceType.PetSitting => "home",
+                                            ServiceType.Boarding => "bed",
+                                            ServiceType.DayCare => "dog",
+                                            ServiceType.Grooming => "cut",
+                                            ServiceType.Training => "graduation-cap",
+                                            ServiceType.PetTaxi => "taxi",
+                                            ServiceType.Veterinary => "stethoscope",
+                                            _ => "paw"
+                                        };
+                                    }
+                                    <i class="fas fa-@icon text-primary fa-2x"></i>
+                                </div>
+                                <span class="badge bg-success">Available</span>
                             </div>
-                            <span class="text-muted small">(4.9) · 127 reviews</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title mb-2">@service.Title</h5>
+                            <p class="card-text text-muted small mb-3">@service.Description</p>
+
+                            <div class="service-details mb-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Price:</span>
+                                    <strong class="text-primary">$@service.BasePrice.ToString("F2") @service.PriceUnit</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Location:</span>
+                                    <span>@service.Location</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Provider:</span>
+                                    <span>@(service.Provider?.BusinessName ?? "Unknown")</span>
+                                </div>
+                                @if (service.Provider?.AverageRating > 0)
+                                {
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="text-muted">Rating:</span>
+                                        <span>@service.Provider.AverageRating.ToString("F1") ⭐ (@service.Provider.TotalReviews reviews)</span>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pt-0">
+                            <button class="btn btn-primary w-100" onclick="openBookingModal(@service.Id, '@service.Title', @service.BasePrice, '@(service.Provider?.BusinessName ?? "Unknown")', '@service.Location')">
+                                <i class="fas fa-calendar-plus me-2"></i>Book Now
+                            </button>
                         </div>
                     </div>
                 </div>
-                <div class="card-footer bg-transparent border-0 pt-0">
-                    <button class="btn btn-primary w-100" onclick="openBookingModal(1, 'Dog Walking', 25.00)">
-                        <i class="fas fa-calendar-plus me-2"></i>Book Now
-                    </button>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No services available</h5>
+                        <p class="text-muted">There are currently no services available. Please check back later.</p>
+                        <a href="@Url.Action("Index", "Services")" class="btn btn-outline-primary">
+                            <i class="fas fa-search me-2"></i>Browse All Services
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Pet Sitting Service -->
-        <div class="col-lg-6 col-xl-4 service-card" data-type="1" data-location="Downtown Victoria" data-price="40">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-transparent border-0 pb-0">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div class="service-icon">
-                            <i class="fas fa-home text-info fa-2x"></i>
-                        </div>
-                        <span class="badge bg-success">Available</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title mb-2">Pet Sitting</h5>
-                    <p class="card-text text-muted small mb-3">Reliable in-home pet sitting services. Your pets stay comfortable in their familiar environment.</p>
-
-                    <div class="service-details mb-3">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Price:</span>
-                            <strong class="text-info">$40.00 per day</strong>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Location:</span>
-                            <span>Downtown Victoria</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Duration:</span>
-                            <span>Full day</span>
-                        </div>
-                    </div>
-
-                    <div class="rating mb-3">
-                        <div class="d-flex align-items-center">
-                            <div class="stars me-2">
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star-half-alt text-warning"></i>
-                            </div>
-                            <span class="text-muted small">(4.7) · 89 reviews</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer bg-transparent border-0 pt-0">
-                    <button class="btn btn-info w-100" onclick="openBookingModal(2, 'Pet Sitting', 40.00)">
-                        <i class="fas fa-calendar-plus me-2"></i>Book Now
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mobile Pet Grooming -->
-        <div class="col-lg-6 col-xl-4 service-card" data-type="4" data-location="Oak Bay, BC" data-price="65">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-transparent border-0 pb-0">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div class="service-icon">
-                            <i class="fas fa-cut text-success fa-2x"></i>
-                        </div>
-                        <span class="badge bg-warning text-dark">Limited</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title mb-2">Mobile Pet Grooming</h5>
-                    <p class="card-text text-muted small mb-3">Full-service mobile pet grooming. We come to you with professional equipment and expertise.</p>
-
-                    <div class="service-details mb-3">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Price:</span>
-                            <strong class="text-success">$65.00 per session</strong>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Location:</span>
-                            <span>Oak Bay, BC</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Duration:</span>
-                            <span>1-2 hours</span>
-                        </div>
-                    </div>
-
-                    <div class="rating mb-3">
-                        <div class="d-flex align-items-center">
-                            <div class="stars me-2">
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                            </div>
-                            <span class="text-muted small">(5.0) · 43 reviews</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer bg-transparent border-0 pt-0">
-                    <button class="btn btn-success w-100" onclick="openBookingModal(3, 'Mobile Pet Grooming', 65.00)">
-                        <i class="fas fa-calendar-plus me-2"></i>Book Now
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Emergency Pet Care -->
-        <div class="col-lg-6 col-xl-4 service-card" data-type="7" data-location="Saanich, BC" data-price="150">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-transparent border-0 pb-0">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div class="service-icon">
-                            <i class="fas fa-ambulance text-danger fa-2x"></i>
-                        </div>
-                        <span class="badge bg-danger">Emergency</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title mb-2">Emergency Pet Care</h5>
-                    <p class="card-text text-muted small mb-3">After-hours emergency veterinary care for urgent pet health situations and accidents.</p>
-
-                    <div class="service-details mb-3">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Price:</span>
-                            <strong class="text-danger">$150.00 per visit</strong>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Location:</span>
-                            <span>Saanich, BC</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Availability:</span>
-                            <span>24/7</span>
-                        </div>
-                    </div>
-
-                    <div class="rating mb-3">
-                        <div class="d-flex align-items-center">
-                            <div class="stars me-2">
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                            </div>
-                            <span class="text-muted small">(4.8) · 67 reviews</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer bg-transparent border-0 pt-0">
-                    <button class="btn btn-danger w-100" onclick="openBookingModal(7, 'Emergency Pet Care', 150.00)">
-                        <i class="fas fa-phone me-2"></i>Book Emergency
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pet Taxi Service -->
-        <div class="col-lg-6 col-xl-4 service-card" data-type="6" data-location="Esquimalt, BC" data-price="15">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-transparent border-0 pb-0">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div class="service-icon">
-                            <i class="fas fa-taxi text-warning fa-2x"></i>
-                        </div>
-                        <span class="badge bg-success">Available</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title mb-2">Pet Taxi Service</h5>
-                    <p class="card-text text-muted small mb-3">Safe and reliable transportation for your pets to vet appointments, grooming, or other destinations.</p>
-
-                    <div class="service-details mb-3">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Price:</span>
-                            <strong class="text-warning">$15.00 per trip</strong>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Location:</span>
-                            <span>Esquimalt, BC</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Range:</span>
-                            <span>Greater Victoria</span>
-                        </div>
-                    </div>
-
-                    <div class="rating mb-3">
-                        <div class="d-flex align-items-center">
-                            <div class="stars me-2">
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="far fa-star text-warning"></i>
-                            </div>
-                            <span class="text-muted small">(4.2) · 34 reviews</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer bg-transparent border-0 pt-0">
-                    <button class="btn btn-warning w-100" onclick="openBookingModal(10, 'Pet Taxi Service', 15.00)">
-                        <i class="fas fa-calendar-plus me-2"></i>Book Now
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Doggy Daycare -->
-        <div class="col-lg-6 col-xl-4 service-card" data-type="3" data-location="James Bay, Victoria" data-price="35">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-transparent border-0 pb-0">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div class="service-icon">
-                            <i class="fas fa-dog text-purple fa-2x"></i>
-                        </div>
-                        <span class="badge bg-success">Available</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title mb-2">Doggy Daycare</h5>
-                    <p class="card-text text-muted small mb-3">Fun and supervised daycare for dogs. Socialization, play time, and professional care.</p>
-
-                    <div class="service-details mb-3">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Price:</span>
-                            <strong class="text-purple">$35.00 per day</strong>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Location:</span>
-                            <span>James Bay, Victoria</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Hours:</span>
-                            <span>7:00 AM - 6:00 PM</span>
-                        </div>
-                    </div>
-
-                    <div class="rating mb-3">
-                        <div class="d-flex align-items-center">
-                            <div class="stars me-2">
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star-half-alt text-warning"></i>
-                            </div>
-                            <span class="text-muted small">(4.6) · 92 reviews</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer bg-transparent border-0 pt-0">
-                    <button class="btn btn-purple w-100" onclick="openBookingModal(12, 'Doggy Daycare', 35.00)">
-                        <i class="fas fa-calendar-plus me-2"></i>Book Now
-                    </button>
-                </div>
-            </div>
-        </div>
+        }
     </div>
 
     <!-- No Results Message -->
@@ -383,6 +195,9 @@
                     <i class="fas fa-search fa-3x text-muted mb-3"></i>
                     <h5 class="text-muted">No services found</h5>
                     <p class="text-muted">Try adjusting your filters to see more results.</p>
+                    <button class="btn btn-outline-primary" onclick="clearFilters()">
+                        <i class="fas fa-filter-circle-xmark me-2"></i>Clear All Filters
+                    </button>
                 </div>
             </div>
         </div>
@@ -400,60 +215,64 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="bookingForm">
+                <form id="bookingForm" asp-action="BookService" method="post">
+                    @Html.AntiForgeryToken()
+                    
+                    <!-- Validation Summary -->
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <h6>Please correct the following errors:</h6>
+                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                        </div>
+                    }
+                    
+                    <input type="hidden" id="serviceId" name="ServiceId" />
                     <div class="row g-3">
                         <div class="col-12">
                             <div class="alert alert-info">
                                 <strong id="selectedService">Service Name</strong> - <span id="selectedPrice">$0.00</span>
+                                <br />
+                                <small class="text-muted">Provider: <span id="selectedProvider">Provider Name</span> | Location: <span id="selectedLocation">Location</span></small>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <label for="petSelect" class="form-label">Select Pet *</label>
-                            <select class="form-select" id="petSelect" required>
+                            <select class="form-select" id="petSelect" name="PetId" required>
                                 <option value="">Choose your pet...</option>
-                                <option value="1">Buddy (Golden Retriever)</option>
-                                <option value="2">Whiskers (Persian Cat)</option>
-                                <option value="3">Charlie (Parakeet)</option>
+                                @if (Model.UserPets != null)
+                                {
+                                    foreach (var pet in Model.UserPets)
+                                    {
+                                        <option value="@pet.Id">@pet.Name (@pet.Breed)</option>
+                                    }
+                                }
                             </select>
+                            <div class="invalid-feedback">Please select a pet.</div>
                         </div>
 
                         <div class="col-md-6">
                             <label for="serviceDate" class="form-label">Service Date *</label>
-                            <input type="date" class="form-control" id="serviceDate" required>
+                            <input type="date" class="form-control" id="serviceDate" name="BookingDate" required>
+                            <div class="invalid-feedback">Please select a valid date.</div>
                         </div>
 
                         <div class="col-md-6">
-                            <label for="serviceTime" class="form-label">Preferred Time *</label>
-                            <select class="form-select" id="serviceTime" required>
-                                <option value="">Select time...</option>
-                                <option value="08:00">8:00 AM</option>
-                                <option value="09:00">9:00 AM</option>
-                                <option value="10:00">10:00 AM</option>
-                                <option value="11:00">11:00 AM</option>
-                                <option value="12:00">12:00 PM</option>
-                                <option value="13:00">1:00 PM</option>
-                                <option value="14:00">2:00 PM</option>
-                                <option value="15:00">3:00 PM</option>
-                                <option value="16:00">4:00 PM</option>
-                                <option value="17:00">5:00 PM</option>
-                            </select>
+                            <label for="startTime" class="form-label">Start Time *</label>
+                            <input type="time" class="form-control" id="startTime" name="StartTime" required>
+                            <div class="invalid-feedback">Please select a start time.</div>
                         </div>
 
                         <div class="col-md-6">
-                            <label for="duration" class="form-label">Duration</label>
-                            <select class="form-select" id="duration">
-                                <option value="30">30 minutes</option>
-                                <option value="60" selected>1 hour</option>
-                                <option value="120">2 hours</option>
-                                <option value="240">4 hours</option>
-                                <option value="full">Full day</option>
-                            </select>
+                            <label for="endTime" class="form-label">End Time *</label>
+                            <input type="time" class="form-control" id="endTime" name="EndTime" required>
+                            <div class="invalid-feedback">Please select an end time.</div>
                         </div>
 
                         <div class="col-12">
                             <label for="specialInstructions" class="form-label">Special Instructions</label>
-                            <textarea class="form-control" id="specialInstructions" rows="3" placeholder="Any special care instructions, medical needs, or preferences..."></textarea>
+                            <textarea class="form-control" id="specialInstructions" name="SpecialInstructions" rows="3" placeholder="Any special care instructions, medical needs, or preferences..."></textarea>
                         </div>
 
                         <div class="col-12">
@@ -480,7 +299,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary" onclick="confirmBooking()">
                     <i class="fas fa-check me-2"></i>Confirm Booking
                 </button>
@@ -489,61 +308,48 @@
     </div>
 </div>
 
-<!-- Custom CSS -->
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body text-center py-4">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h6>Processing your booking...</h6>
+                <p class="text-muted small mb-0">Please wait while we confirm your appointment.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
-    .service-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 12px;
-        background: rgba(13, 110, 253, 0.1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .service-details {
-        font-size: 0.9rem;
-    }
-
-    .stars i {
-        font-size: 0.8rem;
-    }
-
-    .btn-purple {
-        background-color: #6f42c1;
-        border-color: #6f42c1;
-        color: white;
-    }
-
-        .btn-purple:hover {
-            background-color: #5a2d91;
-            border-color: #5a2d91;
-            color: white;
-        }
-
-    .text-purple {
-        color: #6f42c1 !important;
-    }
-
     .service-card {
         transition: transform 0.2s ease-in-out;
     }
 
-        .service-card:hover {
-            transform: translateY(-2px);
-        }
+    .service-card:hover {
+        transform: translateY(-2px);
+    }
 
     .badge {
         font-size: 0.75rem;
     }
 
-    @@media (max-width: 768px) {
-        .service-card
-
-    {
-        margin-bottom: 1rem;
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
     }
 
+    .alert {
+        border-radius: 0.5rem;
+    }
+
+    @@media (max-width: 768px) {
+        .service-card {
+            margin-bottom: 1rem;
+        }
     }
 </style>
 
@@ -553,6 +359,10 @@
     document.addEventListener('DOMContentLoaded', function() {
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('serviceDate').min = today;
+        
+        // Set default time values
+        document.getElementById('startTime').value = '09:00';
+        document.getElementById('endTime').value = '10:00';
     });
 
     function filterServices() {
@@ -612,36 +422,87 @@
         document.getElementById('noResults').style.display = 'none';
     }
 
-    function openBookingModal(serviceId, serviceName, price) {
+    function openBookingModal(serviceId, serviceName, price, providerName, location) {
+        document.getElementById('serviceId').value = serviceId;
         document.getElementById('selectedService').textContent = serviceName;
         document.getElementById('selectedPrice').textContent = `$${price.toFixed(2)}`;
+        document.getElementById('selectedProvider').textContent = providerName || 'Unknown Provider';
+        document.getElementById('selectedLocation').textContent = location || 'Unknown Location';
         document.getElementById('serviceFee').textContent = `$${price.toFixed(2)}`;
         document.getElementById('totalAmount').textContent = `$${(price + 2.99).toFixed(2)}`;
 
+        // Reset form validation
+        document.getElementById('bookingForm').classList.remove('was-validated');
+        
         const modal = new bootstrap.Modal(document.getElementById('bookingModal'));
         modal.show();
     }
 
     function confirmBooking() {
         const form = document.getElementById('bookingForm');
-        const formData = new FormData(form);
-
+        
+        // Add Bootstrap validation classes
+        form.classList.add('was-validated');
+        
         // Basic validation
         const petSelect = document.getElementById('petSelect').value;
         const serviceDate = document.getElementById('serviceDate').value;
-        const serviceTime = document.getElementById('serviceTime').value;
+        const startTime = document.getElementById('startTime').value;
+        const endTime = document.getElementById('endTime').value;
 
-        if (!petSelect || !serviceDate || !serviceTime) {
-            alert('Please fill in all required fields.');
+        if (!petSelect || !serviceDate || !startTime || !endTime) {
+            // Scroll to first invalid element
+            const firstInvalid = form.querySelector('.is-invalid');
+            if (firstInvalid) {
+                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
             return;
         }
 
-        // Here you would typically send the data to your backend
-        alert('Booking confirmed! You will receive a confirmation email shortly.');
+        // Validate date is in the future
+        const selectedDate = new Date(serviceDate + 'T' + startTime);
+        if (selectedDate <= new Date()) {
+            alert('Please select a date and time in the future.');
+            return;
+        }
 
-        // Close modal and reset form
-        const modal = bootstrap.Modal.getInstance(document.getElementById('bookingModal'));
-        modal.hide();
-        form.reset();
+        // Validate end time is after start time
+        const startDateTime = new Date(serviceDate + 'T' + startTime);
+        const endDateTime = new Date(serviceDate + 'T' + endTime);
+        if (endDateTime <= startDateTime) {
+            alert('End time must be after start time.');
+            return;
+        }
+
+        // Show loading modal
+        const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+        loadingModal.show();
+
+        // Submit the form
+        form.submit();
     }
+
+    // Add real-time validation
+    document.addEventListener('DOMContentLoaded', function() {
+        const serviceDate = document.getElementById('serviceDate');
+        const startTime = document.getElementById('startTime');
+        const endTime = document.getElementById('endTime');
+
+        function validateDateTime() {
+            if (serviceDate.value && startTime.value && endTime.value) {
+                const startDateTime = new Date(serviceDate.value + 'T' + startTime.value);
+                const endDateTime = new Date(serviceDate.value + 'T' + endTime.value);
+                
+                if (endDateTime <= startDateTime) {
+                    endTime.setCustomValidity('End time must be after start time');
+                } else {
+                    endTime.setCustomValidity('');
+                }
+            }
+        }
+
+        serviceDate.addEventListener('change', validateDateTime);
+        startTime.addEventListener('change', validateDateTime);
+        endTime.addEventListener('change', validateDateTime);
+    });
 </script>

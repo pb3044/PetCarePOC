@@ -92,9 +92,37 @@ namespace PetCarePlatform.Core.Services
             return await _bookingRepository.IsTimeSlotAvailableAsync(serviceId, startTime, endTime);
         }
 
+        public async Task<bool> IsTimeSlotAvailableAsync(int serviceId, DateTime startTime, DateTime endTime, int excludeBookingId)
+        {
+            return await _bookingRepository.IsTimeSlotAvailableAsync(serviceId, startTime, endTime, excludeBookingId);
+        }
+
         public async Task UpdateBookingStatusAsync(int id, BookingStatus status)
         {
             await _bookingRepository.UpdateStatusAsync(id, status);
+        }
+
+        public async Task UpdateBookingAsync(Booking booking)
+        {
+            var existingBooking = await _bookingRepository.GetByIdAsync(booking.Id);
+            if (existingBooking == null)
+            {
+                throw new InvalidOperationException("Booking not found");
+            }
+
+            // Check if time slot is available (excluding current booking)
+            if (!await IsTimeSlotAvailableAsync(booking.ServiceId, booking.StartTime, booking.EndTime, booking.Id))
+            {
+                throw new InvalidOperationException("The selected time slot is not available");
+            }
+
+            // Update the booking
+            existingBooking.StartTime = booking.StartTime;
+            existingBooking.EndTime = booking.EndTime;
+            existingBooking.SpecialInstructions = booking.SpecialInstructions;
+            existingBooking.UpdatedAt = DateTime.UtcNow;
+
+            await _bookingRepository.UpdateAsync(existingBooking);
         }
 
         public async Task CancelBookingAsync(int id, string cancellationReason)

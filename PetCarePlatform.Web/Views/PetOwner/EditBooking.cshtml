@@ -1,0 +1,135 @@
+@model PetCarePlatform.Web.Models.EditBookingViewModel
+@using PetCarePlatform.Core.Models
+@{
+    ViewData["Title"] = "Edit Booking";
+    Layout = "~/Views/Shared/_PetOwnerLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <h3 class="mb-3"><i class="fas fa-calendar-edit text-primary me-2"></i>Edit Booking</h3>
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>@TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <form asp-action="EditBooking" method="post">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <i class="fas fa-info-circle me-2"></i>Booking Information
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <strong>Service:</strong> @Model.ServiceTitle
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Provider:</strong> @Model.ProviderName
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Pet:</strong> @Model.PetName
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <strong>Price:</strong> $@Model.TotalPrice.ToString("F2")
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Status:</strong> <span class="badge bg-@GetStatusBadgeColor(Model.Status)">@Model.Status</span>
+                    </div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label asp-for="BookingDate" class="form-label">Service Date *</label>
+                        <input asp-for="BookingDate" class="form-control" type="date" />
+                        <span asp-validation-for="BookingDate" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="StartTime" class="form-label">Start Time *</label>
+                        <input asp-for="StartTime" class="form-control" type="time" />
+                        <span asp-validation-for="StartTime" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="EndTime" class="form-label">End Time *</label>
+                        <input asp-for="EndTime" class="form-control" type="time" />
+                        <span asp-validation-for="EndTime" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label asp-for="SpecialInstructions" class="form-label">Special Instructions</label>
+                        <textarea asp-for="SpecialInstructions" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="SpecialInstructions" class="text-danger"></span>
+                        <small class="text-muted">Optional: Add any specific instructions for the service provider.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-2"></i>Save Changes
+            </button>
+            <a href="@Url.Action("MyBookings", "PetOwner")" class="btn btn-secondary ms-2">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@functions {
+    private string GetStatusBadgeColor(PetCarePlatform.Core.Models.BookingStatus status)
+    {
+        return status switch
+        {
+            PetCarePlatform.Core.Models.BookingStatus.Pending => "warning",
+            PetCarePlatform.Core.Models.BookingStatus.Confirmed => "success",
+            PetCarePlatform.Core.Models.BookingStatus.InProgress => "info",
+            PetCarePlatform.Core.Models.BookingStatus.Completed => "success",
+            PetCarePlatform.Core.Models.BookingStatus.Cancelled => "danger",
+            _ => "secondary"
+        };
+    }
+}
+
+@section Scripts {
+    <script>
+        // Set minimum date to today
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('BookingDate').min = today;
+        });
+
+        // Real-time validation
+        document.addEventListener('DOMContentLoaded', function() {
+            const bookingDate = document.getElementById('BookingDate');
+            const startTime = document.getElementById('StartTime');
+            const endTime = document.getElementById('EndTime');
+
+            function validateDateTime() {
+                if (bookingDate.value && startTime.value && endTime.value) {
+                    const startDateTime = new Date(bookingDate.value + 'T' + startTime.value);
+                    const endDateTime = new Date(bookingDate.value + 'T' + endTime.value);
+                    
+                    if (endDateTime <= startDateTime) {
+                        endTime.setCustomValidity('End time must be after start time');
+                    } else {
+                        endTime.setCustomValidity('');
+                    }
+                }
+            }
+
+            bookingDate.addEventListener('change', validateDateTime);
+            startTime.addEventListener('change', validateDateTime);
+            endTime.addEventListener('change', validateDateTime);
+        });
+    </script>
+} 

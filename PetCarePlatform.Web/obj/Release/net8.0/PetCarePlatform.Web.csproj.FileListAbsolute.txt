@@ -148,3 +148,8 @@ C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.Web\obj\Release\ne
 C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.Web\obj\Release\net8.0\PetCarePlatform.Web.pdb
 C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.Web\obj\Release\net8.0\PetCarePlatform.Web.genruntimeconfig.cache
 C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.Web\obj\Release\net8.0\ref\PetCarePlatform.Web.dll
+C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.Web\bin\Release\net8.0\AutoMapper.dll
+C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.Web\obj\Release\net8.0\rpswa.dswa.cache.json
+C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.Web\obj\Release\net8.0\rjimswa.dswa.cache.json
+C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.Web\obj\Release\net8.0\rjsmrazor.dswa.cache.json
+C:\Users\prate\source\repos\pb3044\PetCarePOC\PetCarePlatform.Web\obj\Release\net8.0\rjsmcshtml.dswa.cache.json

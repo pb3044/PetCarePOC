@@ -1,5 +1,6 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\default-profile.png
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\bootstrap-5.3.2-dist\css\bootstrap.css
 wwwroot\lib\bootstrap\bootstrap-5.3.2-dist\css\bootstrap.css.map

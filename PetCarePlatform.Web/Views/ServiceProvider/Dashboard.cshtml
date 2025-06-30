@@ -1,12 +1,33 @@
-﻿@{
+﻿@model PetCarePlatform.Web.Models.ServiceProviderDashboardViewModel
+@{
     ViewData["Title"] = "Service Provider Dashboard";
     Layout = "~/Views/Shared/_ServiceProviderLayout.cshtml";
 }
 
 <div class="container-fluid">
+    <!-- Error Messages -->
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>@ViewBag.ErrorMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     <div class="row">
         <div class="col-12">
-            <h1 class="mb-4">Service Provider Dashboard</h1>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="mb-1">Service Provider Dashboard</h1>
+                    <p class="text-muted mb-0">Welcome back, @Model.ProviderInfo.BusinessName</p>
+                </div>
+                <div class="text-end">
+                    <div class="badge @(Model.ProviderInfo.IsAvailableToday ? "bg-success" : "bg-danger") fs-6">
+                        <i class="fas @(Model.ProviderInfo.IsAvailableToday ? "fa-check-circle" : "fa-times-circle") me-1"></i>
+                        @Model.ProviderInfo.CurrentAvailabilityStatus
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -17,7 +38,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h4 class="card-title">@ViewBag.TotalBookings</h4>
+                            <h4 class="card-title">@Model.TotalBookings</h4>
                             <p class="card-text">Total Bookings</p>
                         </div>
                         <div class="align-self-center">
@@ -33,7 +54,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h4 class="card-title">@ViewBag.PendingRequests</h4>
+                            <h4 class="card-title">@Model.PendingRequests</h4>
                             <p class="card-text">Pending Requests</p>
                         </div>
                         <div class="align-self-center">
@@ -49,7 +70,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h4 class="card-title">@ViewBag.ActiveServices</h4>
+                            <h4 class="card-title">@Model.ActiveServices</h4>
                             <p class="card-text">Active Services</p>
                         </div>
                         <div class="align-self-center">
@@ -65,7 +86,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h4 class="card-title">$@ViewBag.MonthlyEarnings</h4>
+                            <h4 class="card-title">$@Model.MonthlyEarnings.ToString("F2")</h4>
                             <p class="card-text">This Month</p>
                         </div>
                         <div class="align-self-center">
@@ -85,7 +106,7 @@
                     <h5 class="card-title mb-0">Recent Booking Requests</h5>
                 </div>
                 <div class="card-body">
-                    @if (ViewBag.RecentRequests != null && ((IEnumerable<dynamic>)ViewBag.RecentRequests).Any())
+                    @if (Model.RecentRequests.Any())
                     {
                         <div class="table-responsive">
                             <table class="table table-hover">
@@ -95,19 +116,26 @@
                                         <th>Service</th>
                                         <th>Date</th>
                                         <th>Status</th>
+                                        <th>Availability</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var request in ViewBag.RecentRequests)
+                                    @foreach (var request in Model.RecentRequests)
                                     {
                                         <tr>
                                             <td>@request.PetOwnerName</td>
                                             <td>@request.ServiceName</td>
                                             <td>@request.RequestDate.ToString("MMM dd, yyyy")</td>
                                             <td>
-                                                <span class="badge badge-@(request.Status == "Pending" ? "warning" : request.Status == "Accepted" ? "success" : "danger")">
+                                                <span class="badge badge-@(request.Status == "Pending" ? "warning" : request.Status == "Confirmed" ? "success" : "danger")">
                                                     @request.Status
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge @(request.IsAvailable ? "bg-success" : "bg-danger")" 
+                                                      title="@request.AvailabilityMessage">
+                                                    @(request.IsAvailable ? "Available" : "Unavailable")
                                                 </span>
                                             </td>
                                             <td>
@@ -138,18 +166,23 @@
                     <h5 class="card-title mb-0">Today's Schedule</h5>
                 </div>
                 <div class="card-body">
-                    @if (ViewBag.TodaySchedule != null && ((IEnumerable<dynamic>)ViewBag.TodaySchedule).Any())
+                    @if (Model.TodaySchedule.Any())
                     {
-                        @foreach (var appointment in ViewBag.TodaySchedule)
+                        @foreach (var appointment in Model.TodaySchedule)
                         {
                             <div class="d-flex justify-content-between align-items-center mb-3 p-2 border rounded">
                                 <div>
                                     <strong>@appointment.ServiceName</strong><br>
-                                    <small class="text-muted">@appointment.PetOwnerName</small><br>
+                                    <small class="text-muted">@appointment.PetOwnerName - @appointment.PetName</small><br>
                                     <small class="text-info">@appointment.Time</small>
+                                    @if (!string.IsNullOrEmpty(appointment.SpecialInstructions))
+                                    {
+                                        <br><small class="text-warning">@appointment.SpecialInstructions</small>
+                                    }
                                 </div>
-                                <div>
-                                    <span class="badge badge-primary">@appointment.Status</span>
+                                <div class="text-end">
+                                    <span class="badge badge-primary">@appointment.Status</span><br>
+                                    <small class="text-success">$@appointment.TotalPrice.ToString("F2")</small>
                                 </div>
                             </div>
                         }
@@ -161,6 +194,35 @@
                 </div>
             </div>
 
+            <!-- Provider Info Card -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Provider Info</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <small class="text-muted">Business Name</small><br>
+                        <strong>@Model.ProviderInfo.BusinessName</strong>
+                    </div>
+                    <div class="mb-2">
+                        <small class="text-muted">Rating</small><br>
+                        <div class="d-flex align-items-center">
+                            <span class="text-warning">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <i class="fas fa-star@(i <= Model.ProviderInfo.AverageRating ? "" : "-o")"></i>
+                                }
+                            </span>
+                            <span class="ms-2">@Model.ProviderInfo.AverageRating.ToString("F1") (@Model.ProviderInfo.TotalReviews reviews)</span>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <small class="text-muted">Email</small><br>
+                        <strong>@Model.ProviderInfo.Email</strong>
+                    </div>
+                </div>
+            </div>
+
             <!-- Quick Actions -->
             <div class="card mt-3">
                 <div class="card-header">
@@ -168,16 +230,16 @@
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
-                        <a href="@Url.Action("Index", "MyServices")" class="btn btn-outline-primary">
+                        <a href="@Url.Action("MyServices", "ServiceProvider")" class="btn btn-outline-primary">
                             <i class="fas fa-cog"></i> Manage Services
                         </a>
-                        <a href="@Url.Action("Index", "BookingRequest")" class="btn btn-outline-success">
+                        <a href="@Url.Action("BookingRequest", "ServiceProvider")" class="btn btn-outline-success">
                             <i class="fas fa-envelope"></i> View All Requests
                         </a>
-                        <a href="@Url.Action("Index", "Schedule")" class="btn btn-outline-info">
+                        <a href="@Url.Action("Schedule", "ServiceProvider")" class="btn btn-outline-info">
                             <i class="fas fa-calendar"></i> View Schedule
                         </a>
-                        <a href="@Url.Action("Edit", "Profile")" class="btn btn-outline-warning">
+                        <a href="@Url.Action("Profile", "ServiceProvider")" class="btn btn-outline-warning">
                             <i class="fas fa-user-edit"></i> Update Profile
                         </a>
                     </div>

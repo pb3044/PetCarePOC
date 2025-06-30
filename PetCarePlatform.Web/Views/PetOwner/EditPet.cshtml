@@ -1,0 +1,99 @@
+@model PetCarePlatform.Web.Models.EditPetViewModel
+@{
+    ViewData["Title"] = "Edit Pet";
+    Layout = "~/Views/Shared/_PetOwnerLayout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2><i class="fas fa-edit text-primary me-2"></i>Edit Pet - @Model.Name</h2>
+            <a href="/PetOwner/MyPets" class="btn btn-link">&larr; Back to My Pets</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="EditPet" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="OwnerId" />
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label">Name</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Breed" class="form-label">Breed</label>
+                    <input asp-for="Breed" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Type" class="form-label">Type</label>
+                    <select asp-for="Type" class="form-select">
+                        @foreach (var type in Enum.GetValues(typeof(PetCarePlatform.Core.Models.PetType)))
+                        {
+                            <option value="@type" selected="@(Model.Type == (PetCarePlatform.Core.Models.PetType)type ? "selected" : null)">@type</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Age" class="form-label">Age</label>
+                    <input asp-for="Age" class="form-control" type="number" min="0" />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Size" class="form-label">Size</label>
+                    <input asp-for="Size" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Gender" class="form-label">Gender</label>
+                    <input asp-for="Gender" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="IsNeutered" class="form-label">Is Neutered</label>
+                    <input asp-for="IsNeutered" class="form-check-input" type="checkbox" />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="MedicalInformation" class="form-label">Medical Information</label>
+                    <textarea asp-for="MedicalInformation" class="form-control"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SpecialNeeds" class="form-label">Special Needs</label>
+                    <textarea asp-for="SpecialNeeds" class="form-control"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Temperament" class="form-label">Temperament</label>
+                    <input asp-for="Temperament" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="FeedingInstructions" class="form-label">Feeding Instructions</label>
+                    <textarea asp-for="FeedingInstructions" class="form-control"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ExerciseNeeds" class="form-label">Exercise Needs</label>
+                    <textarea asp-for="ExerciseNeeds" class="form-control"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="BehavioralNotes" class="form-label">Behavioral Notes</label>
+                    <textarea asp-for="BehavioralNotes" class="form-control"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EmergencyContactName" class="form-label">Emergency Contact Name</label>
+                    <input asp-for="EmergencyContactName" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EmergencyContactPhone" class="form-label">Emergency Contact Phone</label>
+                    <input asp-for="EmergencyContactPhone" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="VeterinarianName" class="form-label">Veterinarian Name</label>
+                    <input asp-for="VeterinarianName" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="VeterinarianPhone" class="form-label">Veterinarian Phone</label>
+                    <input asp-for="VeterinarianPhone" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a href="/PetOwner/MyPets" class="btn btn-secondary ms-2">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div> 

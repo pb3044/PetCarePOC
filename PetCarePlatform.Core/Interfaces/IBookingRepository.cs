@@ -18,5 +18,6 @@ namespace PetCarePlatform.Core.Interfaces
         Task UpdateStatusAsync(int id, BookingStatus status);
         Task DeleteAsync(int id);
         Task<bool> IsTimeSlotAvailableAsync(int serviceId, DateTime startTime, DateTime endTime);
+        Task<bool> IsTimeSlotAvailableAsync(int serviceId, DateTime startTime, DateTime endTime, int excludeBookingId);
     }
 }

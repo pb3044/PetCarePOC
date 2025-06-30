@@ -14,7 +14,8 @@ builder.Services.AddControllersWithViews();
 
 // Add Entity Framework
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), 
+        b => b.MigrationsAssembly("PetCarePlatform.Infrastructure")));
 
 // Add Identity Services
 builder.Services.AddIdentityServices(builder.Configuration);

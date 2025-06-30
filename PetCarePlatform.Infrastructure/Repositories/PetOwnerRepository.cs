@@ -19,6 +19,7 @@ namespace PetCarePlatform.Infrastructure.Repositories
                     .ThenInclude(p => p.Photos)
                 .Include(po => po.Bookings)
                     .ThenInclude(b => b.Service)
+                        .ThenInclude(s => s.Provider)
                 .Include(po => po.FavoriteProviders)
                 .FirstOrDefaultAsync(po => po.Id == id);
         }
@@ -31,6 +32,7 @@ namespace PetCarePlatform.Infrastructure.Repositories
                     .ThenInclude(p => p.Photos)
                 .Include(po => po.Bookings)
                     .ThenInclude(b => b.Service)
+                        .ThenInclude(s => s.Provider)
                 .Include(po => po.FavoriteProviders)
                 .FirstOrDefaultAsync(po => po.UserId == userId);
         }

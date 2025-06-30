@@ -24,10 +24,32 @@ namespace PetCarePlatform.Infrastructure.Data
         public DbSet<ServicePhoto> ServicePhotos { get; set; }
         public DbSet<ReviewPhoto> ReviewPhotos { get; set; }
         public DbSet<AvailabilitySchedule> AvailabilitySchedules { get; set; }
+        public DbSet<PetCarePlatform.Core.Models.Payment> Payments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            // Configure decimal precision for monetary values
+            builder.Entity<Booking>()
+                .Property(b => b.TotalPrice)
+                .HasPrecision(18, 2);
+
+            builder.Entity<PetCarePlatform.Core.Models.Payment>()
+                .Property(p => p.Amount)
+                .HasPrecision(18, 2);
+
+            builder.Entity<PetCarePlatform.Core.Models.Payment>()
+                .Property(p => p.PlatformFee)
+                .HasPrecision(18, 2);
+
+            builder.Entity<PetCarePlatform.Core.Models.Payment>()
+                .Property(p => p.ProviderPayout)
+                .HasPrecision(18, 2);
+
+            builder.Entity<Service>()
+                .Property(s => s.BasePrice)
+                .HasPrecision(18, 2);
 
             // Configure entity relationships and constraints
 
@@ -76,7 +98,7 @@ namespace PetCarePlatform.Infrastructure.Data
                 .HasForeignKey(s => s.ProviderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Booking
+            // Booking - Fix the PetId relationship to avoid shadow property
             builder.Entity<Booking>()
                 .HasOne(b => b.Service)
                 .WithMany(s => s.Bookings)
@@ -89,25 +111,21 @@ namespace PetCarePlatform.Infrastructure.Data
                 .HasForeignKey(b => b.OwnerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Fix the PetId relationship - configure bidirectional relationship properly
             builder.Entity<Booking>()
                 .HasOne(b => b.Pet)
-                .WithMany()
+                .WithMany(p => p.Bookings)
                 .HasForeignKey(b => b.PetId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired(false);
 
-            //// Review
-            //builder.Entity<Review>()
-            //    .HasOne(r => r.Booking)
-            //    .WithOne(b => b.Review)
-            //    .HasForeignKey<Review>(r => r.BookingId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            // Explicitly configure the Pet.Bookings relationship to avoid shadow property
+            builder.Entity<Pet>()
+                .HasMany(p => p.Bookings)
+                .WithOne(b => b.Pet)
+                .HasForeignKey(b => b.PetId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            //builder.Entity<Review>()
-            //    .HasOne(r => r.Service)
-            //    .WithMany(s => s.Reviews)
-            //    .HasForeignKey(r => r.ServiceId)
-            //    .OnDelete(DeleteBehavior.Restrict);
             // Review ↔ Booking (One-to-One)
             builder.Entity<Review>()
                 .HasOne(r => r.Booking)
@@ -136,7 +154,6 @@ namespace PetCarePlatform.Infrastructure.Data
                 .HasForeignKey(r => r.RevieweeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
             // Message
             builder.Entity<Message>()
                 .HasOne(m => m.Sender)
@@ -151,14 +168,11 @@ namespace PetCarePlatform.Infrastructure.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Payment
-
             builder.Entity<PetCarePlatform.Core.Models.Payment>()
-     .HasOne(p => p.Booking)
-     .WithOne(b => b.Payment)
-     .HasForeignKey<PetCarePlatform.Core.Models.Payment>(p => p.BookingId)
-     .OnDelete(DeleteBehavior.Restrict);
-
-
+                .HasOne(p => p.Booking)
+                .WithOne(b => b.Payment)
+                .HasForeignKey<PetCarePlatform.Core.Models.Payment>(p => p.BookingId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Notification
             builder.Entity<Notification>()

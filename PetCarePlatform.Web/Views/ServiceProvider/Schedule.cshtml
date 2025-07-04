@@ -1,4 +1,4 @@
-﻿@model IEnumerable<dynamic>
+﻿@model PetCarePlatform.Web.Models.ServiceProviderScheduleViewModel
 @{
     ViewData["Title"] = "My Schedule";
     Layout = "~/Views/Shared/_ServiceProviderLayout.cshtml";
@@ -6,516 +6,421 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1>My Schedule</h1>
-                <div class="btn-group" role="group">
-                    <button class="btn btn-outline-primary active" id="dayView">Day</button>
-                    <button class="btn btn-outline-primary" id="weekView">Week</button>
-                    <button class="btn btn-outline-primary" id="monthView">Month</button>
+        <!-- Statistics Cards -->
+        <div class="col-12 mb-4">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Today</h5>
+                            <h3>@Model.Statistics.TodayAppointments</h3>
+                            <small>Appointments</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card bg-success text-white">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">This Week</h5>
+                            <h3>@Model.Statistics.WeekAppointments</h3>
+                            <small>Appointments</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card bg-info text-white">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Available</h5>
+                            <h3>@Model.Statistics.AvailableSlots</h3>
+                            <small>Time Slots</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Today</h5>
+                            <h3>$@Model.Statistics.TodayEarnings.ToString("F2")</h3>
+                            <small>Earnings</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card bg-secondary text-white">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">This Week</h5>
+                            <h3>$@Model.Statistics.WeekEarnings.ToString("F2")</h3>
+                            <small>Earnings</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card bg-dark text-white">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Blocked</h5>
+                            <h3>@Model.Statistics.BlockedHours</h3>
+                            <small>Hours</small>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Date Navigation -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group" role="group">
-                    <button class="btn btn-outline-secondary" id="prevPeriod">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button class="btn btn-outline-secondary" id="todayBtn">Today</button>
-                    <button class="btn btn-outline-secondary" id="nextPeriod">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
+        <!-- Schedule Controls -->
+        <div class="col-12 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-outline-primary view-btn" data-view="day">Day</button>
+                                <button type="button" class="btn btn-outline-primary view-btn" data-view="week">Week</button>
+                                <button type="button" class="btn btn-outline-primary view-btn" data-view="month">Month</button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-outline-secondary" id="prevBtn">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary" id="todayBtn">Today</button>
+                                <button type="button" class="btn btn-outline-secondary" id="nextBtn">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            <h5 class="mt-2" id="currentDate">@Model.CurrentDate.ToString("MMMM yyyy")</h5>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#availabilityModal">
+                                <i class="fas fa-clock"></i> Set Availability
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <h3 id="currentPeriod" class="mb-0">@DateTime.Now.ToString("MMMM dd, yyyy")</h3>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#blockTimeModal">
-                    <i class="fas fa-ban"></i> Block Time
-                </button>
             </div>
         </div>
-    </div>
 
-    <!-- Schedule Content -->
-    <div class="row">
+        <!-- Calendar -->
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <!-- Day View -->
-                    <div id="dayViewContent" class="schedule-view">
-                        <div class="row">
-                            <div class="col-2">
-                                <div class="time-slots">
-                                    @for (int hour = 6; hour <= 22; hour++)
-                                    {
-                                        <div class="time-slot-label">
-                                            @(hour.ToString("00")):00
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                            <div class="col-10">
-                                <div class="appointment-grid" id="appointmentGrid">
-                                    @if (Model != null && Model.Any())
-                                    {
-                                       @*  @foreach (var appointment in Model.Where(a => a.Date.Date == DateTime.Now.Date))
-                                        {
-                                            <div class="appointment-block appointment-@appointment.Status.ToLower()"
-                                                 style="top: @(GetTimeSlotPosition(appointment.StartTime))px; height: @(GetDurationHeight(appointment.Duration))px;"
-                                                 onclick="viewAppointment(@appointment.Id)">
-                                                <div class="appointment-content">
-                                                    <strong>@appointment.ServiceName</strong><br>
-                                                    <small>@appointment.PetOwnerName</small><br>
-                                                    <small>@appointment.StartTime.ToString("hh:mm tt") - @appointment.EndTime.ToString("hh:mm tt")</small>
-                                                </div>
-                                            </div>
-                                        } *@
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Week View -->
-                    <div id="weekViewContent" class="schedule-view d-none">
-                        <div class="table-responsive">
-                            <table class="table table-bordered week-schedule">
-                                <thead>
-                                    <tr>
-                                        <th width="100">Time</th>
-                                        <th>Monday</th>
-                                        <th>Tuesday</th>
-                                        <th>Wednesday</th>
-                                        <th>Thursday</th>
-                                        <th>Friday</th>
-                                        <th>Saturday</th>
-                                        <th>Sunday</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @for (int hour = 6; hour <= 22; hour++)
-                                    {
-                                        <tr>
-                                            <td class="time-cell">@(hour.ToString("00")):00</td>
-                                            @for (int day = 1; day <= 7; day++)
-                                            {
-                                                <td class="schedule-cell" data-day="@day" data-hour="@hour">
-                                                    <!-- Appointments will be populated here -->
-                                                </td>
-                                            }
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Month View -->
-                    <div id="monthViewContent" class="schedule-view d-none">
-                        <div class="calendar-month" id="monthCalendar">
-                            <!-- Calendar will be generated here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Schedule Statistics -->
-    <div class="row mt-4">
-        <div class="col-md-3">
-            <div class="card text-white bg-info">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h4>@ViewBag.TodayAppointments</h4>
-                            <p class="mb-0">Today's Appointments</p>
-                        </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-calendar-day fa-2x"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card text-white bg-success">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h4>@ViewBag.WeekAppointments</h4>
-                            <p class="mb-0">This Week</p>
-                        </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-calendar-week fa-2x"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card text-white bg-warning">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h4>@ViewBag.AvailableSlots</h4>
-                            <p class="mb-0">Available Today</p>
-                        </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-clock fa-2x"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card text-white bg-danger">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h4>@ViewBag.BlockedHours</h4>
-                            <p class="mb-0">Blocked Hours</p>
-                        </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-ban fa-2x"></i>
-                        </div>
-                    </div>
+                    <div id="calendar"></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Block Time Modal -->
-<div class="modal fade" id="blockTimeModal" tabindex="-1" aria-labelledby="blockTimeModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<!-- Availability Modal -->
+<div class="modal fade" id="availabilityModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="blockTimeModalLabel">Block Time Slot</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title">Set Your Availability</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form id="blockTimeForm">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="blockDate" class="form-label">Date</label>
-                        <input type="date" class="form-control" id="blockDate" name="BlockDate" required>
-                    </div>
-                    <div class="row">
-                        <div class="col-6 mb-3">
-                            <label for="blockStartTime" class="form-label">Start Time</label>
-                            <input type="time" class="form-control" id="blockStartTime" name="StartTime" required>
+            <div class="modal-body">
+                <div class="row">
+                    @foreach (var day in Model.Availability)
+                    {
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-check">
+                                        <input class="form-check-input availability-checkbox" type="checkbox" 
+                                               id="available_@day.DayOfWeek" 
+                                               data-day="@day.DayOfWeek"
+                                               @(day.IsAvailable ? "checked" : "")>
+                                        <label class="form-check-label" for="available_@day.DayOfWeek">
+                                            <strong>@day.DayName</strong>
+                                        </label>
+                                    </div>
+                                    <div class="row mt-2 availability-times" @(!day.IsAvailable ? "style='display:none;'" : "")>
+                                        <div class="col-6">
+                                            <label class="form-label">Start Time</label>
+                                            <input type="time" class="form-control start-time" 
+                                                   data-day="@day.DayOfWeek"
+                                                   value="@day.StartTime.ToString(@"hh\:mm")">
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label">End Time</label>
+                                            <input type="time" class="form-control end-time" 
+                                                   data-day="@day.DayOfWeek"
+                                                   value="@day.EndTime.ToString(@"hh\:mm")">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-6 mb-3">
-                            <label for="blockEndTime" class="form-label">End Time</label>
-                            <input type="time" class="form-control" id="blockEndTime" name="EndTime" required>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="blockReason" class="form-label">Reason (Optional)</label>
-                        <input type="text" class="form-control" id="blockReason" name="Reason" placeholder="e.g., Personal appointment, Break">
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="recurringBlock" name="IsRecurring">
-                        <label class="form-check-label" for="recurringBlock">
-                            Block this time slot every week
-                        </label>
-                    </div>
+                    }
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger">Block Time</button>
-                </div>
-            </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveAvailability">Save Availability</button>
+            </div>
         </div>
     </div>
 </div>
 
 <!-- Appointment Details Modal -->
-<div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade" id="appointmentModal" tabindex="-1">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="appointmentModalLabel">Appointment Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title">Appointment Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body" id="appointmentContent">
-                <!-- Content will be loaded dynamically -->
+            <div class="modal-body" id="appointmentDetails">
+                <!-- Appointment details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 
-@section Styles {
-    <style>
-        .schedule-view {
-            min-height: 500px;
-        }
-
-        .time-slots {
-            height: 100%;
-        }
-
-        .time-slot-label {
-            height: 60px;
-            border-bottom: 1px solid #eee;
-            padding: 5px;
-            font-size: 12px;
-            color: #666;
-        }
-
-        .appointment-grid {
-            position: relative;
-            height: 1020px; /* 17 hours * 60px */
-            border-left: 1px solid #eee;
-        }
-
-        .appointment-block {
-            position: absolute;
-            left: 5px;
-            right: 5px;
-            border-radius: 4px;
-            padding: 8px;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            z-index: 1;
-        }
-
-            .appointment-block:hover {
-                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            }
-
-        .appointment-accepted {
-            background-color: #d4edda;
-            border-left: 4px solid #28a745;
-        }
-
-        .appointment-pending {
-            background-color: #fff3cd;
-            border-left: 4px solid #ffc107;
-        }
-
-        .appointment-completed {
-            background-color: #d1ecf1;
-            border-left: 4px solid #17a2b8;
-        }
-
-        .appointment-blocked {
-            background-color: #f8d7da;
-            border-left: 4px solid #dc3545;
-        }
-
-        .appointment-content {
-            font-size: 12px;
-            line-height: 1.2;
-        }
-
-        .week-schedule {
-            font-size: 12px;
-        }
-
-        .schedule-cell {
-            height: 40px;
-            vertical-align: top;
-            padding: 2px;
-        }
-
-        .time-cell {
-            background-color: #f8f9fa;
-            font-weight: bold;
-        }
-
-        .calendar-month {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 1px;
-            background-color: #dee2e6;
-        }
-
-        .calendar-day {
-            background-color: white;
-            min-height: 100px;
-            padding: 5px;
-            border: 1px solid #dee2e6;
-        }
-
-        .calendar-day-header {
-            font-weight: bold;
-            text-align: center;
-            background-color: #f8f9fa;
-            padding: 10px;
-        }
-
-        .calendar-appointment {
-            font-size: 10px;
-            padding: 2px 4px;
-            margin: 1px 0;
-            border-radius: 2px;
-            cursor: pointer;
-        }
-    </style>
-}
-
 @section Scripts {
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    
     <script>
-        let currentView = 'day';
-        let currentDate = new Date();
-
-        $(document).ready(function() {
-            updateScheduleView();
-            updatePeriodLabel();
+        let currentDate = new Date('@Model.CurrentDate.ToString("yyyy-MM-dd")');
+        let currentView = '@Model.CurrentView';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCalendar();
+            initializeControls();
+            initializeAvailability();
         });
 
-        // View switching
-        $('#dayView, #weekView, #monthView').on('click', function() {
-            $('.btn-group .btn').removeClass('active');
-            $(this).addClass('active');
-
-            currentView = $(this).attr('id').replace('View', '');
-            updateScheduleView();
-            updatePeriodLabel();
-        });
-
-        // Navigation
-        $('#prevPeriod').on('click', function() {
-            navigatePeriod(-1);
-        });
-
-        $('#nextPeriod').on('click', function() {
-            navigatePeriod(1);
-        });
-
-        $('#todayBtn').on('click', function() {
-            currentDate = new Date();
-            updateScheduleView();
-            updatePeriodLabel();
-        });
-
-        function navigatePeriod(direction) {
-            if (currentView === 'day') {
-                currentDate.setDate(currentDate.getDate() + direction);
-            } else if (currentView === 'week') {
-                currentDate.setDate(currentDate.getDate() + (direction * 7));
-            } else if (currentView === 'month') {
-                currentDate.setMonth(currentDate.getMonth() + direction);
-            }
-
-            updateScheduleView();
-            updatePeriodLabel();
-        }
-
-        function updateScheduleView() {
-            $('.schedule-view').addClass('d-none');
-            $('#' + currentView + 'ViewContent').removeClass('d-none');
-
-            if (currentView === 'week') {
-                loadWeekView();
-            } else if (currentView === 'month') {
-                loadMonthView();
-            }
-        }
-
-        function updatePeriodLabel() {
-            let label = '';
-            if (currentView === 'day') {
-                label = currentDate.toLocaleDateString('en-US', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-            } else if (currentView === 'week') {
-                const weekStart = new Date(currentDate);
-                weekStart.setDate(currentDate.getDate() - currentDate.getDay());
-                const weekEnd = new Date(weekStart);
-                weekEnd.setDate(weekStart.getDate() + 6);
-
-                label = weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
-                       ' - ' + weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-            } else if (currentView === 'month') {
-                label = currentDate.toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long'
-                });
-            }
-
-            $('#currentPeriod').text(label);
-        }
-
-        function loadWeekView() {
-            // Load week appointments via AJAX
-            $.ajax({
-                url: '@Url.Action("GetWeekAppointments", "Schedule")',
-                type: 'GET',
-                data: { date: currentDate.toISOString() },
-                success: function(appointments) {
-                    $('.schedule-cell').empty();
-                    appointments.forEach(function(apt) {
-                        const cell = $('.schedule-cell[data-day="' + apt.DayOfWeek + '"][data-hour="' + apt.Hour + '"]');
-                        cell.append('<div class="calendar-appointment appointment-' + apt.Status.toLowerCase() + '" onclick="viewAppointment(' + apt.Id + ')">' +
-                                   apt.ServiceName + '<br><small>' + apt.PetOwnerName + '</small></div>');
-                    });
-                }
-            });
-        }
-
-        function loadMonthView() {
-            // Generate calendar grid and load appointments
-            $.ajax({
-                url: '@Url.Action("GetMonthAppointments", "Schedule")',
-                type: 'GET',
-                data: { date: currentDate.toISOString() },
-                success: function(data) {
-                    $('#monthCalendar').html(data);
-                }
-            });
-        }
-
-        function viewAppointment(appointmentId) {
-            $.ajax({
-                url: '@Url.Action("GetAppointmentDetails", "Schedule")',
-                type: 'GET',
-                data: { id: appointmentId },
-                success: function(data) {
-                    $('#appointmentContent').html(data);
-                    $('#appointmentModal').modal('show');
-                }
-            });
-        }
-
-        // Block time form submission
-        $('#blockTimeForm').on('submit', function(e) {
-            e.preventDefault();
-
-            $.ajax({
-                url: '@Url.Action("BlockTime", "Schedule")',
-                type: 'POST',
-                data: $(this).serialize(),
-                success: function(result) {
-                    if (result.success) {
-                        $('#blockTimeModal').modal('hide');
-                        updateScheduleView();
-                    } else {
-                        alert('Error: ' + result.message);
-                    }
+        function initializeCalendar() {
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: currentView === 'day' ? 'timeGridDay' : 
+                            currentView === 'week' ? 'timeGridWeek' : 'dayGridMonth',
+                initialDate: currentDate,
+                headerToolbar: false,
+                height: 'auto',
+                slotMinTime: '06:00:00',
+                slotMaxTime: '22:00:00',
+                allDaySlot: false,
+                slotDuration: '00:30:00',
+                events: function(info, successCallback, failureCallback) {
+                    loadScheduleData(info.start, info.end, successCallback);
                 },
-                error: function() {
-                    alert('An error occurred while blocking the time slot.');
+                eventClick: function(info) {
+                    showAppointmentDetails(info.event);
+                },
+                eventDidMount: function(info) {
+                    // Add custom styling based on status
+                    const status = info.event.extendedProps.status;
+                    if (status === 'Confirmed') {
+                        info.el.style.backgroundColor = '#28a745';
+                    } else if (status === 'Pending') {
+                        info.el.style.backgroundColor = '#ffc107';
+                    } else if (status === 'Declined') {
+                        info.el.style.backgroundColor = '#dc3545';
+                    }
                 }
             });
-        });
-
-        // Helper functions for day view positioning
-        function getTimeSlotPosition(time) {
-            const hour = time.getHours();
-            const minutes = time.getMinutes();
-            return ((hour - 6) * 60) + minutes;
+            calendar.render();
+            window.calendar = calendar;
         }
 
-        function getDurationHeight(minutes) {
-            return minutes;
+        function initializeControls() {
+            // View buttons
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentView = this.dataset.view;
+                    updateCalendarView();
+                });
+            });
+
+            // Navigation buttons
+            document.getElementById('prevBtn').addEventListener('click', function() {
+                currentDate.setDate(currentDate.getDate() - 1);
+                updateCalendar();
+            });
+
+            document.getElementById('nextBtn').addEventListener('click', function() {
+                currentDate.setDate(currentDate.getDate() + 1);
+                updateCalendar();
+            });
+
+            document.getElementById('todayBtn').addEventListener('click', function() {
+                currentDate = new Date();
+                updateCalendar();
+            });
+
+            // Set initial active view
+            document.querySelector(`[data-view="${currentView}"]`).classList.add('active');
+        }
+
+        function initializeAvailability() {
+            // Availability checkboxes
+            document.querySelectorAll('.availability-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const day = this.dataset.day;
+                    const timesDiv = document.querySelector(`.availability-times:has([data-day="${day}"])`);
+                    if (this.checked) {
+                        timesDiv.style.display = 'block';
+                    } else {
+                        timesDiv.style.display = 'none';
+                    }
+                });
+            });
+
+            // Save availability
+            document.getElementById('saveAvailability').addEventListener('click', function() {
+                saveAvailability();
+            });
+        }
+
+        function loadScheduleData(start, end, successCallback) {
+            const viewType = currentView;
+            const date = start.toISOString().split('T')[0];
+
+            fetch(`/ServiceProvider/GetScheduleData?date=${date}&viewType=${viewType}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const events = data.appointments.map(appointment => ({
+                            id: appointment.id,
+                            title: appointment.title,
+                            start: appointment.start,
+                            end: appointment.end,
+                            extendedProps: {
+                                status: appointment.status,
+                                petOwnerName: appointment.petOwnerName,
+                                petName: appointment.petName,
+                                totalPrice: appointment.totalPrice
+                            }
+                        }));
+                        successCallback(events);
+                    } else {
+                        console.error('Failed to load schedule data:', data.message);
+                        successCallback([]);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading schedule data:', error);
+                    successCallback([]);
+                });
+        }
+
+        function updateCalendar() {
+            updateCalendarView();
+            updateDateDisplay();
+        }
+
+        function updateCalendarView() {
+            const viewName = currentView === 'day' ? 'timeGridDay' : 
+                           currentView === 'week' ? 'timeGridWeek' : 'dayGridMonth';
+            window.calendar.changeView(viewName, currentDate);
+        }
+
+        function updateDateDisplay() {
+            const dateElement = document.getElementById('currentDate');
+            if (currentView === 'day') {
+                dateElement.textContent = currentDate.toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+            } else if (currentView === 'week') {
+                const endOfWeek = new Date(currentDate);
+                endOfWeek.setDate(currentDate.getDate() + 6);
+                dateElement.textContent = `${currentDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} - ${endOfWeek.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+            } else {
+                dateElement.textContent = currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            }
+        }
+
+        function showAppointmentDetails(event) {
+            const details = `
+                <div class="row">
+                    <div class="col-12">
+                        <h6>Service: ${event.title}</h6>
+                        <p><strong>Pet Owner:</strong> ${event.extendedProps.petOwnerName}</p>
+                        <p><strong>Pet:</strong> ${event.extendedProps.petName}</p>
+                        <p><strong>Time:</strong> ${event.start.toLocaleString()} - ${event.end.toLocaleString()}</p>
+                        <p><strong>Status:</strong> <span class="badge bg-${getStatusColor(event.extendedProps.status)}">${event.extendedProps.status}</span></p>
+                        <p><strong>Total Price:</strong> $${event.extendedProps.totalPrice}</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('appointmentDetails').innerHTML = details;
+            new bootstrap.Modal(document.getElementById('appointmentModal')).show();
+        }
+
+        function getStatusColor(status) {
+            switch (status) {
+                case 'Confirmed': return 'success';
+                case 'Pending': return 'warning';
+                case 'Declined': return 'danger';
+                default: return 'secondary';
+            }
+        }
+
+        function saveAvailability() {
+            const availabilityData = [];
+            
+            document.querySelectorAll('.availability-checkbox').forEach(checkbox => {
+                const day = checkbox.dataset.day;
+                const isAvailable = checkbox.checked;
+                const startTime = document.querySelector(`.start-time[data-day="${day}"]`).value;
+                const endTime = document.querySelector(`.end-time[data-day="${day}"]`).value;
+
+                availabilityData.push({
+                    dayOfWeek: parseInt(day),
+                    isAvailable: isAvailable,
+                    startTime: startTime,
+                    endTime: endTime
+                });
+            });
+
+            fetch('/ServiceProvider/UpdateAvailability', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify(availabilityData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showAlert('Availability updated successfully!', 'success');
+                    bootstrap.Modal.getInstance(document.getElementById('availabilityModal')).hide();
+                } else {
+                    showAlert('Failed to update availability: ' + data.message, 'danger');
+                }
+            })
+            .catch(error => {
+                console.error('Error saving availability:', error);
+                showAlert('An error occurred while saving availability', 'danger');
+            });
+        }
+
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.querySelector('.container-fluid').insertBefore(alertDiv, document.querySelector('.row'));
+            
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 5000);
         }
     </script>
 }

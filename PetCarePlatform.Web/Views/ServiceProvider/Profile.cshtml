@@ -1,4 +1,4 @@
-﻿@model dynamic
+﻿@model PetCarePlatform.Web.Models.ServiceProviderProfileViewModel
 @{
     ViewData["Title"] = "My Profile";
     Layout = "~/Views/Shared/_ServiceProviderLayout.cshtml";
@@ -104,12 +104,6 @@
                                         </div>
                                         
                                         <div class="mb-3">
-                                            <label for="dateOfBirth" class="form-label">Date of Birth</label>
-                                            <input type="date" class="form-control" id="dateOfBirth" name="DateOfBirth" 
-                                                   value="@Model?.DateOfBirth?.ToString("yyyy-MM-dd")">
-                                        </div>
-                                        
-                                        <div class="mb-3">
                                             <label for="bio" class="form-label">Bio</label>
                                             <textarea class="form-control" id="bio" name="Bio" rows="4" 
                                                       placeholder="Tell us about yourself...">@Model?.Bio</textarea>
@@ -179,72 +173,15 @@
                                                value="@Model?.BusinessNumber">
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label for="taxNumber" class="form-label">Tax Number</label>
-                                        <input type="text" class="form-control" id="taxNumber" name="TaxNumber" 
-                                               value="@Model?.TaxNumber">
+                                        <label for="taxInfo" class="form-label">Tax Info</label>
+                                        <input type="text" class="form-control" id="taxInfo" name="TaxInfo" 
+                                               value="@Model?.TaxInfo">
                                     </div>
                                 </div>
                                 
                                 <div class="mb-3">
-                                    <label for="businessAddress" class="form-label">Business Address</label>
-                                    <input type="text" class="form-control" id="businessAddress" name="BusinessAddress" 
-                                           value="@Model?.BusinessAddress">
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="businessCity" class="form-label">City</label>
-                                        <input type="text" class="form-control" id="businessCity" name="BusinessCity" 
-                                               value="@Model?.BusinessCity">
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label for="businessProvince" class="form-label">Province</label>
-                                        <select class="form-select" id="businessProvince" name="BusinessProvince">
-                                            @* <option value="BC" @(Model?.BusinessProvince == "BC" ? "selected" : "")>British Columbia</option>
-                                            <option value="AB" @(Model?.BusinessProvince == "AB" ? "selected" : "")>Alberta</option>
-                                            <option value="SK" @(Model?.BusinessProvince == "SK" ? "selected" : "")>Saskatchewan</option>
-                                            <option value="MB" @(Model?.BusinessProvince == "MB" ? "selected" : "")>Manitoba</option>
-                                            <option value="ON" @(Model?.BusinessProvince == "ON" ? "selected" : "")>Ontario</option>
-                                            <option value="QC" @(Model?.BusinessProvince == "QC" ? "selected" : "")>Quebec</option>
-                                            <option value="NB" @(Model?.BusinessProvince == "NB" ? "selected" : "")>New Brunswick</option>
-                                            <option value="NS" @(Model?.BusinessProvince == "NS" ? "selected" : "")>Nova Scotia</option>
-                                            <option value="PE" @(Model?.BusinessProvince == "PE" ? "selected" : "")>Prince Edward Island</option>
-                                            <option value="NL" @(Model?.BusinessProvince == "NL" ? "selected" : "")>Newfoundland and Labrador</option>
-                                            <option value="YT" @(Model?.BusinessProvince == "YT" ? "selected" : "")>Yukon</option>
-                                            <option value="NT" @(Model?.BusinessProvince == "NT" ? "selected" : "")>Northwest Territories</option>
-                                            <option value="NU" @(Model?.BusinessProvince == "NU" ? "selected" : "")>Nunavut</option> *@
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label for="businessPostalCode" class="form-label">Postal Code</label>
-                                        <input type="text" class="form-control" id="businessPostalCode" name="BusinessPostalCode" 
-                                               value="@Model?.BusinessPostalCode" pattern="[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d">
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="businessPhone" class="form-label">Business Phone</label>
-                                        <input type="tel" class="form-control" id="businessPhone" name="BusinessPhone" 
-                                               value="@Model?.BusinessPhone">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="businessEmail" class="form-label">Business Email</label>
-                                        <input type="email" class="form-control" id="businessEmail" name="BusinessEmail" 
-                                               value="@Model?.BusinessEmail">
-                                    </div>
-                                </div>
-                                
-                                <div class="mb-3">
-                                    <label for="businessWebsite" class="form-label">Website</label>
-                                    <input type="url" class="form-control" id="businessWebsite" name="BusinessWebsite" 
-                                           value="@Model?.BusinessWebsite" placeholder="https://www.example.com">
-                                </div>
-                                
-                                <div class="mb-3">
-                                    <label for="businessDescription" class="form-label">Business Description</label>
-                                    <textarea class="form-control" id="businessDescription" name="BusinessDescription" rows="4" 
-                                              placeholder="Describe your business...">@Model?.BusinessDescription</textarea>
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="description" name="Description" rows="3">@Model?.Description</textarea>
                                 </div>
                                 
                                 <div class="d-flex justify-content-end">
@@ -308,7 +245,7 @@
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox" 
                                                                        id="available@(day)" name="Available@(day)" 
-                                                                       @(Model?.GetType().GetProperty($"Available{day}")?.GetValue(Model) == true ? "checked" : "")>
+                                                                       @(Convert.ToBoolean(Model?.GetType().GetProperty($"Available{day}")?.GetValue(Model) ?? false) ? "checked" : "")>
                                                             </div>
                                                         </td>
                                                         <td>
@@ -326,12 +263,6 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                </div>
-                                
-                                <div class="mb-3">
-                                    <label for="specialNotes" class="form-label">Special Notes</label>
-                                    <textarea class="form-control" id="specialNotes" name="SpecialNotes" rows="3" 
-                                              placeholder="Any special availability notes...">@Model?.SpecialNotes</textarea>
                                 </div>
                                 
                                 <div class="d-flex justify-content-end">
@@ -406,50 +337,13 @@
                                 </div>
                                 <div class="card-body">
                                     <div id="reviewsList">
-                                        @if (Model?.Reviews != null)
-                                        {
-                                            @foreach (var review in Model.Reviews)
-                                            {
-                                                <div class="border-bottom pb-3 mb-3" data-rating="@review.Rating">
-                                                    <div class="d-flex justify-content-between align-items-start mb-2">
-                                                        <div>
-                                                            <h6 class="mb-1">@review.CustomerName</h6>
-                                                            <div class="text-warning mb-1">
-                                                                @for (int i = 1; i <= 5; i++)
-                                                                {
-                                                                    @if (i <= review.Rating)
-                                                                    {
-                                                                        <i class="fas fa-star"></i>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <i class="far fa-star"></i>
-                                                                    }
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                        <small class="text-muted">@review.Date?.ToString("MMM dd, yyyy")</small>
-                                                    </div>
-                                                    <p class="mb-0">@review.Comment</p>
-                                                </div>
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <div class="text-center py-5">
-                                                <i class="fas fa-star fa-3x text-muted mb-3"></i>
-                                                <h6 class="text-muted">No reviews yet</h6>
-                                                <p class="text-muted">Your reviews will appear here once customers start rating your services.</p>
-                                            </div>
-                                        }
-                                    </div>
-                                    
-                                    @if (Model?.Reviews != null && Model.Reviews.Count > 10)
-                                    {
-                                        <div class="text-center mt-3">
-                                            <button class="btn btn-outline-primary" id="loadMoreReviews">Load More Reviews</button>
+                                        <!-- Reviews functionality will be implemented in future phase -->
+                                        <div class="text-center py-5">
+                                            <i class="fas fa-star fa-3x text-muted mb-3"></i>
+                                            <h6 class="text-muted">No reviews yet</h6>
+                                            <p class="text-muted">Your reviews will appear here once customers start rating your services.</p>
                                         </div>
-                                    }
+                                    </div>
                                 </div>
                             </div>
                         </div>

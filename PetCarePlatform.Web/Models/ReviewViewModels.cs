@@ -28,5 +28,16 @@ namespace PetCarePlatform.Web.Models
         [StringLength(1000, ErrorMessage = "Comment cannot exceed 1000 characters")]
         public string Comment { get; set; }
     }
+
+    public class ReviewViewModel
+    {
+        public int Id { get; set; }
+        public int BookingId { get; set; }
+        public string ServiceName { get; set; }
+        public string ReviewerName { get; set; }
+        public int Rating { get; set; }
+        public string Comment { get; set; }
+        public DateTime CreatedAt { get; set; }
+    }
 }
 

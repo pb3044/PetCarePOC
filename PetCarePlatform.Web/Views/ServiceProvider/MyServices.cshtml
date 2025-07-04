@@ -115,18 +115,14 @@
                             <!-- Actions -->
                             <div class="d-grid gap-2">
                                 <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-outline-primary btn-sm" 
-                                            data-bs-toggle="modal" data-bs-target="#editServiceModal" 
-                                            data-service-id="@service.Id">
+                                    <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editServiceModal" data-service-id="@service.Id">
                                         <i class="fas fa-edit"></i> Edit
                                     </button>
-                                    <button type="button" class="btn btn-outline-@(service.IsActive ? "warning" : "success") btn-sm toggle-status" 
-                                            data-service-id="@service.Id" data-current-status="@service.IsActive.ToString().ToLower()">
-                                        <i class="fas fa-@(service.IsActive ? "pause" : "play")"></i> 
+                                    <button type="button" class="btn btn-outline-@(service.IsActive ? "warning" : "success") btn-sm toggle-status" data-service-id="@service.Id" data-current-status="@service.IsActive.ToString().ToLower()">
+                                        <i class="fas fa-@(service.IsActive ? "pause" : "play")"></i>
                                         @(service.IsActive ? "Deactivate" : "Activate")
                                     </button>
-                                    <button type="button" class="btn btn-outline-danger btn-sm delete-service" 
-                                            data-service-id="@service.Id" data-service-title="@service.Title">
+                                    <button type="button" class="btn btn-outline-danger btn-sm delete-service" data-service-id="@service.Id" data-service-title="@service.Title">
                                         <i class="fas fa-trash"></i> Delete
                                     </button>
                                 </div>
@@ -160,12 +156,12 @@
 </div>
 
 <!-- Add Service Modal -->
-<div class="modal fade" id="addServiceModal" tabindex="-1">
+<div class="modal fade" id="addServiceModal" tabindex="-1" aria-labelledby="addServiceModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add New Service</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title" id="addServiceModalLabel">Add New Service</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="addServiceForm">
                 <div class="modal-body">
@@ -272,17 +268,16 @@
 </div>
 
 <!-- Edit Service Modal -->
-<div class="modal fade" id="editServiceModal" tabindex="-1">
+<div class="modal fade" id="editServiceModal" tabindex="-1" aria-labelledby="editServiceModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Service</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title" id="editServiceModalLabel">Edit Service</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="editServiceForm">
-                <input type="hidden" id="EditId" name="Id">
                 <div class="modal-body">
-                    <!-- Same form fields as Add Service Modal -->
+                    <input type="hidden" id="EditId" name="Id" />
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -315,30 +310,19 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="EditBasePrice" class="form-label">Base Price *</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">$</span>
-                                    <input type="number" class="form-control" id="EditBasePrice" name="BasePrice" step="0.01" min="0" required>
-                                </div>
+                                <input type="number" class="form-control" id="EditBasePrice" name="BasePrice" min="0" step="0.01" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="EditPriceUnit" class="form-label">Price Unit *</label>
-                                <select class="form-select" id="EditPriceUnit" name="PriceUnit" required>
-                                    <option value="">Select Unit</option>
-                                    <option value="per hour">per hour</option>
-                                    <option value="per day">per day</option>
-                                    <option value="per session">per session</option>
-                                    <option value="per visit">per visit</option>
-                                    <option value="per week">per week</option>
-                                    <option value="per month">per month</option>
-                                </select>
+                                <input type="text" class="form-control" id="EditPriceUnit" name="PriceUnit" required>
                             </div>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="EditLocation" class="form-label">Service Location *</label>
+                        <label for="EditLocation" class="form-label">Location *</label>
                         <input type="text" class="form-control" id="EditLocation" name="Location" required>
                     </div>
 
@@ -388,10 +372,71 @@
 @section Scripts {
     <script>
         $(document).ready(function() {
+            // Edit Service Button Click Handler
+            $(document).on('click', '[data-bs-target="#editServiceModal"]', function() {
+                console.log("Edit clicked");
+                const serviceId = $(this).data('service-id');
+
+                // Fetch service data
+                $.get('@Url.Action("GetService")', { id: serviceId })
+                    .done(function(response) {
+                        if (response.success) {
+                            const service = response.service;
+
+                            // Populate the edit form fields using camelCase
+                            $('#EditId').val(service.id);
+                            $('#EditTitle').val(service.title);
+                            $('#EditDescription').val(service.description);
+                            $('#EditType').val(service.type);
+                            $('#EditBasePrice').val(service.basePrice);
+                            $('#EditPriceUnit').val(service.priceUnit);
+                            $('#EditLocation').val(service.location);
+                            $('#EditAcceptedPetTypes').val(service.acceptedPetTypes);
+                            $('#EditAcceptedPetSizes').val(service.acceptedPetSizes);
+                            $('#EditMaxPetsPerBooking').val(service.maxPetsPerBooking);
+                            $('#EditIsActive').prop('checked', service.isActive);
+                        } else {
+                            showAlert('danger', response.message || 'Failed to load service data');
+                        }
+                    })
+                    .fail(function() {
+                        showAlert('danger', 'An error occurred while loading the service data');
+                    });
+            });
+
+            // Modal event handlers for proper accessibility
+            $('#editServiceModal').on('show.bs.modal', function (e) {
+                // Remove aria-hidden when modal is about to show
+                $(this).removeAttr('aria-hidden');
+            });
+
+            $('#editServiceModal').on('shown.bs.modal', function (e) {
+                // Focus on the first input field when modal is shown
+                $('#EditTitle').focus();
+            });
+
+            $('#editServiceModal').on('hide.bs.modal', function (e) {
+                // Add aria-hidden back when modal is being hidden
+                $(this).attr('aria-hidden', 'true');
+            });
+
+            // Add Service Modal accessibility
+            $('#addServiceModal').on('show.bs.modal', function (e) {
+                $(this).removeAttr('aria-hidden');
+            });
+
+            $('#addServiceModal').on('shown.bs.modal', function (e) {
+                $('#Title').focus();
+            });
+
+            $('#addServiceModal').on('hide.bs.modal', function (e) {
+                $(this).attr('aria-hidden', 'true');
+            });
+
             // Add Service Form
             $('#addServiceForm').on('submit', function(e) {
                 e.preventDefault();
-                
+
                 const formData = {
                     Title: $('#Title').val(),
                     Description: $('#Description').val(),
@@ -423,7 +468,7 @@
             // Edit Service Form
             $('#editServiceForm').on('submit', function(e) {
                 e.preventDefault();
-                
+
                 const formData = {
                     Id: parseInt($('#EditId').val()),
                     Title: $('#EditTitle').val(),
@@ -458,7 +503,7 @@
                 const serviceId = $(this).data('service-id');
                 const currentStatus = $(this).data('current-status');
                 const action = currentStatus === 'true' ? 'deactivate' : 'activate';
-                
+
                 if (confirm(`Are you sure you want to ${action} this service?`)) {
                     $.post('@Url.Action("ToggleServiceStatus")', { serviceId: serviceId })
                         .done(function(response) {
@@ -479,7 +524,7 @@
             $('.delete-service').on('click', function() {
                 const serviceId = $(this).data('service-id');
                 const serviceTitle = $(this).data('service-title');
-                
+
                 if (confirm(`Are you sure you want to delete "${serviceTitle}"? This action cannot be undone.`)) {
                     $.post('@Url.Action("DeleteService")', { serviceId: serviceId })
                         .done(function(response) {
@@ -501,7 +546,7 @@
                 const alertHtml = `
                     <div class="alert alert-${type} alert-dismissible fade show" role="alert">
                         ${message}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 `;
                 $('.container-fluid').prepend(alertHtml);

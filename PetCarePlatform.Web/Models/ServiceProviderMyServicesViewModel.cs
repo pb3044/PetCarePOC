@@ -36,20 +36,12 @@ namespace PetCarePlatform.Web.Models
         public string PrimaryPhotoUrl { get; set; } = string.Empty;
     }
 
-    public class ServicePhotoItem
-    {
-        public int Id { get; set; }
-        public string Url { get; set; } = string.Empty;
-        public string Caption { get; set; } = string.Empty;
-        public bool IsPrimary { get; set; }
-    }
-
     public class ServiceFormModel
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public ServiceType Type { get; set; }
+        public string Type { get; set; } = string.Empty;
         public decimal BasePrice { get; set; }
         public string PriceUnit { get; set; } = string.Empty;
         public string Location { get; set; } = string.Empty;

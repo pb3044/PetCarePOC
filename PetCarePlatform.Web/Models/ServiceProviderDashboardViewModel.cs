@@ -39,16 +39,4 @@ namespace PetCarePlatform.Web.Models
         public decimal TotalPrice { get; set; }
         public string SpecialInstructions { get; set; } = string.Empty;
     }
-
-    public class ServiceProviderInfo
-    {
-        public int Id { get; set; }
-        public string BusinessName { get; set; } = string.Empty;
-        public string UserName { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public double AverageRating { get; set; }
-        public int TotalReviews { get; set; }
-        public bool IsAvailableToday { get; set; }
-        public string CurrentAvailabilityStatus { get; set; } = string.Empty;
-    }
 } 

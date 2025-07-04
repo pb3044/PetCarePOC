@@ -5,10 +5,11 @@ using PetCarePlatform.Core.Models;
 using PetCarePlatform.Infrastructure.Identity;
 using System;
 using System.ComponentModel.DataAnnotations;
-using PetCarePlatform.Web.Models;
+using WebModels = PetCarePlatform.Web.Models;
 using PetCarePlatform.Core.Interfaces;
 using System.Linq;
 using System.Security.Claims;
+using System.Collections.Generic;
 
 namespace PetCarePlatform.Web.Controllers
 {
@@ -39,13 +40,11 @@ namespace PetCarePlatform.Web.Controllers
             try
             {
                 // Get current user ID
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (string.IsNullOrEmpty(userId))
+                var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdStr) || !int.TryParse(userIdStr, out var userIdInt))
                 {
                     return RedirectToAction("Login", "Account");
                 }
-
-                var userIdInt = int.Parse(userId);
 
                 // Get service provider profile
                 var serviceProvider = await _serviceProviderService.GetServiceProviderByUserIdAsync(userIdInt);
@@ -60,9 +59,9 @@ namespace PetCarePlatform.Web.Controllers
                 var startOfMonth = new DateTime(now.Year, now.Month, 1);
 
                 // Fetch dashboard data
-                var dashboard = new ServiceProviderDashboardViewModel
+                var dashboard = new WebModels.ServiceProviderDashboardViewModel
                 {
-                    ProviderInfo = new ServiceProviderInfo
+                    ProviderInfo = new WebModels.ServiceProviderInfo
                     {
                         Id = serviceProvider.Id,
                         BusinessName = serviceProvider.BusinessName,
@@ -107,7 +106,7 @@ namespace PetCarePlatform.Web.Controllers
                         ? $"{duration.TotalHours:F1} hours" 
                         : $"{duration.TotalMinutes} minutes";
 
-                    dashboard.RecentRequests.Add(new RecentBookingRequestViewModel
+                    dashboard.RecentRequests.Add(new WebModels.RecentBookingRequestViewModel
                     {
                         Id = booking.Id,
                         PetOwnerName = $"{booking.Owner?.User?.FirstName} {booking.Owner?.User?.LastName}",
@@ -128,7 +127,7 @@ namespace PetCarePlatform.Web.Controllers
 
                 foreach (var booking in todayBookings)
                 {
-                    dashboard.TodaySchedule.Add(new TodayScheduleViewModel
+                    dashboard.TodaySchedule.Add(new WebModels.TodayScheduleViewModel
                     {
                         Id = booking.Id,
                         ServiceName = booking.Service?.Title ?? "",
@@ -156,7 +155,7 @@ namespace PetCarePlatform.Web.Controllers
                 
                 // Return a view with error information
                 ViewBag.ErrorMessage = "An error occurred while loading the dashboard. Please try again later.";
-                return View(new ServiceProviderDashboardViewModel());
+                return View(new WebModels.ServiceProviderDashboardViewModel());
             }
         }
 
@@ -232,9 +231,194 @@ namespace PetCarePlatform.Web.Controllers
         }
 
         // You can add other actions for pet owners here
-        public IActionResult Schedule()
+        public async Task<IActionResult> Schedule(DateTime? date = null, string viewType = "day")
         {
-            return View();
+            try
+            {
+                var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdStr) || !int.TryParse(userIdStr, out var userIdInt))
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                // Get service provider profile
+                var serviceProvider = await _serviceProviderService.GetServiceProviderByUserIdAsync(userIdInt);
+                if (serviceProvider == null)
+                {
+                    return RedirectToAction("Create", "ServiceProvider");
+                }
+
+                var currentDate = date ?? DateTime.Now;
+                var startOfDay = currentDate.Date;
+                var endOfDay = startOfDay.AddDays(1).AddSeconds(-1);
+                var startOfWeek = startOfDay.AddDays(-(int)startOfDay.DayOfWeek);
+                var endOfWeek = startOfWeek.AddDays(7).AddSeconds(-1);
+
+                // Get all bookings for this provider
+                var allBookings = await _bookingService.GetBookingsByProviderIdAsync(serviceProvider.Id);
+
+                // Get availability schedule
+                var availabilitySchedules = await _serviceProviderService.GetAvailabilityScheduleAsync(serviceProvider.Id);
+
+                var viewModel = new WebModels.ServiceProviderScheduleViewModel
+                {
+                    CurrentDate = currentDate,
+                    CurrentView = viewType
+                };
+
+                // Populate appointments based on view type
+                var filteredBookings = viewType switch
+                {
+                    "day" => allBookings.Where(b => b.StartTime.Date == currentDate.Date),
+                    "week" => allBookings.Where(b => b.StartTime >= startOfWeek && b.StartTime <= endOfWeek),
+                    "month" => allBookings.Where(b => b.StartTime.Month == currentDate.Month && b.StartTime.Year == currentDate.Year),
+                    _ => allBookings.Where(b => b.StartTime.Date == currentDate.Date)
+                };
+
+                foreach (var booking in filteredBookings.OrderBy(b => b.StartTime))
+                {
+                    var duration = booking.EndTime - booking.StartTime;
+                    var durationText = duration.TotalHours >= 1 
+                        ? $"{duration.TotalHours:F1} hours" 
+                        : $"{duration.TotalMinutes} minutes";
+
+                    viewModel.Appointments.Add(new WebModels.ScheduleAppointment
+                    {
+                        Id = booking.Id,
+                        ServiceName = booking.Service?.Title ?? "",
+                        PetOwnerName = $"{booking.Owner?.User?.FirstName} {booking.Owner?.User?.LastName}",
+                        PetName = booking.Pet?.Name ?? "",
+                        StartTime = booking.StartTime,
+                        EndTime = booking.EndTime,
+                        Status = booking.Status.ToString(),
+                        TotalPrice = booking.TotalPrice,
+                        SpecialInstructions = booking.SpecialInstructions ?? "",
+                        Duration = durationText,
+                        TimeSlot = $"{booking.StartTime:HH:mm} - {booking.EndTime:HH:mm}"
+                    });
+                }
+
+                // Populate availability schedule
+                foreach (var availability in availabilitySchedules)
+                {
+                    viewModel.Availability.Add(new WebModels.AvailabilitySchedule
+                    {
+                        Id = availability.Id,
+                        DayOfWeek = availability.DayOfWeek,
+                        IsAvailable = availability.IsAvailable,
+                        StartTime = availability.StartTime,
+                        EndTime = availability.EndTime,
+                        DayName = availability.DayOfWeek.ToString()
+                    });
+                }
+
+                // Calculate statistics
+                var todayBookings = allBookings.Where(b => b.StartTime.Date == DateTime.Now.Date).ToList();
+                var weekBookings = allBookings.Where(b => b.StartTime >= DateTime.Now.Date.AddDays(-7)).ToList();
+
+                viewModel.Statistics = new WebModels.ScheduleStatistics
+                {
+                    TodayAppointments = todayBookings.Count,
+                    WeekAppointments = weekBookings.Count,
+                    AvailableSlots = availabilitySchedules.Count(a => a.IsAvailable),
+                    BlockedHours = 0, // TODO: Calculate blocked hours
+                    TodayEarnings = todayBookings.Where(b => b.Status == BookingStatus.Completed).Sum(b => b.TotalPrice),
+                    WeekEarnings = weekBookings.Where(b => b.Status == BookingStatus.Completed).Sum(b => b.TotalPrice)
+                };
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in ServiceProviderController.Schedule: {ex.Message}");
+                ViewBag.ErrorMessage = "An error occurred while loading your schedule. Please try again later.";
+                return View(new WebModels.ServiceProviderScheduleViewModel());
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetScheduleData(DateTime date, string viewType)
+        {
+            try
+            {
+                var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdStr) || !int.TryParse(userIdStr, out var userIdInt))
+                {
+                    return Json(new { success = false, message = "User not authenticated" });
+                }
+
+                var serviceProvider = await _serviceProviderService.GetServiceProviderByUserIdAsync(userIdInt);
+                if (serviceProvider == null)
+                {
+                    return Json(new { success = false, message = "Service provider not found" });
+                }
+
+                var allBookings = await _bookingService.GetBookingsByProviderIdAsync(serviceProvider.Id);
+                var filteredBookings = viewType switch
+                {
+                    "day" => allBookings.Where(b => b.StartTime.Date == date.Date),
+                    "week" => allBookings.Where(b => b.StartTime >= date.Date && b.StartTime <= date.Date.AddDays(7)),
+                    "month" => allBookings.Where(b => b.StartTime.Month == date.Month && b.StartTime.Year == date.Year),
+                    _ => allBookings.Where(b => b.StartTime.Date == date.Date)
+                };
+
+                var appointments = filteredBookings.Select(b => new
+                {
+                    id = b.Id,
+                    title = b.Service?.Title ?? "",
+                    start = b.StartTime.ToString("yyyy-MM-ddTHH:mm:ss"),
+                    end = b.EndTime.ToString("yyyy-MM-ddTHH:mm:ss"),
+                    status = b.Status.ToString(),
+                    petOwnerName = $"{b.Owner?.User?.FirstName} {b.Owner?.User?.LastName}",
+                    petName = b.Pet?.Name ?? "",
+                    totalPrice = b.TotalPrice
+                }).ToList();
+
+                return Json(new { success = true, appointments });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in ServiceProviderController.GetScheduleData: {ex.Message}");
+                return Json(new { success = false, message = "An error occurred while loading schedule data" });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateAvailability(PetCarePlatform.Core.Models.AvailabilitySchedule model)
+        {
+            try
+            {
+                var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdStr) || !int.TryParse(userIdStr, out var userIdInt))
+                {
+                    return Json(new { success = false, message = "User not authenticated" });
+                }
+
+                var serviceProvider = await _serviceProviderService.GetServiceProviderByUserIdAsync(userIdInt);
+                if (serviceProvider == null)
+                {
+                    return Json(new { success = false, message = "Service provider not found" });
+                }
+
+                // Update availability schedule
+                var availabilitySchedules = await _serviceProviderService.GetAvailabilityScheduleAsync(serviceProvider.Id);
+                var existingSchedule = availabilitySchedules.FirstOrDefault(a => a.DayOfWeek == model.DayOfWeek);
+
+                if (existingSchedule != null)
+                {
+                    existingSchedule.IsAvailable = model.IsAvailable;
+                    existingSchedule.StartTime = model.StartTime;
+                    existingSchedule.EndTime = model.EndTime;
+                    // TODO: Update in database
+                }
+
+                return Json(new { success = true, message = "Availability updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in ServiceProviderController.UpdateAvailability: {ex.Message}");
+                return Json(new { success = false, message = "An error occurred while updating availability" });
+            }
         }
 
         public async Task<IActionResult> MyServices()
@@ -242,13 +426,11 @@ namespace PetCarePlatform.Web.Controllers
             try
             {
                 // Get current user ID
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (string.IsNullOrEmpty(userId))
+                var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdStr) || !int.TryParse(userIdStr, out var userIdInt))
                 {
                     return RedirectToAction("Login", "Account");
                 }
-
-                var userIdInt = int.Parse(userId);
 
                 // Get service provider profile
                 var serviceProvider = await _serviceProviderService.GetServiceProviderByUserIdAsync(userIdInt);
@@ -260,7 +442,7 @@ namespace PetCarePlatform.Web.Controllers
                 // Get all services for this provider
                 var services = await _serviceService.GetServicesByProviderIdAsync(serviceProvider.Id);
 
-                var viewModel = new ServiceProviderMyServicesViewModel
+                var viewModel = new WebModels.ServiceProviderMyServicesViewModel
                 {
                     TotalServices = services.Count(),
                     ActiveServices = services.Count(s => s.IsActive),
@@ -275,7 +457,7 @@ namespace PetCarePlatform.Web.Controllers
                     // Calculate average rating
                     var averageRating = await _serviceService.GetServiceRatingAsync(service.Id);
 
-                    viewModel.Services.Add(new ServiceItem
+                    viewModel.Services.Add(new WebModels.ServiceItem
                     {
                         Id = service.Id,
                         Title = service.Title,
@@ -294,13 +476,13 @@ namespace PetCarePlatform.Web.Controllers
                         AcceptedPetSizes = service.AcceptedPetSizes,
                         MaxPetsPerBooking = service.MaxPetsPerBooking,
                         PrimaryPhotoUrl = service.Photos?.FirstOrDefault(p => p.IsPrimary)?.Url ?? "/images/default-service.jpg",
-                        Photos = service.Photos?.Select(p => new ServicePhotoItem
+                        Photos = service.Photos?.Select(p => new WebModels.ServicePhotoItem
                         {
                             Id = p.Id,
                             Url = p.Url,
                             Caption = p.Caption,
                             IsPrimary = p.IsPrimary
-                        }).ToList() ?? new List<ServicePhotoItem>()
+                        }).ToList() ?? new List<WebModels.ServicePhotoItem>()
                     });
                 }
 
@@ -310,12 +492,12 @@ namespace PetCarePlatform.Web.Controllers
             {
                 System.Diagnostics.Debug.WriteLine($"Error in ServiceProviderController.MyServices: {ex.Message}");
                 ViewBag.ErrorMessage = "An error occurred while loading your services. Please try again later.";
-                return View(new ServiceProviderMyServicesViewModel());
+                return View(new WebModels.ServiceProviderMyServicesViewModel());
             }
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateService(ServiceFormModel model)
+        public async Task<IActionResult> CreateService(WebModels.ServiceFormModel model)
         {
             try
             {
@@ -325,13 +507,11 @@ namespace PetCarePlatform.Web.Controllers
                 }
 
                 // Get current user ID
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (string.IsNullOrEmpty(userId))
+                var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdStr) || !int.TryParse(userIdStr, out var userIdInt))
                 {
                     return Json(new { success = false, message = "User not authenticated." });
                 }
-
-                var userIdInt = int.Parse(userId);
 
                 // Get service provider profile
                 var serviceProvider = await _serviceProviderService.GetServiceProviderByUserIdAsync(userIdInt);
@@ -346,7 +526,7 @@ namespace PetCarePlatform.Web.Controllers
                     ProviderId = serviceProvider.Id,
                     Title = model.Title,
                     Description = model.Description,
-                    Type = model.Type,
+                    Type = Enum.Parse<ServiceType>(model.Type),
                     BasePrice = model.BasePrice,
                     PriceUnit = model.PriceUnit,
                     Location = model.Location,
@@ -370,7 +550,7 @@ namespace PetCarePlatform.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateService(ServiceFormModel model)
+        public async Task<IActionResult> UpdateService(WebModels.ServiceFormModel model)
         {
             try
             {
@@ -389,7 +569,7 @@ namespace PetCarePlatform.Web.Controllers
                 // Update service properties
                 existingService.Title = model.Title;
                 existingService.Description = model.Description;
-                existingService.Type = model.Type;
+                existingService.Type = Enum.Parse<ServiceType>(model.Type);
                 existingService.BasePrice = model.BasePrice;
                 existingService.PriceUnit = model.PriceUnit;
                 existingService.Location = model.Location;
@@ -487,8 +667,8 @@ namespace PetCarePlatform.Web.Controllers
                 booking.Notes = reason;
                 booking.UpdatedAt = DateTime.UtcNow;
 
-                // TODO: Update booking in database
-                // await _bookingService.UpdateBookingAsync(booking);
+                // Update booking in database
+                await _bookingService.UpdateBookingAsync(booking);
 
                 return Json(new { success = true, message = "Booking declined successfully" });
             }
@@ -496,6 +676,335 @@ namespace PetCarePlatform.Web.Controllers
             {
                 System.Diagnostics.Debug.WriteLine($"Error in ServiceProviderController.RejectBooking: {ex.Message}");
                 return Json(new { success = false, message = "An error occurred while declining the booking" });
+            }
+        }
+
+        public async Task<IActionResult> BookingRequest(WebModels.BookingRequestFilters filters = null)
+        {
+            try
+            {
+                // Get current user ID
+                var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdStr) || !int.TryParse(userIdStr, out var userIdInt))
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                // Get service provider profile
+                var serviceProvider = await _serviceProviderService.GetServiceProviderByUserIdAsync(userIdInt);
+                if (serviceProvider == null)
+                {
+                    return RedirectToAction("Create", "ServiceProvider");
+                }
+
+                // Initialize filters if null
+                filters ??= new WebModels.BookingRequestFilters();
+
+                // Get all bookings for this provider
+                var allBookings = await _bookingService.GetBookingsByProviderIdAsync(serviceProvider.Id);
+
+                // Apply filters
+                var filteredBookings = allBookings.AsQueryable();
+
+                if (!string.IsNullOrEmpty(filters.Status))
+                {
+                    if (Enum.TryParse<BookingStatus>(filters.Status, out var status))
+                    {
+                        filteredBookings = filteredBookings.Where(b => b.Status == status);
+                    }
+                }
+
+                if (filters.FromDate.HasValue)
+                {
+                    filteredBookings = filteredBookings.Where(b => b.StartTime.Date >= filters.FromDate.Value.Date);
+                }
+
+                if (filters.ToDate.HasValue)
+                {
+                    filteredBookings = filteredBookings.Where(b => b.StartTime.Date <= filters.ToDate.Value.Date);
+                }
+
+                if (!string.IsNullOrEmpty(filters.ServiceType))
+                {
+                    if (Enum.TryParse<ServiceType>(filters.ServiceType, out var serviceType))
+                    {
+                        filteredBookings = filteredBookings.Where(b => b.Service.Type == serviceType);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(filters.SearchTerm))
+                {
+                    var searchTerm = filters.SearchTerm.ToLower();
+                    filteredBookings = filteredBookings.Where(b =>
+                        b.Owner.User.FirstName.ToLower().Contains(searchTerm) ||
+                        b.Owner.User.LastName.ToLower().Contains(searchTerm) ||
+                        b.Service.Title.ToLower().Contains(searchTerm) ||
+                        b.Pet.Name.ToLower().Contains(searchTerm)
+                    );
+                }
+
+                if (filters.ShowOnlyAvailable == true)
+                {
+                    // Filter to show only bookings where provider is available
+                    var availableBookings = new List<Booking>();
+                    foreach (var booking in filteredBookings)
+                    {
+                        var isAvailable = await CheckAvailabilityForBooking(serviceProvider.Id, booking);
+                        if (isAvailable)
+                        {
+                            availableBookings.Add(booking);
+                        }
+                    }
+                    filteredBookings = availableBookings.AsQueryable();
+                }
+
+                // Separate pending and recent requests
+                var pendingRequests = filteredBookings
+                    .Where(b => b.Status == BookingStatus.Pending)
+                    .OrderBy(b => b.CreatedAt)
+                    .ToList();
+
+                var recentRequests = filteredBookings
+                    .Where(b => b.Status != BookingStatus.Pending && b.CreatedAt >= DateTime.UtcNow.AddDays(-30))
+                    .OrderByDescending(b => b.CreatedAt)
+                    .Take(20)
+                    .ToList();
+
+                // Create view model
+                var viewModel = new WebModels.ServiceProviderBookingRequestViewModel
+                {
+                    Filters = filters,
+                    TotalPendingCount = pendingRequests.Count,
+                    TotalRecentCount = recentRequests.Count
+                };
+
+                // Populate pending requests
+                foreach (var booking in pendingRequests)
+                {
+                    var isAvailable = await CheckAvailabilityForBooking(serviceProvider.Id, booking);
+                    var duration = booking.EndTime - booking.StartTime;
+                    var durationText = duration.TotalHours >= 1 
+                        ? $"{duration.TotalHours:F1} hours" 
+                        : $"{duration.TotalMinutes} minutes";
+
+                    viewModel.PendingRequests.Add(new WebModels.BookingRequestItem
+                    {
+                        Id = booking.Id,
+                        PetOwnerName = $"{booking.Owner.User.FirstName} {booking.Owner.User.LastName}",
+                        PetOwnerEmail = booking.Owner.User.Email,
+                        PetOwnerPhone = booking.Owner.User.PhoneNumber ?? "",
+                        ServiceName = booking.Service.Title,
+                        PetName = booking.Pet.Name,
+                        PetType = booking.Pet.Type.ToString(),
+                        PetBreed = booking.Pet.Breed ?? "",
+                        RequestDate = booking.CreatedAt,
+                        StartTime = booking.StartTime,
+                        EndTime = booking.EndTime,
+                        Duration = durationText,
+                        TotalPrice = booking.TotalPrice,
+                        Status = booking.Status.ToString(),
+                        SpecialInstructions = booking.SpecialInstructions ?? "",
+                        Notes = booking.Notes ?? "",
+                        IsAvailable = isAvailable,
+                        AvailabilityMessage = GetAvailabilityMessage(isAvailable, booking),
+                        PetOwnerAddress = $"{booking.Owner.User.Address}, {booking.Owner.User.City}, {booking.Owner.User.Province}",
+                        Distance = 0, // TODO: Calculate distance
+                        EstimatedTravelTime = "15 min" // TODO: Calculate travel time
+                    });
+                }
+
+                // Populate recent requests
+                foreach (var booking in recentRequests)
+                {
+                    var duration = booking.EndTime - booking.StartTime;
+                    var durationText = duration.TotalHours >= 1 
+                        ? $"{duration.TotalHours:F1} hours" 
+                        : $"{duration.TotalMinutes} minutes";
+
+                    viewModel.RecentRequests.Add(new WebModels.BookingRequestItem
+                    {
+                        Id = booking.Id,
+                        PetOwnerName = $"{booking.Owner.User.FirstName} {booking.Owner.User.LastName}",
+                        PetOwnerEmail = booking.Owner.User.Email,
+                        PetOwnerPhone = booking.Owner.User.PhoneNumber ?? "",
+                        ServiceName = booking.Service.Title,
+                        PetName = booking.Pet.Name,
+                        PetType = booking.Pet.Type.ToString(),
+                        PetBreed = booking.Pet.Breed ?? "",
+                        RequestDate = booking.CreatedAt,
+                        StartTime = booking.StartTime,
+                        EndTime = booking.EndTime,
+                        Duration = durationText,
+                        TotalPrice = booking.TotalPrice,
+                        Status = booking.Status.ToString(),
+                        SpecialInstructions = booking.SpecialInstructions ?? "",
+                        Notes = booking.Notes ?? "",
+                        IsAvailable = false, // Not relevant for completed/declined bookings
+                        AvailabilityMessage = "",
+                        PetOwnerAddress = $"{booking.Owner.User.Address}, {booking.Owner.User.City}, {booking.Owner.User.Province}",
+                        Distance = 0,
+                        EstimatedTravelTime = "15 min"
+                    });
+                }
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in ServiceProviderController.BookingRequest: {ex.Message}");
+                ViewBag.ErrorMessage = "An error occurred while loading booking requests. Please try again later.";
+                return View(new WebModels.ServiceProviderBookingRequestViewModel());
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AcceptBooking(int bookingId)
+        {
+            try
+            {
+                var booking = await _bookingService.GetBookingByIdAsync(bookingId);
+                if (booking == null)
+                {
+                    return Json(new { success = false, message = "Booking not found" });
+                }
+
+                // Check if provider is available for this booking
+                var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdStr) || !int.TryParse(userIdStr, out var userIdInt))
+                {
+                    return Json(new { success = false, message = "User not authenticated" });
+                }
+                var serviceProvider = await _serviceProviderService.GetServiceProviderByUserIdAsync(userIdInt);
+                
+                var isAvailable = await CheckAvailabilityForBooking(serviceProvider.Id, booking);
+                if (!isAvailable)
+                {
+                    return Json(new { success = false, message = "You are not available for this booking time" });
+                }
+
+                // Update booking status to Confirmed
+                booking.Status = BookingStatus.Confirmed;
+                booking.UpdatedAt = DateTime.UtcNow;
+
+                await _bookingService.UpdateBookingAsync(booking);
+
+                return Json(new { success = true, message = "Booking accepted successfully" });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in ServiceProviderController.AcceptBooking: {ex.Message}");
+                return Json(new { success = false, message = "An error occurred while accepting the booking" });
+            }
+        }
+
+        public async Task<IActionResult> Profile()
+        {
+            try
+            {
+                var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdStr) || !int.TryParse(userIdStr, out var userIdInt))
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                // Get user and service provider
+                var serviceProvider = await _serviceProviderService.GetServiceProviderByUserIdAsync(userIdInt);
+                if (serviceProvider == null || serviceProvider.User == null)
+                {
+                    return RedirectToAction("Create", "ServiceProvider");
+                }
+                var user = serviceProvider.User;
+
+                var reviews = await _serviceProviderService.GetProviderReviewsAsync(serviceProvider.Id);
+                var reviewViewModels = reviews.Select(r => new WebModels.ReviewViewModel
+                {
+                    Id = r.Id,
+                    BookingId = r.BookingId,
+                    ServiceName = r.Service?.Title ?? string.Empty,
+                    ReviewerName = r.Reviewer != null ? (r.Reviewer.FirstName + " " + r.Reviewer.LastName) : string.Empty,
+                    Rating = r.Rating,
+                    Comment = r.Comment,
+                    CreatedAt = r.CreatedAt
+                }).ToList();
+
+                var viewModel = new WebModels.ServiceProviderProfileViewModel
+                {
+                    FirstName = user.FirstName ?? "",
+                    LastName = user.LastName ?? "",
+                    Email = user.Email ?? "",
+                    Phone = user.PhoneNumber ?? "",
+                    Address = user.Address ?? "",
+                    City = user.City ?? "",
+                    Province = user.Province ?? "",
+                    PostalCode = user.PostalCode ?? "",
+                    Bio = user.Bio ?? "",
+                    BusinessName = serviceProvider.BusinessName ?? "",
+                    Description = serviceProvider.Description ?? "",
+                    TaxInfo = serviceProvider.TaxInfo ?? "",
+                    TaxNumber = serviceProvider.TaxInfo ?? "",
+                    BusinessDescription = serviceProvider.Description ?? "",
+                    SpecialNotes = "",
+                    AverageRating = serviceProvider.AverageRating,
+                    TotalReviews = serviceProvider.TotalReviews,
+                    Credentials = serviceProvider.Credentials ?? "",
+                    Certifications = serviceProvider.Certifications ?? "",
+                    InsuranceInfo = serviceProvider.InsuranceInfo ?? "",
+                    LicenseInfo = serviceProvider.LicenseInfo ?? "",
+                    BackgroundCheckVerified = serviceProvider.BackgroundCheckVerified,
+                    BackgroundCheckDate = serviceProvider.BackgroundCheckDate,
+                    IdentityVerified = serviceProvider.IdentityVerified,
+                    ServiceArea = serviceProvider.ServiceArea ?? "",
+                    ServiceRadius = serviceProvider.ServiceRadius,
+                    BankingInfo = serviceProvider.BankingInfo ?? "",
+                    Reviews = reviewViewModels
+                };
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in ServiceProviderController.Profile: {ex.Message}");
+                ViewBag.ErrorMessage = "An error occurred while loading your profile. Please try again later.";
+                return View(new WebModels.ServiceProviderProfileViewModel());
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetService(int id)
+        {
+            try
+            {
+                var service = await _serviceService.GetServiceByIdAsync(id);
+                if (service == null)
+                {
+                    return Json(new { success = false, message = "Service not found." });
+                }
+
+                // Return service data for editing
+                var serviceData = new
+                {
+                    success = true,
+                    service = new
+                    {
+                        Id = service.Id,
+                        Title = service.Title,
+                        Description = service.Description,
+                        Type = service.Type.ToString(), // Fix: Convert ServiceType enum to string for serialization
+                        BasePrice = service.BasePrice,
+                        PriceUnit = service.PriceUnit,
+                        Location = service.Location,
+                        IsActive = service.IsActive,
+                        AcceptedPetTypes = service.AcceptedPetTypes,
+                        AcceptedPetSizes = service.AcceptedPetSizes,
+                        MaxPetsPerBooking = service.MaxPetsPerBooking
+                    }
+                };
+
+                return Json(serviceData);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in ServiceProviderController.GetService: {ex.Message}");
+                return Json(new { success = false, message = "An error occurred while retrieving the service." });
             }
         }
     }

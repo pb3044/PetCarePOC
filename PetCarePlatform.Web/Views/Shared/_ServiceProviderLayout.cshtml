@@ -6,153 +6,346 @@
     <title>@ViewData["Title"] - Pet Services</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.css" />
+    <link href="~/fonts/outfit/outfit.css" rel="stylesheet">
     @await RenderSectionAsync("Styles", required: false)
     <form id="logoutForm" asp-controller="Account" asp-action="Logout" method="post" style="display: none;">
     </form>
     <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --sidebar-width: 260px;
+            --mobile-nav-height: 65px;
+        }
+
+        body {
+            font-family: 'Outfit', 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            color: #1a1c1e;
+        }
+
         .service-provider-navbar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .service-provider-sidebar {
-            background: #f8f9fa;
-            min-height: calc(100vh - 56px);
-            border-right: 1px solid #dee2e6;
-        }
-
-        .sidebar-nav .nav-link {
-            color: #495057;
-            padding: 12px 20px;
-            border-radius: 8px;
-            margin: 4px 8px;
-            transition: all 0.3s ease;
-        }
-
-            .sidebar-nav .nav-link:hover, .sidebar-nav .nav-link.active {
-                background-color: #667eea;
-                color: white;
-            }
-
-            .sidebar-nav .nav-link i {
-                width: 20px;
-                margin-right: 10px;
-            }
-
-        .main-content {
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 0.75rem 1.5rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1030;
         }
 
         .navbar-brand {
-            font-weight: bold;
-            font-size: 1.5rem;
+            font-weight: 800;
+            font-size: 1.4rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
         }
 
         .user-info {
+            color: #495057 !important;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .service-provider-sidebar {
+            background: white;
+            width: var(--sidebar-width);
+            height: 100vh;
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding-top: 20px;
+            transition: transform 0.3s ease;
+            z-index: 1020;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        .sidebar-nav .nav-link {
+            color: #64748b;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin: 4px 16px;
+            font-weight: 500;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-nav .nav-link:hover {
+            background-color: #f1f5f9;
+            color: #334155;
+            transform: translateX(4px);
+        }
+
+        .sidebar-nav .nav-link.active {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .sidebar-nav .nav-link i {
+            font-size: 1.1rem;
+            width: 24px;
+            margin-right: 12px;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 30px;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+            width: calc(100% - var(--sidebar-width));
+        }
+
+        /* Mobile Bottom Nav */
+        .mobile-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: var(--mobile-nav-height);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            z-index: 1040;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #94a3b8;
+            font-size: 0.7rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-nav-item i {
+            font-size: 1.3rem;
+            margin-bottom: 2px;
+        }
+
+        .mobile-nav-item.active {
+            color: #667eea;
+        }
+
+        @@media (max-width: 991.98px) {
+            .service-provider-sidebar {
+                transform: translateX(-100%);
+                padding-top: 70px;
+                padding-bottom: 100px;
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px 15px 80px;
+            }
+            .sidebar-nav .nav-link {
+                margin: 4px 8px;
+            }
+            .sidebar-open .service-provider-sidebar {
+                transform: translateX(0);
+                box-shadow: 20px 0 50px rgba(0,0,0,0.1);
+            }
+        }
+
+        /* Premium Components */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
+        }
+
+        .btn-premium {
+            background: var(--primary-gradient);
+            border: none;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
             color: white;
         }
     </style>
 </head>
 <body>
-    <!-- Top Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark service-provider-navbar">
+    <nav class="navbar navbar-expand-lg navbar-light service-provider-navbar d-lg-none">
         <div class="container-fluid">
-            <a class="navbar-brand" href="@Url.Action("Dashboard", "ServiceProvider")">
-                <i class="fas fa-paw"></i> Pet Services Pro
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+            <button class="btn d-lg-none p-0 me-3" id="sidebarToggle">
+                <i class="bi bi-list fs-3"></i>
             </button>
-
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle user-info" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle"></i> @ViewBag.ServiceProviderName
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="@Url.Action("Profile", "ServiceProvider")"><i class="fas fa-user"></i> My Profile</a></li>
-                            <li><a class="dropdown-item" href="@Url.Action("Settings", "ServiceProvider")"><i class="fas fa-cog"></i> Settings</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            @* <li><a class="dropdown-item" href="@Url.Action("Logout", "Account")"><i class="fas fa-sign-out-alt"></i> Logout</a></li>*@
-                            <li> 
-                                <a class="dropdown-item" href="#" onclick="document.getElementById('logoutForm').submit(); return false;">
-                                    <i class="fas fa-sign-out-alt"></i> Logout
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+            <a class="navbar-brand d-flex align-items-center d-lg-none" href="@Url.Action("Dashboard", "ServiceProvider")">
+                <div class="brand-icon me-2">
+                    <i class="bi bi-heart-pulse-fill"></i>
+                </div>
+                <span class="fw-800">PetCare <span class="text-primary">Pro</span></span>
+            </a>
         </div>
     </nav>
 
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar Navigation -->
-            <nav class="col-md-2 d-md-block service-provider-sidebar">
-                <div class="position-sticky pt-3">
+    <div class="dashboard-wrapper">
+        <!-- Sidebar Navigation -->
+        <nav class="service-provider-sidebar" id="sidebar">
+                <div class="position-sticky">
+                    <!-- Sidebar Logo (Desktop Only) -->
+                    <div class="p-4 d-none d-lg-block">
+                        <a class="navbar-brand d-flex align-items-center" href="@Url.Action("Dashboard", "ServiceProvider")">
+                            <div class="brand-icon me-2">
+                                <i class="bi bi-heart-pulse-fill"></i>
+                            </div>
+                            <span class="fw-800" style="color: #1a1c1e !important;">PetCare <span class="text-primary">Pro</span></span>
+                        </a>
+                    </div>
+                    
                     <ul class="nav flex-column sidebar-nav">
                         <li class="nav-item">
                             <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Dashboard" ? "active" : "")"
                                href="@Url.Action("Dashboard", "ServiceProvider")">
-                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                                <i class="bi bi-speedometer2"></i> Dashboard
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString() == "BookingRequest" ? "active" : "")"
+                            <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "BookingRequest" ? "active" : "")"
                                href="@Url.Action("BookingRequest", "ServiceProvider")">
-                                <i class="fas fa-envelope"></i> Booking Requests
+                                <i class="bi bi-calendar-event"></i> Booking Requests
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString() == "MyServices" ? "active" : "")"
+                            <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "MyServices" ? "active" : "")"
                                href="@Url.Action("MyServices", "ServiceProvider")">
-                                <i class="fas fa-cog"></i> My Services
+                                <i class="bi bi-grid"></i> My Services
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString() == "Schedule" ? "active" : "")"
+                            <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Schedule" ? "active" : "")"
                                href="@Url.Action("Schedule", "ServiceProvider")">
-                                <i class="fas fa-calendar"></i> Schedule
+                                <i class="bi bi-clock"></i> Schedule
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Profile" ? "active" : "")"
-                               href="@Url.Action("Profile", "ServiceProvider")">
-                                <i class="fas fa-user"></i> Profile
+                            <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Reviews" ? "active" : "")" href="@Url.Action("Reviews", "ServiceProvider")">
+                                <i class="bi bi-star"></i> Reviews
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Reviews", "ServiceProvider")">
-                                <i class="fas fa-star"></i> Reviews
+                            <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Earnings" ? "active" : "")" href="@Url.Action("Earnings", "ServiceProvider")">
+                                <i class="bi bi-wallet2"></i> Earnings
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Earnings", "ServiceProvider")">
-                                <i class="fas fa-dollar-sign"></i> Earnings
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Reports", "ServiceProvider")">
-                                <i class="fas fa-chart-bar"></i> Reports
+                            <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Reports" ? "active" : "")" href="@Url.Action("Reports", "ServiceProvider")">
+                                <i class="bi bi-bar-chart"></i> Reports
                             </a>
                         </li>
                     </ul>
+
+                    <!-- User Account Section (Bottom of Sidebar) -->
+                    <div class="mt-5 px-3">
+                        <div class="text-muted small fw-700 mb-3 px-3 text-uppercase letter-spacing-1">Account</div>
+                        <ul class="nav flex-column sidebar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Profile" ? "active" : "")" href="@Url.Action("Profile", "ServiceProvider")">
+                                    <i class="bi bi-person-circle"></i> @(ViewBag.ServiceProviderName ?? "My Profile")
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Settings" ? "active" : "")" href="@Url.Action("Settings", "ServiceProvider")">
+                                    <i class="bi bi-gear"></i> Settings
+                                </a>
+                            </li>
+                            <li class="nav-item mt-2">
+                                <a class="nav-link text-danger" href="#" onclick="document.getElementById('logoutForm').submit(); return false;">
+                                    <i class="bi bi-box-arrow-right"></i> Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
 
-            <!-- Main Content -->
-            <main class="col-md-10 ms-sm-auto main-content">
+            <!-- Mobile Bottom Nav -->
+            <div class="mobile-bottom-nav d-lg-none">
+                <a href="@Url.Action("Dashboard", "ServiceProvider")" class="mobile-nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "Dashboard" ? "active" : "")">
+                    <i class="bi bi-house-door"></i>
+                    <span>Home</span>
+                </a>
+                <a href="@Url.Action("BookingRequest", "ServiceProvider")" class="mobile-nav-item @(ViewContext.RouteData.Values["Controller"].ToString() == "BookingRequest" ? "active" : "")">
+                    <i class="bi bi-calendar-check"></i>
+                    <span>Bookings</span>
+                </a>
+                <a href="@Url.Action("MyServices", "ServiceProvider")" class="mobile-nav-item @(ViewContext.RouteData.Values["Controller"].ToString() == "MyServices" ? "active" : "")">
+                    <i class="bi bi-grid"></i>
+                    <span>Services</span>
+                </a>
+                <a href="@Url.Action("Schedule", "ServiceProvider")" class="mobile-nav-item @(ViewContext.RouteData.Values["Controller"].ToString() == "Schedule" ? "active" : "")">
+                    <i class="bi bi-clock"></i>
+                    <span>Schedule</span>
+                </a>
+                <a href="#" class="mobile-nav-item" id="mobileMoreToggle">
+                    <i class="bi bi-three-dots"></i>
+                    <span>More</span>
+                </a>
+            </div>
+
+            <main class="main-content">
                 @RenderBody()
             </main>
         </div>
-    </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#sidebarToggle, #mobileMoreToggle').on('click', function () {
+                $('body').toggleClass('sidebar-open');
+            });
+
+            // Close sidebar when clicking outside on mobile
+            $(document).on('click', function (e) {
+                if ($('body').hasClass('sidebar-open')) {
+                    if (!$(e.target).closest('#sidebar, #sidebarToggle, #mobileMoreToggle').length) {
+                        $('body').removeClass('sidebar-open');
+                    }
+                }
+            });
+        });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

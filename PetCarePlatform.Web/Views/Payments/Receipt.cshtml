@@ -1,0 +1,48 @@
+@model PetCarePlatform.Core.Models.Payment
+@{
+    ViewData["Title"] = "Payment Receipt";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-receipt me-2"></i>Payment Receipt
+                    </h4>
+                    <div>
+                        <a href="@Url.Action("DownloadReceipt", "Payments", new { id = Model.Id })" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-download me-1"></i>Download Receipt
+                        </a>
+                        <a href="@Url.Action("Index", "Payments")" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-arrow-left me-1"></i>Back to Payments
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.ReceiptHtml != null)
+                    {
+                        @Html.Raw(ViewBag.ReceiptHtml)
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Receipt content not available.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Print functionality
+        function printReceipt() {
+            window.print();
+        }
+    </script>
+}
+

@@ -1,144 +1,246 @@
 @model PetCarePlatform.Web.Models.SearchServicesViewModel
 @{
-    ViewData["Title"] = "Search Services";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Search Pet Care Services";
+    Layout = "~/Views/Shared/_SearchLayout.cshtml";
 }
 
-<div class="container-fluid py-4">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="h3 mb-4">Search Services</h1>
-        </div>
-    </div>
-
-    <!-- Search Form -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <form method="get" class="row g-3">
-                        <div class="col-md-4">
-                            <label for="keyword" class="form-label">Search</label>
-                            <input type="text" class="form-control" id="keyword" name="keyword" value="@Model.Keyword" placeholder="Service name or description...">
+<!-- Hero Search Section -->
+<div class="search-hero">
+    <div class="container">
+        <div class="search-hero-content">
+            <h1>Find the Perfect Pet Care</h1>
+            <p>Discover trusted pet sitters, dog walkers, groomers, and more in your area</p>
+            
+            <!-- Main Search Form -->
+            <div class="main-search-form">
+                <form method="get" class="search-form">
+                    <div class="search-inputs">
+                        <div class="search-group">
+                            <label for="location">Where are you located?</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <input type="text" id="location" name="location" value="@Model.Location" placeholder="Enter city, address, or zip code">
+                            </div>
                         </div>
-                        <div class="col-md-2">
-                            <label for="type" class="form-label">Service Type</label>
-                            <select class="form-select" id="type" name="type">
-                                <option value="">All Types</option>
-                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.DogWalking)
-                                {
-                                    <option value="0" selected>Dog Walking</option>
-                                }
-                                else
-                                {
-                                    <option value="0">Dog Walking</option>
-                                }
-                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.PetSitting)
-                                {
-                                    <option value="1" selected>Pet Sitting</option>
-                                }
-                                else
-                                {
-                                    <option value="1">Pet Sitting</option>
-                                }
-                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.Boarding)
-                                {
-                                    <option value="2" selected>Boarding</option>
-                                }
-                                else
-                                {
-                                    <option value="2">Boarding</option>
-                                }
-                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.DayCare)
-                                {
-                                    <option value="3" selected>Day Care</option>
-                                }
-                                else
-                                {
-                                    <option value="3">Day Care</option>
-                                }
-                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.Grooming)
-                                {
-                                    <option value="4" selected>Grooming</option>
-                                }
-                                else
-                                {
-                                    <option value="4">Grooming</option>
-                                }
-                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.Training)
-                                {
-                                    <option value="5" selected>Training</option>
-                                }
-                                else
-                                {
-                                    <option value="5">Training</option>
-                                }
-                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.PetTaxi)
-                                {
-                                    <option value="6" selected>Pet Taxi</option>
-                                }
-                                else
-                                {
-                                    <option value="6">Pet Taxi</option>
-                                }
-                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.Veterinary)
-                                {
-                                    <option value="7" selected>Veterinary</option>
-                                }
-                                else
-                                {
-                                    <option value="7">Veterinary</option>
-                                }
-                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.VeterinaryVisit)
-                                {
-                                    <option value="8" selected>Veterinary Visit</option>
-                                }
-                                else
-                                {
-                                    <option value="8">Veterinary Visit</option>
-                                }
-                                @if (Model.Type == PetCarePlatform.Core.Models.ServiceType.Other)
-                                {
-                                    <option value="9" selected>Other</option>
-                                }
-                                else
-                                {
-                                    <option value="9">Other</option>
-                                }
-                            </select>
+                        
+                        <div class="search-group">
+                            <label for="type">What service do you need?</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-paw"></i>
+                                <select id="type" name="type">
+                                    <option value="">All Services</option>
+                                    <option value="0" selected="@(Model.Type == PetCarePlatform.Core.Models.ServiceType.DogWalking)">Dog Walking</option>
+                                    <option value="1" selected="@(Model.Type == PetCarePlatform.Core.Models.ServiceType.PetSitting)">Pet Sitting</option>
+                                    <option value="2" selected="@(Model.Type == PetCarePlatform.Core.Models.ServiceType.Boarding)">Boarding</option>
+                                    <option value="3" selected="@(Model.Type == PetCarePlatform.Core.Models.ServiceType.DayCare)">Day Care</option>
+                                    <option value="4" selected="@(Model.Type == PetCarePlatform.Core.Models.ServiceType.Grooming)">Grooming</option>
+                                    <option value="5" selected="@(Model.Type == PetCarePlatform.Core.Models.ServiceType.Training)">Training</option>
+                                    <option value="6" selected="@(Model.Type == PetCarePlatform.Core.Models.ServiceType.PetTaxi)">Pet Taxi</option>
+                                    <option value="7" selected="@(Model.Type == PetCarePlatform.Core.Models.ServiceType.Veterinary)">Veterinary</option>
+                                    <option value="8" selected="@(Model.Type == PetCarePlatform.Core.Models.ServiceType.VeterinaryVisit)">Veterinary Visit</option>
+                                    <option value="9" selected="@(Model.Type == PetCarePlatform.Core.Models.ServiceType.Other)">Other</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-md-2">
-                            <label for="minPrice" class="form-label">Min Price</label>
-                            <input type="number" class="form-control" id="minPrice" name="minPrice" value="@Model.MinPrice" placeholder="$0">
+                        
+                        <div class="search-group">
+                            <label for="keyword">Search keywords</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="keyword" name="keyword" value="@Model.Keyword" placeholder="Service name or description...">
+                            </div>
                         </div>
-                        <div class="col-md-2">
-                            <label for="maxPrice" class="form-label">Max Price</label>
-                            <input type="number" class="form-control" id="maxPrice" name="maxPrice" value="@Model.MaxPrice" placeholder="$1000">
+                        
+                        <button type="submit" class="search-btn">
+                            <i class="fas fa-search"></i>
+                            Find Services
+                        </button>
+                    </div>
+                    
+                    <!-- Advanced Filters -->
+                    <div class="advanced-filters">
+                        <button type="button" class="toggle-filters-btn" id="toggleFilters">
+                            <i class="fas fa-filter"></i>
+                            Advanced Filters
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        
+                        <div class="filters-content" id="filtersContent">
+                            <div class="filter-row">
+                                <div class="filter-group">
+                                    <label for="radiusInKm">Search Radius</label>
+                                    <select id="radiusInKm" name="radiusInKm">
+                                        <option value="5" selected="@(Model.RadiusInKm == 5)">5 km</option>
+                                        <option value="10" selected="@(Model.RadiusInKm == 10)">10 km</option>
+                                        <option value="25" selected="@(Model.RadiusInKm == 25)">25 km</option>
+                                        <option value="50" selected="@(Model.RadiusInKm == 50)">50 km</option>
+                                        <option value="100" selected="@(Model.RadiusInKm == 100)">100 km</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label for="minPrice">Min Price</label>
+                                    <input type="number" id="minPrice" name="minPrice" value="@Model.MinPrice" placeholder="0" min="0" step="0.01">
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label for="maxPrice">Max Price</label>
+                                    <input type="number" id="maxPrice" name="maxPrice" value="@Model.MaxPrice" placeholder="1000" min="0" step="0.01">
+                                </div>
+                            </div>
+                            
+                            <div class="filter-row">
+                                <div class="filter-group">
+                                    <label for="minRating">Minimum Rating</label>
+                                    <select id="minRating" name="minRating">
+                                        <option value="">Any Rating</option>
+                                        <option value="4" selected="@(Model.MinRating == 4)">4+ Stars</option>
+                                        <option value="3" selected="@(Model.MinRating == 3)">3+ Stars</option>
+                                        <option value="2" selected="@(Model.MinRating == 2)">2+ Stars</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label for="petType">Pet Type</label>
+                                    <select id="petType" name="petType">
+                                        <option value="">Any Pet Type</option>
+                                        <option value="Dog" selected="@(Model.PetType == "Dog")">Dog</option>
+                                        <option value="Cat" selected="@(Model.PetType == "Cat")">Cat</option>
+                                        <option value="Bird" selected="@(Model.PetType == "Bird")">Bird</option>
+                                        <option value="Rabbit" selected="@(Model.PetType == "Rabbit")">Rabbit</option>
+                                        <option value="Other" selected="@(Model.PetType == "Other")">Other</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label for="petSize">Pet Size</label>
+                                    <select id="petSize" name="petSize">
+                                        <option value="">Any Size</option>
+                                        <option value="Small" selected="@(Model.PetSize == "Small")">Small</option>
+                                        <option value="Medium" selected="@(Model.PetSize == "Medium")">Medium</option>
+                                        <option value="Large" selected="@(Model.PetSize == "Large")">Large</option>
+                                        <option value="Extra Large" selected="@(Model.PetSize == "Extra Large")">Extra Large</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="filter-row">
+                                <div class="filter-group">
+                                    <label for="availableDate">Available Date</label>
+                                    <input type="date" id="availableDate" name="availableDate" value="@Model.AvailableDate?.ToString("yyyy-MM-dd")" min="@DateTime.Today.ToString("yyyy-MM-dd")">
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label for="availableTime">Preferred Time</label>
+                                    <select id="availableTime" name="availableTime">
+                                        <option value="">Any Time</option>
+                                        <option value="morning" selected="@(Model.AvailableTime == "morning")">Morning (6AM-12PM)</option>
+                                        <option value="afternoon" selected="@(Model.AvailableTime == "afternoon")">Afternoon (12PM-6PM)</option>
+                                        <option value="evening" selected="@(Model.AvailableTime == "evening")">Evening (6PM-10PM)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="showOnlyAvailable" value="true" checked="@Model.ShowOnlyAvailable">
+                                            <span class="checkmark"></span>
+                                            Show only available services
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="filter-row">
+                                <div class="filter-group">
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="showVerifiedOnly" value="true" checked="@Model.ShowVerifiedOnly">
+                                            <span class="checkmark"></span>
+                                            Show only verified providers
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label for="sortBy">Sort By</label>
+                                    <select id="sortBy" name="sortBy">
+                                        <option value="distance" selected="@(Model.SortBy == "distance")">Distance</option>
+                                        <option value="rating" selected="@(Model.SortBy == "rating")">Rating</option>
+                                        <option value="price_low" selected="@(Model.SortBy == "price_low")">Price: Low to High</option>
+                                        <option value="price_high" selected="@(Model.SortBy == "price_high")">Price: High to Low</option>
+                                        <option value="newest" selected="@(Model.SortBy == "newest")">Newest</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-2 d-flex align-items-end">
-                            <button type="submit" class="btn btn-primary me-2">
-                                <i class="fas fa-search me-2"></i>Search
-                            </button>
-                            <a href="@Url.Action("Search", "Services")" class="btn btn-outline-secondary">
-                                <i class="fas fa-times me-2"></i>Clear
-                            </a>
-                        </div>
-                    </form>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Quick Filters -->
+            <div class="quick-filters">
+                <span class="quick-filters-label">Popular searches:</span>
+                <div class="quick-filter-chips">
+                    <button type="button" class="quick-filter-chip" data-filter="type" data-value="0">
+                        <i class="fas fa-walking"></i>
+                        Dog Walking
+                    </button>
+                    <button type="button" class="quick-filter-chip" data-filter="type" data-value="4">
+                        <i class="fas fa-cut"></i>
+                        Pet Grooming
+                    </button>
+                    <button type="button" class="quick-filter-chip" data-filter="type" data-value="1">
+                        <i class="fas fa-home"></i>
+                        Pet Sitting
+                    </button>
+                    <button type="button" class="quick-filter-chip" data-filter="type" data-value="5">
+                        <i class="fas fa-graduation-cap"></i>
+                        Dog Training
+                    </button>
+                    <button type="button" class="quick-filter-chip" data-filter="type" data-value="2">
+                        <i class="fas fa-bed"></i>
+                        Pet Boarding
+                    </button>
+                    <button type="button" class="quick-filter-chip" data-filter="rating" data-value="4">
+                        <i class="fas fa-star"></i>
+                        4+ Stars
+                    </button>
+                    <button type="button" class="quick-filter-chip" data-filter="verified" data-value="true">
+                        <i class="fas fa-check-circle"></i>
+                        Verified Only
+                    </button>
+                    <button type="button" class="quick-filter-chip" data-filter="price" data-value="50">
+                        <i class="fas fa-dollar-sign"></i>
+                        Under $50
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Search Results -->
-    <div class="row">
-        <div class="col-12">
-            @if (Model.Results != null && Model.Results.Any())
-            {
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5>Search Results (@Model.Results.Count() services found)</h5>
-                    <div class="d-flex align-items-center">
-                        <label for="sortBy" class="form-label me-2 mb-0">Sort by:</label>
-                        <select class="form-select form-select-sm" id="sortBy" style="width: auto;">
+<!-- Results Section -->
+<div class="results-section">
+    <div class="container">
+        @if (Model.Results != null && Model.Results.Any())
+        {
+            <div class="results-header">
+                                 <div class="results-info">
+                     <h2>Found @Model.Results.Count() services</h2>
+                     @if (!string.IsNullOrEmpty(Model.Location))
+                     {
+                         <div class="search-location-info">
+                             <i class="fas fa-map-marker-alt search-location-icon"></i>
+                             <p>near <strong>@Model.Location</strong></p>
+                         </div>
+                     }
+                 </div>
+                
+                <div class="results-controls">
+                    <div class="sort-control">
+                        <label for="sortBy">Sort by:</label>
+                        <select id="sortBy" class="sort-select">
                             <option value="relevance">Relevance</option>
                             <option value="price-low">Price: Low to High</option>
                             <option value="price-high">Price: High to Low</option>
@@ -146,115 +248,1047 @@
                             <option value="distance">Distance</option>
                         </select>
                     </div>
+                    
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="map">
+                            <i class="fas fa-map"></i> Map
+                        </button>
+                        <button class="view-btn" data-view="list">
+                            <i class="fas fa-list"></i> List
+                        </button>
+                    </div>
                 </div>
-
-                <div class="row" id="searchResults">
-                    @foreach (var service in Model.Results)
-                    {
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="card h-100 shadow-sm">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <h5 class="card-title mb-0">@service.Title</h5>
-                                        <span class="badge bg-primary">@service.Type.ToString()</span>
+            </div>
+            
+            <!-- Map View -->
+            <div class="map-view active" id="mapView">
+                <div class="map-container">
+                    <div id="servicesMap"></div>
+                </div>
+                <div class="map-sidebar">
+                    <div class="services-list" id="servicesList">
+                        @foreach (var service in Model.Results)
+                        {
+                            <div class="service-card" data-service-id="@service.Id" data-lat="@(service.Latitude ?? 0)" data-lng="@(service.Longitude ?? 0)">
+                                <div class="service-header">
+                                    <div class="service-title-section">
+                                        <h3>@service.Title</h3>
+                                        @if (service.Provider?.IsVerified == true)
+                                        {
+                                            <span class="verified-badge">
+                                                <i class="fas fa-check-circle"></i>
+                                                Verified
+                                            </span>
+                                        }
+                                    </div>
+                                    <span class="service-type">@service.Type.ToString()</span>
+                                </div>
+                                
+                                <div class="service-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    @service.Location
+                                </div>
+                                
+                                <div class="service-rating">
+                                    @if (service.Provider?.AverageRating > 0)
+                                    {
+                                        <div class="stars">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                if (i <= service.Provider.AverageRating)
+                                                {
+                                                    <i class="fas fa-star"></i>
+                                                }
+                                                else if (i - 0.5 <= service.Provider.AverageRating)
+                                                {
+                                                    <i class="fas fa-star-half-alt"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="far fa-star"></i>
+                                                }
+                                            }
+                                        </div>
+                                        <span class="rating-text">@service.Provider.AverageRating.ToString("F1") (@service.Provider.TotalReviews reviews)</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="no-rating">No reviews yet</span>
+                                    }
+                                </div>
+                                
+                                <div class="service-description">
+                                    @(service.Description?.Length > 100 ? service.Description.Substring(0, 100) + "..." : service.Description)
+                                </div>
+                                
+                                <div class="service-footer">
+                                    <div class="service-price">
+                                        <span class="price">$@service.BasePrice.ToString("F2")</span>
+                                        <span class="unit">@service.PriceUnit</span>
                                     </div>
                                     
-                                    <p class="card-text text-muted small mb-2">
-                                        <i class="fas fa-map-marker-alt me-1"></i>@service.Location
-                                    </p>
-                                    
-                                    <p class="card-text">@(service.Description?.Length > 100 ? service.Description.Substring(0, 100) + "..." : service.Description)</p>
-                                    
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="text-primary fw-bold">
-                                            $@service.BasePrice.ToString("F2") <small class="text-muted">@service.PriceUnit</small>
-                                        </div>
-                                        <div class="text-muted small">
-                                            <i class="fas fa-paw me-1"></i>Max @service.MaxPetsPerBooking pets
-                                        </div>
+                                    <div class="service-actions">
+                                        <a href="@Url.Action("Details", "Services", new { id = service.Id })" class="btn-details">
+                                            View Details
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            
+            <!-- List View -->
+            <div class="list-view" id="listView">
+                <div class="services-grid">
+                    @foreach (var service in Model.Results)
+                    {
+                        <div class="service-card-large">
+                            <div class="service-image">
+                                <div class="service-type-badge">@service.Type.ToString()</div>
+                            </div>
+                            
+                            <div class="service-content">
+                                <h3>@service.Title</h3>
+                                
+                                <div class="service-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    @service.Location
+                                </div>
+                                
+                                <p class="service-description">
+                                    @(service.Description?.Length > 150 ? service.Description.Substring(0, 150) + "..." : service.Description)
+                                </p>
+                                
+                                <div class="service-meta">
+                                    <div class="meta-item">
+                                        <i class="fas fa-paw"></i>
+                                        Max @service.MaxPetsPerBooking pets
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="fas fa-star"></i>
+                                        4.5 (12 reviews)
                                     </div>
                                 </div>
                                 
-                                <div class="card-footer bg-transparent border-top-0">
-                                    <div class="d-grid">
-                                        <a href="@Url.Action("Details", "Services", new { id = service.Id })" class="btn btn-outline-primary btn-sm">
-                                            <i class="fas fa-info-circle me-2"></i>View Details
-                                        </a>
+                                <div class="service-footer">
+                                    <div class="service-price">
+                                        <span class="price">$@service.BasePrice.ToString("F2")</span>
+                                        <span class="unit">@service.PriceUnit</span>
                                     </div>
+                                    
+                                    <a href="@Url.Action("Details", "Services", new { id = service.Id })" class="btn-primary">
+                                        View Details
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     }
                 </div>
-            }
-            else if (Model.Results != null)
-            {
-                <div class="alert alert-info text-center">
-                    <i class="fas fa-info-circle me-2"></i>
-                    No services found matching your search criteria. Try adjusting your filters.
-                </div>
-            }
-        </div>
-    </div>
-
-    <!-- Quick Filters -->
-    <div class="row mt-5">
-        <div class="col-12">
-            <h5 class="mb-3">Quick Filters</h5>
-            <div class="row">
-                <div class="col-md-2 col-6 mb-2">
-                    <a href="@Url.Action("Search", "Services", new { type = 0 })" class="btn btn-outline-primary w-100">
-                        <i class="fas fa-dog me-2"></i>Dog Walking
-                    </a>
-                </div>
-                <div class="col-md-2 col-6 mb-2">
-                    <a href="@Url.Action("Search", "Services", new { type = 1 })" class="btn btn-outline-primary w-100">
-                        <i class="fas fa-home me-2"></i>Pet Sitting
-                    </a>
-                </div>
-                <div class="col-md-2 col-6 mb-2">
-                    <a href="@Url.Action("Search", "Services", new { type = 4 })" class="btn btn-outline-primary w-100">
-                        <i class="fas fa-cut me-2"></i>Grooming
-                    </a>
-                </div>
-                <div class="col-md-2 col-6 mb-2">
-                    <a href="@Url.Action("Search", "Services", new { type = 5 })" class="btn btn-outline-primary w-100">
-                        <i class="fas fa-graduation-cap me-2"></i>Training
-                    </a>
-                </div>
-                <div class="col-md-2 col-6 mb-2">
-                    <a href="@Url.Action("Search", "Services", new { type = 7 })" class="btn btn-outline-primary w-100">
-                        <i class="fas fa-stethoscope me-2"></i>Veterinary
-                    </a>
-                </div>
-                <div class="col-md-2 col-6 mb-2">
-                    <a href="@Url.Action("Search", "Services", new { minPrice = 0, maxPrice = 25 })" class="btn btn-outline-success w-100">
-                        <i class="fas fa-dollar-sign me-2"></i>Under $25
-                    </a>
-                </div>
             </div>
-        </div>
+        }
+        else if (Model.Results != null)
+        {
+            <div class="no-results">
+                <div class="no-results-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h2>No services found</h2>
+                <p>Try adjusting your search criteria or location</p>
+                <a href="@Url.Action("Search", "Services")" class="btn-primary">Clear Filters</a>
+            </div>
+        }
     </div>
 </div>
 
+<style>
+/* Search Hero Section */
+.search-hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 80px 0 60px;
+    margin-top: 60px;
+}
+
+.search-hero-content {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.search-hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.search-hero p {
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+    opacity: 0.9;
+}
+
+/* Main Search Form */
+.main-search-form {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.search-form {
+    width: 100%;
+}
+
+.search-inputs {
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr 1fr;
+    gap: 1rem;
+    align-items: end;
+}
+
+.search-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.search-group label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    z-index: 2;
+}
+
+.input-with-icon input,
+.input-with-icon select {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border: 2px solid #e1e5e9;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.input-with-icon input:focus,
+.input-with-icon select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.search-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* Advanced Filters */
+.advanced-filters {
+    margin-top: 1rem;
+    border-top: 1px solid #e1e5e9;
+    padding-top: 1rem;
+}
+
+.toggle-filters-btn {
+    background: none;
+    border: none;
+    color: #667eea;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 0.5rem 0;
+}
+
+.toggle-filters-btn:hover {
+    color: #5a6fd8;
+}
+
+.toggle-filters-btn i:last-child {
+    transition: transform 0.3s ease;
+}
+
+.toggle-filters-btn.active i:last-child {
+    transform: rotate(180deg);
+}
+
+.filters-content {
+    display: none;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.filters-content.active {
+    display: block;
+}
+
+.filter-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    align-items: end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.filter-group input,
+.filter-group select {
+    padding: 8px 12px;
+    border: 1px solid #e1e5e9;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+/* Quick Filters */
+.quick-filters {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: #f8f9ff;
+    border-radius: 12px;
+}
+
+.quick-filters-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.quick-filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.quick-filter-chip {
+    background: white;
+    border: 2px solid #e1e5e9;
+    border-radius: 25px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.quick-filter-chip:hover {
+    border-color: #667eea;
+    color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.quick-filter-chip.active {
+    background: #667eea;
+    border-color: #667eea;
+    color: white;
+}
+
+.quick-filter-chip i {
+    font-size: 0.8rem;
+}
+.quick-filters {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.quick-filters span {
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
+
+.quick-filter {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.quick-filter:hover {
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-1px);
+}
+
+/* Results Section */
+.results-section {
+    padding: 3rem 0;
+    background: #f8f9fa;
+    min-height: 60vh;
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+}
+
+.results-info h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+ .results-info p {
+     color: #666;
+     margin: 0;
+ }
+
+ .search-location-info {
+     display: flex;
+     align-items: center;
+     gap: 0.5rem;
+     margin-top: 0.5rem;
+ }
+
+ .search-location-icon {
+     color: #ff4757;
+     font-size: 1.1rem;
+ }
+
+.results-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.sort-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sort-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: white;
+}
+
+.view-toggle {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.view-btn {
+    padding: 8px 16px;
+    border: none;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.view-btn.active {
+    background: #667eea;
+    color: white;
+}
+
+/* Map View */
+.map-view {
+    display: none;
+    height: 70vh;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.map-view.active {
+    display: flex;
+}
+
+.map-container {
+    flex: 2;
+    height: 100%;
+}
+
+#servicesMap {
+    width: 100%;
+    height: 100%;
+}
+
+.map-sidebar {
+    flex: 1;
+    background: white;
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+.services-list {
+    padding: 1rem;
+}
+
+.service-card {
+    background: white;
+    border: 1px solid #e1e5e9;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.service-card:hover {
+    border-color: #667eea;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.service-card.active {
+    border-color: #667eea;
+    background: #f8f9ff;
+}
+
+.service-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 0.5rem;
+}
+
+.service-title-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.service-header h3 {
+    font-size: 1rem;
+    margin: 0;
+    color: #333;
+}
+
+.verified-badge {
+    background: #10b981;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    width: fit-content;
+}
+
+.verified-badge i {
+    font-size: 0.6rem;
+}
+
+.service-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+.stars {
+    display: flex;
+    gap: 1px;
+}
+
+.stars i {
+    color: #fbbf24;
+    font-size: 0.8rem;
+}
+
+.rating-text {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.no-rating {
+    font-size: 0.8rem;
+    color: #999;
+    font-style: italic;
+}
+
+.service-type {
+    background: #667eea;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.service-location {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.service-description {
+    color: #666;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.service-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.service-price {
+    display: flex;
+    flex-direction: column;
+}
+
+.price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.unit {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.btn-details {
+    background: #667eea;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.btn-details:hover {
+    background: #5a6fd8;
+}
+
+/* List View */
+.list-view {
+    display: none;
+}
+
+.list-view.active {
+    display: block;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.service-card-large {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.service-card-large:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.service-image {
+    height: 200px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.service-type-badge {
+    background: rgba(255,255,255,0.9);
+    color: #667eea;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.service-content {
+    padding: 1.5rem;
+}
+
+.service-content h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.service-meta {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.service-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e1e5e9;
+}
+
+.btn-primary {
+    background: #667eea;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #5a6fd8;
+    transform: translateY(-2px);
+}
+
+/* No Results */
+.no-results {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.no-results-icon {
+    font-size: 4rem;
+    color: #ccc;
+    margin-bottom: 1rem;
+}
+
+.no-results h2 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.no-results p {
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+/* Checkbox Styles */
+.checkbox-group {
+    margin-top: 1rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+
+.checkbox-label input[type="checkbox"] {
+    display: none;
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    margin-right: 8px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark {
+    background: #667eea;
+    border-color: #667eea;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-label:hover .checkmark {
+    border-color: #667eea;
+}
+
+/* Responsive Design */
+@@media (max-width: 768px) {
+    .search-hero h1 {
+        font-size: 2rem;
+    }
+    
+    .search-inputs {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .results-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    .map-view {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .map-container {
+        height: 300px;
+    }
+    
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-filters {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .filter-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+</style>
+
 @section Scripts {
     <script>
-        $(document).ready(function() {
-            // Auto-submit form when filters change
-            $('#type, #minPrice, #maxPrice').change(function() {
-                if ($('#keyword').val() || $('#type').val() || $('#minPrice').val() || $('#maxPrice').val()) {
-                    $('form').submit();
+        // Immediately wrap everything to wait for jQuery and Leaflet
+        (function() {
+            let map;
+            let markers = [];
+            let popups = [];
+
+            // Check if Leaflet script tag exists
+            const leafletScript = document.querySelector('script[src*="leaflet"]');
+            if (!leafletScript) {
+                console.warn('Leaflet script tag not found in DOM');
+            } else {
+                console.log('Leaflet script tag found:', leafletScript.src);
+            }
+
+            // Wait for Leaflet to be loaded
+            function waitForLeaflet(callback, maxAttempts = 100) {
+                let attempts = 0;
+                let fallbackLoaded = false;
+                function checkLeaflet() {
+                    attempts++;
+                    if (typeof L !== 'undefined' && L !== null && typeof L.map === 'function') {
+                        console.log('Leaflet loaded successfully');
+                        callback();
+                    } else if (attempts < maxAttempts) {
+                        setTimeout(checkLeaflet, 100);
+                    } else {
+                        console.error('Leaflet did not load after ' + (maxAttempts * 100) + 'ms');
+                        // Try to load Leaflet from CDN as fallback
+                        if (!fallbackLoaded && typeof L === 'undefined') {
+                            fallbackLoaded = true;
+                            console.warn('Attempting to load Leaflet from CDN as fallback...');
+                            const script = document.createElement('script');
+                            script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+                            script.crossOrigin = 'anonymous';
+                            script.onload = function() {
+                                console.log('Leaflet loaded via fallback');
+                                if (callback) callback();
+                            };
+                            script.onerror = function() {
+                                console.error('Failed to load Leaflet from CDN');
+                            };
+                            document.head.appendChild(script);
+                        }
+                    }
                 }
-            });
+                checkLeaflet();
+            }
+
+            // Wait for jQuery to be available, then initialize
+            function waitForJQuery(callback, maxAttempts = 100) {
+                let attempts = 0;
+                function checkJQuery() {
+                    attempts++;
+                    // Check for both jQuery and $ (jQuery alias)
+                    if (typeof window.jQuery !== 'undefined' && window.jQuery !== null && typeof window.$ !== 'undefined') {
+                        console.log('jQuery loaded successfully');
+                        callback();
+                    } else if (attempts < maxAttempts) {
+                        setTimeout(checkJQuery, 50); // Check more frequently
+                    } else {
+                        console.error('jQuery did not load after ' + (maxAttempts * 50) + 'ms, using fallback');
+                        // Use vanilla JS fallback
+                        if (document.readyState === 'loading') {
+                            document.addEventListener('DOMContentLoaded', initializeSearchPageVanilla);
+                        } else {
+                            initializeSearchPageVanilla();
+                        }
+                    }
+                }
+                // Start checking immediately
+                checkJQuery();
+            }
+
+            // Wait for jQuery and DOM to be ready
+            function initializeSearchPage() {
+                // jQuery should be available at this point (waited for by waitForJQuery)
+                if (typeof jQuery === 'undefined' || typeof window.$ === 'undefined') {
+                    console.error('jQuery is not loaded');
+                    // Fallback: use vanilla JavaScript
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', initializeSearchPageVanilla);
+                    } else {
+                        initializeSearchPageVanilla();
+                    }
+                    return;
+                }
+
+                // Use jQuery now that we know it's loaded
+                jQuery(document).ready(function($) {
+                // Always initialize map if map view is active (even with no results)
+                // Check if map view is active, if so initialize map
+                if ($('#mapView').hasClass('active')) {
+                    // Wait for Leaflet to be loaded before initializing map
+                    waitForLeaflet(function() {
+                        setTimeout(function() {
+                            initializeMap();
+                        }, 100);
+                    });
+                }
+
+                // Advanced filters toggle
+                $('#toggleFilters').click(function() {
+                    $(this).toggleClass('active');
+                    $('#filtersContent').toggleClass('active');
+                });
+
+                // View toggle functionality
+                $('.view-btn').click(function() {
+                    const view = $(this).data('view');
+                    
+                    // Update button states
+                    $('.view-btn').removeClass('active');
+                    $(this).addClass('active');
+                    
+                    // Show/hide views
+                    $('.map-view, .list-view').removeClass('active');
+                    if (view === 'map') {
+                        $('#mapView').addClass('active');
+                        // Reinitialize map if it hasn't been initialized yet
+                        // Wait for Leaflet, then ensure the map container is visible
+                        waitForLeaflet(function() {
+                            setTimeout(function() {
+                                if (!map && document.getElementById('servicesMap')) {
+                                    initializeMap();
+                                } else if (map) {
+                                    // If map exists, invalidate size to fix display issues
+                                    map.invalidateSize();
+                                    // Re-center on search location if available
+                                    @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
+                                    {
+                                        <text>
+                                        map.setView([@Model.Latitude.Value.ToString(System.Globalization.CultureInfo.InvariantCulture), @Model.Longitude.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)], 13);
+                                        </text>
+                                    }
+                                }
+                            }, 200);
+                        });
+                    } else {
+                        $('#listView').addClass('active');
+                    }
+                });
 
             // Sort functionality
             $('#sortBy').change(function() {
                 const sortBy = $(this).val();
-                const results = $('#searchResults .col-lg-4').get();
+                const results = $('.service-card').get();
                 
                 results.sort(function(a, b) {
-                    const priceA = parseFloat($(a).find('.text-primary').text().replace('$', ''));
-                    const priceB = parseFloat($(b).find('.text-primary').text().replace('$', ''));
+                    const priceA = parseFloat($(a).find('.price').text().replace('$', ''));
+                    const priceB = parseFloat($(b).find('.price').text().replace('$', ''));
                     
                     switch(sortBy) {
                         case 'price-low':
@@ -266,8 +1300,362 @@
                     }
                 });
                 
-                $('#searchResults').html(results);
+                $('#servicesList').html(results);
             });
-        });
+
+            // Service card click to highlight marker
+            $(document).on('click', '.service-card', function() {
+                const serviceId = $(this).data('service-id');
+                const markerData = markers.find(m => m.serviceId === serviceId);
+                if (markerData) {
+                    markerData.marker.openPopup();
+                    map.panTo(markerData.marker.getLatLng());
+                }
+                
+                // Update active state
+                $('.service-card').removeClass('active');
+                $(this).addClass('active');
+            });
+
+            // Quick filter chips functionality
+            $('.quick-filter-chip').on('click', function() {
+                const filterType = $(this).data('filter');
+                const filterValue = $(this).data('value');
+                
+                // Toggle active state
+                $(this).toggleClass('active');
+                
+                // Update form fields based on filter type
+                switch(filterType) {
+                    case 'type':
+                        $('#type').val(filterValue);
+                        break;
+                    case 'rating':
+                        $('#minRating').val(filterValue);
+                        break;
+                    case 'verified':
+                        $('input[name="showVerifiedOnly"]').prop('checked', $(this).hasClass('active'));
+                        break;
+                    case 'price':
+                        $('#maxPrice').val(filterValue);
+                        break;
+                }
+                
+                // Submit the form
+                $('.search-form').submit();
+            });
+            });
+        }
+
+            // Vanilla JavaScript fallback if jQuery is not available
+            function initializeSearchPageVanilla() {
+                // Advanced filters toggle
+                const toggleFilters = document.getElementById('toggleFilters');
+                const filtersContent = document.getElementById('filtersContent');
+                if (toggleFilters && filtersContent) {
+                    toggleFilters.addEventListener('click', function() {
+                        this.classList.toggle('active');
+                        filtersContent.classList.toggle('active');
+                    });
+                }
+
+                // Initialize map if map view is active
+                const mapView = document.getElementById('mapView');
+                if (mapView && mapView.classList.contains('active')) {
+                    waitForLeaflet(function() {
+                        setTimeout(function() {
+                            initializeMap();
+                        }, 100);
+                    });
+                }
+
+                // View toggle functionality
+                const viewButtons = document.querySelectorAll('.view-btn');
+                viewButtons.forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        const view = this.getAttribute('data-view');
+                        
+                        // Update button states
+                        viewButtons.forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Show/hide views
+                        document.querySelectorAll('.map-view, .list-view').forEach(v => v.classList.remove('active'));
+                        if (view === 'map') {
+                            const mapView = document.getElementById('mapView');
+                            if (mapView) {
+                                mapView.classList.add('active');
+                                // Wait for Leaflet, then ensure the map container is visible
+                                waitForLeaflet(function() {
+                                    setTimeout(function() {
+                                        if (!map && document.getElementById('servicesMap')) {
+                                            initializeMap();
+                                        } else if (map) {
+                                            // If map exists, invalidate size to fix display issues
+                                            map.invalidateSize();
+                                            // Re-center on search location if available
+                                            @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
+                                            {
+                                                <text>
+                                                map.setView([@Model.Latitude.Value.ToString(System.Globalization.CultureInfo.InvariantCulture), @Model.Longitude.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)], 13);
+                                                </text>
+                                            }
+                                        }
+                                    }, 200);
+                                });
+                            }
+                        } else {
+                            const listView = document.getElementById('listView');
+                            if (listView) {
+                                listView.classList.add('active');
+                            }
+                        }
+                    });
+                });
+            }
+
+            function initializeMap() {
+                const mapElement = document.getElementById('servicesMap');
+                if (!mapElement) {
+                    console.warn('Map element not found');
+                    return;
+                }
+                
+                // Don't reinitialize if map already exists
+                if (map) {
+                    console.log('Map already initialized');
+                    return;
+                }
+                
+                // Check if Leaflet is loaded - if not, wait for it
+                if (typeof L === 'undefined') {
+                    console.warn('Leaflet not loaded yet, waiting...');
+                    waitForLeaflet(function() {
+                        initializeMap();
+                    });
+                    return;
+                }
+
+                // Default center (can be overridden by search location)
+                let center = [48.4284, -123.3656]; // Victoria, BC default [lat, lng]
+                let searchLocation = null;
+                
+                @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
+                {
+                    <text>
+                    center = [@Model.Latitude.Value.ToString(System.Globalization.CultureInfo.InvariantCulture), @Model.Longitude.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)];
+                    searchLocation = [@Model.Latitude.Value.ToString(System.Globalization.CultureInfo.InvariantCulture), @Model.Longitude.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)];
+                    </text>
+                }
+
+                // Initialize Leaflet map
+                map = L.map(mapElement).setView(center, 12);
+
+                // Add OpenStreetMap tile layer
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                    maxZoom: 19
+                }).addTo(map);
+
+                // Add search location marker if we have coordinates
+                if (searchLocation) {
+                    addSearchLocationMarker(searchLocation);
+                }
+
+                // Add markers for each service
+                @if (Model.Results != null)
+                {
+                    foreach (var service in Model.Results)
+                    {
+                        if (service.Latitude.HasValue && service.Longitude.HasValue)
+                        {
+                            <text>
+                            addServiceMarker(@service.Id, @service.Latitude.Value, @service.Longitude.Value, '@Html.Raw(service.Title.Replace("'", "\\'"))', '@service.Type.ToString()', '@Html.Raw(service.Location.Replace("'", "\\'"))', @service.BasePrice, '@service.PriceUnit');
+                            </text>
+                        }
+                    }
+                }
+
+                // Fit bounds to show all markers
+                if (markers.length > 0) {
+                    const bounds = L.latLngBounds(markers.map(m => m.marker.getLatLng()));
+                    // Include search location in bounds if it exists
+                    if (searchLocation) {
+                        bounds.extend(searchLocation);
+                    }
+                    map.fitBounds(bounds, { padding: [50, 50] });
+                    
+                    // If only one marker, zoom in more
+                    if (markers.length === 1) {
+                        map.setZoom(15);
+                    }
+                } else if (searchLocation) {
+                    // If no service markers but we have a search location, center on it
+                    map.setView(searchLocation, 13);
+                }
+                
+                // Force map to resize after initialization
+                setTimeout(function() {
+                    if (map) {
+                        map.invalidateSize();
+                    }
+                }, 100);
+            }
+
+            function addServiceMarker(serviceId, lat, lng, title, type, location, price, priceUnit) {
+                const position = [lat, lng];
+                
+                // Create custom icon
+                const iconUrl = getMarkerIcon(type);
+                const customIcon = L.icon({
+                    iconUrl: iconUrl,
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [0, -32]
+                });
+                
+                // Create marker
+                const marker = L.marker(position, {
+                    icon: customIcon,
+                    title: title
+                }).addTo(map);
+
+                // Create popup content
+                const content = `
+                    <div style="min-width: 200px;">
+                        <h6 style="margin: 0 0 5px 0; color: #333;">${title}</h6>
+                        <p style="margin: 0 0 5px 0; font-size: 12px; color: #666;">
+                            <i class="fas fa-map-marker-alt"></i> ${location}
+                        </p>
+                        <p style="margin: 0 0 5px 0; font-size: 12px; color: #666;">
+                            <span class="badge bg-primary">${type}</span>
+                        </p>
+                        <p style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: #667eea;">
+                            $${price} ${priceUnit}
+                        </p>
+                        <a href="/Services/Details/${serviceId}" class="btn btn-sm btn-outline-primary">
+                            View Details
+                        </a>
+                    </div>
+                `;
+
+                // Bind popup to marker
+                marker.bindPopup(content);
+
+                // Add click listener
+                marker.on('click', () => {
+                    // Close all other popups
+                    popups.forEach(p => {
+                        if (p.isOpen()) p.closePopup();
+                    });
+                    marker.openPopup();
+                    
+                    // Highlight corresponding service item
+                    $('.service-card').removeClass('active');
+                    $(`.service-card[data-service-id="${serviceId}"]`).addClass('active');
+                });
+
+                // Store references
+                markers.push({ serviceId: serviceId, marker: marker });
+                popups.push(marker);
+            }
+
+            function addSearchLocationMarker(position) {
+                // Create custom icon for search location
+                const searchIcon = L.icon({
+                    iconUrl: getSearchLocationIcon(),
+                    iconSize: [40, 40],
+                    iconAnchor: [20, 40],
+                    popupAnchor: [0, -40]
+                });
+                
+                // Create a distinctive marker for the search location
+                const searchMarker = L.marker(position, {
+                    icon: searchIcon,
+                    title: 'Search Location',
+                    zIndexOffset: 1000 // Ensure it appears above other markers
+                }).addTo(map);
+
+                // Create popup content for search location
+                const content = `
+                    <div style="min-width: 200px;">
+                        <h6 style="margin: 0 0 5px 0; color: #333;">
+                            <i class="fas fa-search"></i> Search Location
+                        </h6>
+                        <p style="margin: 0 0 5px 0; font-size: 12px; color: #666;">
+                            @if (!string.IsNullOrEmpty(Model.Location))
+                            {
+                                <text>@Html.Raw(Model.Location.Replace("'", "\\'"))</text>
+                            }
+                            else
+                            {
+                                <text>Your search area</text>
+                            }
+                        </p>
+                        <p style="margin: 0 0 10px 0; font-size: 12px; color: #667eea;">
+                            Services found within this area
+                        </p>
+                    </div>
+                `;
+
+                // Bind popup to marker
+                searchMarker.bindPopup(content);
+
+                // Add click listener to search marker
+                searchMarker.on('click', () => {
+                    // Close all other popups
+                    popups.forEach(p => {
+                        if (p.isOpen()) p.closePopup();
+                    });
+                    searchMarker.openPopup();
+                });
+
+                // Store reference
+                popups.push(searchMarker);
+            }
+
+            function getSearchLocationIcon() {
+                return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+                    <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="20" cy="20" r="18" fill="#ff4757" stroke="white" stroke-width="3"/>
+                        <circle cx="20" cy="20" r="8" fill="white"/>
+                        <circle cx="20" cy="20" r="4" fill="#ff4757"/>
+                        <text x="20" y="25" text-anchor="middle" fill="white" font-size="8" font-weight="bold">SEARCH</text>
+                    </svg>
+                `)}`;
+            }
+
+            function getMarkerIcon(serviceType) {
+                const iconColors = {
+                    'DogWalking': '#28a745',
+                    'PetSitting': '#17a2b8',
+                    'Boarding': '#ffc107',
+                    'DayCare': '#fd7e14',
+                    'Grooming': '#e83e8c',
+                    'Training': '#6f42c1',
+                    'PetTaxi': '#20c997',
+                    'Veterinary': '#dc3545',
+                    'VeterinaryVisit': '#dc3545',
+                    'Other': '#6c757d'
+                };
+                
+                const color = iconColors[serviceType] || '#6c757d';
+                return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+                    <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="16" cy="16" r="14" fill="${color}" stroke="white" stroke-width="2"/>
+                        <text x="16" y="20" text-anchor="middle" fill="white" font-size="12" font-weight="bold">${serviceType.charAt(0)}</text>
+                    </svg>
+                `)}`;
+            }
+
+            // Initialize when page loads - wait for jQuery first
+            waitForJQuery(function() {
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', initializeSearchPage);
+                } else {
+                    initializeSearchPage();
+                }
+            });
+        })(); // Immediately invoke the function to start waiting for jQuery
     </script>
-} 
+}

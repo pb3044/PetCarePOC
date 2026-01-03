@@ -1,0 +1,69 @@
+@{
+    Layout = "_Layout-Mobile";
+    ViewData["Title"] = "Mobile-First Test";
+}
+
+<div class="container">
+    <h1 class="mt-4 mb-4">Mobile-First Design Test</h1>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2>Test Elements</h2>
+            <p>This page tests our mobile-first design implementation.</p>
+
+            <div class="mt-3">
+                <button class="btn btn-primary">Primary Button</button>
+                <button class="btn btn-outline">Outline Button</button>
+            </div>
+
+            <div class="mt-3">
+                <input type="text" class="form-control" placeholder="Test input field">
+            </div>
+
+            <div class="mt-3">
+                <i class="fas fa-heart"></i> Font Awesome Icon Test
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6 col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Responsive Column</h3>
+                    <p>This should stack on mobile and become 3 columns on desktop.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Responsive Column</h3>
+                    <p>This should stack on mobile and become 3 columns on desktop.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Responsive Column</h3>
+                    <p>This should stack on mobile and become 3 columns on desktop.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <h2>Typography Test</h2>
+        <p class="lead">This is a lead paragraph with Inter font.</p>
+        <p>Regular paragraph text.</p>
+        <p class="text-center">Centered text.</p>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        console.log('Mobile-first design test page loaded');
+        console.log('jQuery version:', typeof $ !== 'undefined' ? 'Loaded' : 'Not loaded');
+    </script>
+}

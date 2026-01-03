@@ -34,6 +34,7 @@ namespace PetCarePlatform.Core.Models
         InProgress,
         Completed,
         Cancelled,
-        Declined
+        Declined,
+        Disputed
     }
 }

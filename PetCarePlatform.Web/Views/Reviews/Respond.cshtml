@@ -1,0 +1,210 @@
+@model PetCarePlatform.Web.Models.ProviderResponseViewModel
+@{
+    ViewData["Title"] = "Respond to Review";
+    Layout = "~/Views/Shared/_ServiceProviderLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="mb-1">
+                        <i class="fas fa-reply text-primary me-2"></i>Respond to Review
+                    </h2>
+                    <p class="text-muted mb-0">Share your perspective on this customer feedback</p>
+                </div>
+                <a href="@Url.Action("Index", "ServiceProvider")" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <form asp-action="Respond" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="ReviewId" />
+        
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Response Form -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-edit me-2"></i>Your Response
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Response Text -->
+                        <div class="mb-4">
+                            <label asp-for="Response" class="form-label fw-bold"></label>
+                            <textarea asp-for="Response" class="form-control" rows="6" 
+                                      placeholder="Thank the customer for their feedback and address any concerns they may have raised. Be professional and constructive."></textarea>
+                            <div class="form-text">
+                                <span id="charCount">0</span>/500 characters
+                            </div>
+                            <span asp-validation-for="Response" class="text-danger"></span>
+                        </div>
+
+                        <!-- Response Guidelines -->
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-info-circle me-2"></i>Response Guidelines</h6>
+                            <ul class="mb-0">
+                                <li>Be professional and courteous in your response</li>
+                                <li>Thank the customer for their feedback</li>
+                                <li>Address any specific concerns mentioned</li>
+                                <li>Keep responses constructive and helpful</li>
+                                <li>Your response will be visible to all users</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <!-- Review Details -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-star me-2"></i>Original Review
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <strong>Reviewer:</strong><br>
+                            <span class="text-primary">@Model.ReviewerName</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Service:</strong><br>
+                            <span>@Model.ServiceName</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Rating:</strong><br>
+                            <div class="stars">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= Model.Rating)
+                                    {
+                                        <i class="fas fa-star text-warning"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="far fa-star text-warning"></i>
+                                    }
+                                }
+                                <span class="ms-2">@Model.Rating/5</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Review:</strong><br>
+                            <div class="review-comment bg-light p-3 rounded">
+                                @Model.Comment
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Response Tips -->
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="fas fa-lightbulb me-2"></i>Response Tips
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="response-tips">
+                            <div class="tip-item mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <small>Thank them for taking the time to review</small>
+                            </div>
+                            <div class="tip-item mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <small>Acknowledge any specific points they mentioned</small>
+                            </div>
+                            <div class="tip-item mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <small>Offer to address any concerns privately</small>
+                            </div>
+                            <div class="tip-item mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <small>Invite them to book again in the future</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Buttons -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between">
+                    <a href="@Url.Action("Index", "ServiceProvider")" class="btn btn-outline-secondary">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-paper-plane me-2"></i>Post Response
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function() {
+            // Character count for response
+            $('#Response').on('input', function() {
+                var length = $(this).val().length;
+                $('#charCount').text(length);
+                
+                if (length > 500) {
+                    $('#charCount').addClass('text-danger');
+                } else {
+                    $('#charCount').removeClass('text-danger');
+                }
+            });
+
+            // Form validation
+            $('form').on('submit', function(e) {
+                var response = $('#Response').val().trim();
+                
+                if (response.length < 10) {
+                    e.preventDefault();
+                    alert('Please write at least 10 characters for your response.');
+                    return false;
+                }
+                
+                if (response.length > 500) {
+                    e.preventDefault();
+                    alert('Response must be 500 characters or less.');
+                    return false;
+                }
+            });
+        });
+    </script>
+}
+
+<style>
+    .stars i {
+        font-size: 1.2rem;
+        margin-right: 2px;
+    }
+    
+    .review-comment {
+        font-style: italic;
+        line-height: 1.5;
+    }
+    
+    .response-tips .tip-item {
+        display: flex;
+        align-items: center;
+    }
+    
+    .response-tips .tip-item i {
+        font-size: 0.8rem;
+    }
+</style>

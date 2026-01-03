@@ -150,19 +150,19 @@
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="text-muted">Provider:</span>
-                                    <span>@(service.Provider?.BusinessName ?? "Unknown")</span>
+                                    <span>@(service.ProviderBusinessName ?? "Unknown")</span>
                                 </div>
-                                @if (service.Provider?.AverageRating > 0)
+                                @if (service.AverageRating > 0)
                                 {
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="text-muted">Rating:</span>
-                                        <span>@service.Provider.AverageRating.ToString("F1") ⭐ (@service.Provider.TotalReviews reviews)</span>
+                                        <span>@service.AverageRating.ToString("F1") ⭐ (@service.ReviewCount reviews)</span>
                                     </div>
                                 }
                             </div>
                         </div>
                         <div class="card-footer bg-transparent border-0 pt-0">
-                            <button class="btn btn-primary w-100" onclick="openBookingModal(@service.Id, '@service.Title', @service.BasePrice, '@(service.Provider?.BusinessName ?? "Unknown")', '@service.Location')">
+                            <button class="btn btn-primary w-100" onclick="openBookingModal(@service.Id, '@service.Title', @service.BasePrice, '@(service.ProviderBusinessName ?? "Unknown")', '@service.Location')">
                                 <i class="fas fa-calendar-plus me-2"></i>Book Now
                             </button>
                         </div>

@@ -1,0 +1,318 @@
+@model PetCarePlatform.Web.Models.PetOwnerSettingsViewModel
+@{
+    ViewData["Title"] = "Settings";
+    Layout = "~/Views/Shared/_PetOwnerLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="mb-1">Settings</h1>
+                    <p class="text-muted mb-0">Manage your account and preferences</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>@TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <form asp-action="Settings" method="post">
+        <div class="row">
+            <!-- Left Column - Account & Location Settings -->
+            <div class="col-lg-8">
+                <!-- Account Settings -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-user me-2"></i>Account Settings
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="FirstName" class="form-label"></label>
+                                    <input asp-for="FirstName" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="LastName" class="form-label"></label>
+                                    <input asp-for="LastName" class="form-control" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Email" class="form-label"></label>
+                                    <input asp-for="Email" class="form-control" readonly />
+                                    <small class="form-text text-muted">Contact support to change your email address</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="PhoneNumber" class="form-label"></label>
+                                    <input asp-for="PhoneNumber" class="form-control" />
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location Settings -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-map-marker-alt me-2"></i>Location Settings
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="Address" class="form-label"></label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label asp-for="City" class="form-label"></label>
+                                    <input asp-for="City" class="form-control" />
+                                    <span asp-validation-for="City" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label asp-for="Province" class="form-label"></label>
+                                    <input asp-for="Province" class="form-control" />
+                                    <span asp-validation-for="Province" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label asp-for="PostalCode" class="form-label"></label>
+                                    <input asp-for="PostalCode" class="form-control" />
+                                    <span asp-validation-for="PostalCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Bio" class="form-label"></label>
+                            <textarea asp-for="Bio" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Bio" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preferences -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-heart me-2"></i>Preferences
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="MaxTravelDistance" class="form-label"></label>
+                                    <input asp-for="MaxTravelDistance" class="form-control" type="number" min="1" max="100" />
+                                    <span asp-validation-for="MaxTravelDistance" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="PreferredBookingAdvance" class="form-label"></label>
+                                    <input asp-for="PreferredBookingAdvance" class="form-control" type="number" min="1" max="168" />
+                                    <span asp-validation-for="PreferredBookingAdvance" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="PreferredServiceTypes" class="form-label"></label>
+                            <input asp-for="PreferredServiceTypes" class="form-control" placeholder="e.g., Dog Walking, Pet Grooming, Pet Sitting" />
+                            <span asp-validation-for="PreferredServiceTypes" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="PreferredProviders" class="form-label"></label>
+                            <input asp-for="PreferredProviders" class="form-control" placeholder="Names of your favorite service providers" />
+                            <span asp-validation-for="PreferredProviders" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Notifications & Privacy -->
+            <div class="col-lg-4">
+                <!-- Notification Settings -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-bell me-2"></i>Notifications
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check mb-3">
+                            <input asp-for="EmailNotifications" class="form-check-input" type="checkbox" />
+                            <label asp-for="EmailNotifications" class="form-check-label"></label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input asp-for="SMSNotifications" class="form-check-input" type="checkbox" />
+                            <label asp-for="SMSNotifications" class="form-check-label"></label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input asp-for="BookingReminders" class="form-check-input" type="checkbox" />
+                            <label asp-for="BookingReminders" class="form-check-label"></label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input asp-for="PaymentNotifications" class="form-check-input" type="checkbox" />
+                            <label asp-for="PaymentNotifications" class="form-check-label"></label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input asp-for="ReviewNotifications" class="form-check-input" type="checkbox" />
+                            <label asp-for="ReviewNotifications" class="form-check-label"></label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input asp-for="MarketingEmails" class="form-check-input" type="checkbox" />
+                            <label asp-for="MarketingEmails" class="form-check-label"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Privacy Settings -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-shield-alt me-2"></i>Privacy
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="ProfileVisibility" class="form-label"></label>
+                            <select asp-for="ProfileVisibility" class="form-select">
+                                <option value="Public">Public</option>
+                                <option value="Private">Private</option>
+                                <option value="Limited">Limited</option>
+                            </select>
+                            <span asp-validation-for="ProfileVisibility" class="text-danger"></span>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input asp-for="ShowContactInfo" class="form-check-input" type="checkbox" />
+                            <label asp-for="ShowContactInfo" class="form-check-label"></label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input asp-for="ShowLocation" class="form-check-input" type="checkbox" />
+                            <label asp-for="ShowLocation" class="form-check-label"></label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input asp-for="ShowPets" class="form-check-input" type="checkbox" />
+                            <label asp-for="ShowPets" class="form-check-label"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Save Button -->
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-save me-2"></i>Save Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid #dee2e6;
+    border-radius: 15px 15px 0 0 !important;
+    padding: 1.25rem;
+}
+
+.card-header h5 {
+    color: #495057;
+    font-weight: 600;
+    margin: 0;
+}
+
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid #e1e5e9;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.form-check-input:checked {
+    background-color: #667eea;
+    border-color: #667eea;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.alert {
+    border-radius: 10px;
+    border: none;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    color: #721c24;
+}
+</style>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

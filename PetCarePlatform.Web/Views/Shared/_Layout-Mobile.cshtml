@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare - Connecting Pet Owners with Trusted Care Providers</title>
+
+    <!-- Local Fonts - No CDN -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="~/lib/fontawesome/css/all.min.css" rel="stylesheet">
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Local CSS - Mobile First -->
+    <link href="~/css/mobile-first.css" rel="stylesheet" asp-append-version="true">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Critical CSS for above-the-fold content */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fc;
+        }
+
+        .header {
+            background: #4e73df;
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .container {
+            width: 100%;
+            padding: 0 1rem;
+            margin: 0 auto;
+        }
+
+        main {
+            margin-top: 80px;
+        }
+
+        /* Load full CSS after page load */
+        @@media (min-width: 768px) {
+            .container {
+                max-width: 720px;
+                padding: 0 1.5rem;
+            }
+        }
+
+        @@media (min-width: 1024px) {
+            .container {
+                max-width: 1200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="@Url.Action("Index", "Home")" class="logo">
+                    <i class="fas fa-heart"></i>
+                    PetCare
+                </a>
+                <ul class="nav-links">
+                    <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+                    <li><a href="@Url.Action("Search", "Services")">Search Services</a></li>
+                    <li><a href="@Url.Action("Index", "Services")">All Services</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="@Url.Action("Login", "Account")" class="btn btn-outline">Login</a>
+                    <a href="@Url.Action("Register", "Account")" class="btn btn-primary">Sign Up</a>
+                </div>
+                <div class="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>PetCare</h3>
+                    <p>Connecting pet owners with trusted pet care providers in your neighborhood.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>For Pet Owners</h3>
+                    <ul>
+                        <li><a href="@Url.Action("Search", "Services")">Find Services</a></li>
+                        <li><a href="#">Book a Service</a></li>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">Safety</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>For Providers</h3>
+                    <ul>
+                        <li><a href="#">Become a Provider</a></li>
+                        <li><a href="#">Provider Portal</a></li>
+                        <li><a href="#">Resources</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Safety</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 PetCare. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Local jQuery - No CDN -->
+    <script src="/js/local/jquery.min.js"></script>
+
+    <!-- Local Scripts -->
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+
+            if (mobileMenu && navLinks) {
+                mobileMenu.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                });
+            }
+
+            // Header background change on scroll
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('.header');
+                if (header) {
+                    if (window.scrollY > 100) {
+                        header.style.background = 'rgba(78, 115, 223, 0.95)';
+                        header.style.backdropFilter = 'blur(10px)';
+                    } else {
+                        header.style.background = '#4e73df';
+                        header.style.backdropFilter = 'none';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

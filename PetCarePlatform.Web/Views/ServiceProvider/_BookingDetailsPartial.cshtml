@@ -1,0 +1,74 @@
+@model PetCarePlatform.Core.Models.Booking
+
+<div class="modal-header">
+    <h5 class="modal-title">Booking Request Details</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-6">
+            <h6 class="text-primary mb-3">Service Information</h6>
+            <p><strong>Service:</strong> @Model.Service?.Title</p>
+            <p><strong>Service Type:</strong> @Model.Service?.Type</p>
+            <p><strong>Description:</strong> @Model.Service?.Description</p>
+            <p><strong>Location:</strong> @Model.Service?.Location</p>
+            <p><strong>Price:</strong> $@Model.TotalPrice.ToString("F2")</p>
+        </div>
+        <div class="col-md-6">
+            <h6 class="text-primary mb-3">Pet Owner Information</h6>
+            <p><strong>Name:</strong> @Model.Owner?.User?.FirstName @Model.Owner?.User?.LastName</p>
+            <p><strong>Email:</strong> @Model.Owner?.User?.Email</p>
+            <p><strong>Phone:</strong> @Model.Owner?.User?.PhoneNumber</p>
+            <p><strong>Address:</strong> @Model.Owner?.User?.Address, @Model.Owner?.User?.City, @Model.Owner?.User?.Province</p>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <h6 class="text-primary mb-3">Pet Information</h6>
+            <p><strong>Pet Name:</strong> @Model.Pet?.Name</p>
+            <p><strong>Breed:</strong> @Model.Pet?.Breed</p>
+            <p><strong>Type:</strong> @Model.Pet?.Type</p>
+            <p><strong>Age:</strong> @(Model.Pet?.Age != null ? Model.Pet.Age + " years" : "N/A")</p>
+        </div>
+        <div class="col-md-6">
+            <h6 class="text-primary mb-3">Booking Information</h6>
+            <p><strong>Booking ID:</strong> @Model.Id</p>
+            <p><strong>Date:</strong> @Model.StartTime.ToString("MMM dd, yyyy")</p>
+            <p><strong>Start Time:</strong> @Model.StartTime.ToString("h:mm tt")</p>
+            <p><strong>End Time:</strong> @Model.EndTime.ToString("h:mm tt")</p>
+            <p><strong>Duration:</strong> @((Model.EndTime - Model.StartTime).TotalHours.ToString("F1")) hours</p>
+            <p><strong>Status:</strong> 
+                <span class="badge bg-@(Model.Status == BookingStatus.Requested || Model.Status == BookingStatus.Pending ? "warning" : Model.Status == BookingStatus.Confirmed ? "success" : Model.Status == BookingStatus.Declined ? "danger" : "secondary")">
+                    @Model.Status
+                </span>
+            </p>
+        </div>
+    </div>
+    @if (!string.IsNullOrEmpty(Model.SpecialInstructions))
+    {
+        <div class="row mt-3">
+            <div class="col-12">
+                <h6 class="text-primary mb-2">Special Instructions</h6>
+                <p class="text-muted">@Model.SpecialInstructions</p>
+            </div>
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(Model.Notes))
+    {
+        <div class="row mt-3">
+            <div class="col-12">
+                <h6 class="text-primary mb-2">Notes</h6>
+                <p class="text-muted">@Model.Notes</p>
+            </div>
+        </div>
+    }
+    <div class="row mt-3">
+        <div class="col-12">
+            <p class="text-muted"><small>Created: @Model.CreatedAt.ToString("MMM dd, yyyy h:mm tt")</small></p>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+</div>
+

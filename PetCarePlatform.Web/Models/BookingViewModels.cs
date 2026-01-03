@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using PetCarePlatform.Core.Models;
+using PetCarePlatform.Core.DTOs.Responses;
 
 namespace PetCarePlatform.Web.Models
 {
@@ -62,12 +63,11 @@ namespace PetCarePlatform.Web.Models
         public string ServiceLocation { get; set; } = string.Empty;
 
         // Optional field
-        [StringLength(500, ErrorMessage = "Special instructions cannot exceed 500 characters")]
-        public string SpecialInstructions { get; set; } = string.Empty;
+        public string? SpecialInstructions { get; set; }
 
         // For dropdown population
         public IEnumerable<Pet> UserPets { get; set; } = new List<Pet>();
-        public IEnumerable<Service> AvailableServices { get; set; } = new List<Service>();
+        public IEnumerable<ServiceResponse> AvailableServices { get; set; } = new List<ServiceResponse>();
     }
 
     public class EditBookingViewModel
@@ -84,8 +84,7 @@ namespace PetCarePlatform.Web.Models
         [Required(ErrorMessage = "Please select an end time")]
         public string EndTime { get; set; }
 
-        [StringLength(500, ErrorMessage = "Special instructions cannot exceed 500 characters")]
-        public string SpecialInstructions { get; set; }
+        public string? SpecialInstructions { get; set; }
 
         // Display-only fields (no validation attributes)
         public string ServiceTitle { get; set; }
@@ -95,4 +94,3 @@ namespace PetCarePlatform.Web.Models
         public BookingStatus Status { get; set; }
     }
 }
-

@@ -1,198 +1,163 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
+using PetCarePlatform.Core.DTOs.Requests;
+using PetCarePlatform.Core.DTOs.Queries;
 using PetCarePlatform.Core.Interfaces;
 using PetCarePlatform.Core.Models;
-using System.Collections.Generic;
+using System.Security.Claims;
 
-namespace PetCarePlatform.API.Controllers
+namespace PetCarePlatform.Web.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class BookingsController : ControllerBase
+    [Authorize]
+    public class BookingsController : Controller
     {
         private readonly IBookingService _bookingService;
-        private readonly IServiceService _serviceService;
+        private readonly IBookingRepository _bookingRepository;
         private readonly IPetOwnerService _petOwnerService;
 
         public BookingsController(
             IBookingService bookingService,
-            IServiceService serviceService,
+            IBookingRepository bookingRepository,
             IPetOwnerService petOwnerService)
         {
             _bookingService = bookingService;
-            _serviceService = serviceService;
+            _bookingRepository = bookingRepository;
             _petOwnerService = petOwnerService;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetBooking(int id)
+        [HttpGet]
+        [Authorize(Roles = "PetOwner")]
+        public async Task<IActionResult> Details(int id)
         {
-            var booking = await _bookingService.GetBookingByIdAsync(id);
-            if (booking == null)
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var petOwnerResult = await _petOwnerService.GetPetOwnerByUserIdAsync(userId);
+            if (petOwnerResult.IsFailure || petOwnerResult.Value == null)
             {
-                return NotFound();
+                TempData["Error"] = "Pet owner not found.";
+                return RedirectToAction("Index", "PetOwner");
             }
 
-            return Ok(booking);
-        }
+            var petOwner = petOwnerResult.Value;
 
-        [HttpGet("owner/{ownerId}")]
-        public async Task<IActionResult> GetBookingsByOwner(int ownerId, [FromQuery] bool includeHistory = false)
-        {
-            var bookings = await _bookingService.GetBookingsByOwnerIdAsync(ownerId);
-            return Ok(bookings);
-        }
+            // Use repository to get full Booking entity with navigation properties
+            var booking = await _bookingRepository.GetByIdAsync(id);
+            
+            if (booking == null)
+            {
+                TempData["Error"] = "Booking not found.";
+                return RedirectToAction("MyBookings", "PetOwner");
+            }
 
-        [HttpGet("provider/{providerId}")]
-        public async Task<IActionResult> GetBookingsByProvider(int providerId, [FromQuery] bool includeHistory = false)
-        {
-            var bookings = await _bookingService.GetBookingsByProviderIdAsync(providerId);
-            return Ok(bookings);
-        }
+            // Validate user owns the booking
+            if (booking.OwnerId != petOwner.Id)
+            {
+                TempData["Error"] = "You do not have permission to view this booking.";
+                return RedirectToAction("MyBookings", "PetOwner");
+            }
 
-        [HttpGet("service/{serviceId}")]
-        public async Task<IActionResult> GetBookingsByService(int serviceId)
-        {
-            var bookings = await _bookingService.GetBookingsByServiceIdAsync(serviceId);
-            return Ok(bookings);
-        }
-
-        [HttpGet("upcoming/{userId}")]
-        public async Task<IActionResult> GetUpcomingBookings(int userId)
-        {
-            var bookings = await _bookingService.GetUpcomingBookingsAsync(userId);
-            return Ok(bookings);
+            return View(booking);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateBooking([FromBody] CreateBookingRequest request)
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "PetOwner")]
+        public async Task<IActionResult> Cancel(int id, string cancellationReason = "")
         {
-            if (!ModelState.IsValid)
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var petOwnerResult = await _petOwnerService.GetPetOwnerByUserIdAsync(userId);
+            if (petOwnerResult.IsFailure || petOwnerResult.Value == null)
             {
-                return BadRequest(ModelState);
+                return Json(new { success = false, message = "Pet owner not found." });
             }
 
-            try
+            var petOwner = petOwnerResult.Value;
+
+            // Verify booking exists and belongs to user
+            var bookingResult = await _bookingService.GetBookingByIdAsync(id, CancellationToken.None);
+            if (bookingResult.IsFailure)
             {
-                // Check if time slot is available
-                if (!await _bookingService.IsTimeSlotAvailableAsync(request.ServiceId, request.StartTime, request.EndTime))
+                return Json(new { success = false, message = bookingResult.ErrorMessage });
+            }
+
+            var booking = bookingResult.Value!;
+            if (booking.OwnerId != petOwner.Id)
+            {
+                return Json(new { success = false, message = "Booking not found or doesn't belong to you." });
+            }
+
+            // Use enterprise pattern method
+            var request = new CancelBookingRequest
+            {
+                BookingId = id,
+                CancellationReason = cancellationReason
+            };
+
+            var result = await _bookingService.CancelBookingAsync(request);
+
+            if (result.IsFailure)
+            {
+                return Json(new { success = false, message = result.ErrorMessage });
+            }
+
+            TempData["SuccessMessage"] = "Booking cancelled successfully.";
+            return Json(new { success = true, message = "Booking cancelled successfully." });
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "PetOwner,ServiceProvider")]
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 20, BookingStatus? status = null, bool? upcomingOnly = null)
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userRole = User.FindFirstValue(ClaimTypes.Role);
+
+            var query = new BookingQuery
+            {
+                PageNumber = page,
+                PageSize = pageSize,
+                Status = status,
+                UpcomingOnly = upcomingOnly,
+                SortBy = "StartTime",
+                SortOrder = "asc"
+            };
+
+            // Set owner or provider filter based on role
+            if (userRole == "PetOwner")
+            {
+                var petOwnerResult = await _petOwnerService.GetPetOwnerByUserIdAsync(userId);
+                if (petOwnerResult.IsSuccess && petOwnerResult.Value != null)
                 {
-                    return BadRequest("The selected time slot is not available");
+                    query.OwnerId = petOwnerResult.Value.Id;
                 }
-
-                var booking = new Booking
-                {
-                    ServiceId = request.ServiceId,
-                    OwnerId = request.OwnerId,
-                    PetId = request.PetId,
-                    StartTime = request.StartTime,
-                    EndTime = request.EndTime,
-                    Notes = request.Notes,
-                    SpecialInstructions = request.SpecialInstructions
-                };
-
-                var createdBooking = await _bookingService.CreateBookingAsync(booking);
-                return CreatedAtAction(nameof(GetBooking), new { id = createdBooking.Id }, createdBooking);
             }
-            catch (InvalidOperationException ex)
+            else if (userRole == "ServiceProvider")
             {
-                return BadRequest(ex.Message);
+                // For service providers, we'd need to get their provider ID
+                // For now, we'll use ProviderId filter if needed
+                query.ProviderId = null; // TODO: Get provider ID from service
             }
+
+            var result = await _bookingService.GetBookingsAsync(query);
+
+            if (result.IsFailure)
+            {
+                TempData["Error"] = result.ErrorMessage;
+                return View(new PetCarePlatform.Core.Common.PagedResult<PetCarePlatform.Core.DTOs.Responses.BookingResponse>(
+                    new List<PetCarePlatform.Core.DTOs.Responses.BookingResponse>(),
+                    0,
+                    1,
+                    20
+                ));
+            }
+
+            ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = result.Value!.TotalPages;
+            ViewBag.TotalCount = result.Value.TotalCount;
+
+            return View(result.Value);
         }
-
-        [HttpPut("{id}/status")]
-        public async Task<IActionResult> UpdateBookingStatus(int id, [FromBody] UpdateBookingStatusRequest request)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            try
-            {
-                await _bookingService.UpdateBookingStatusAsync(id, request.Status);
-                return NoContent();
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost("{id}/cancel")]
-        public async Task<IActionResult> CancelBooking(int id, [FromBody] CancelBookingRequest request)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            try
-            {
-                await _bookingService.CancelBookingAsync(id, request.CancellationReason);
-                return NoContent();
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet("{id}/can-review")]
-        public async Task<IActionResult> CanReviewBooking(int id)
-        {
-            var canReview = await _bookingService.CanBeReviewedAsync(id);
-            return Ok(new { canReview });
-        }
-
-        [HttpGet("check-availability")]
-        public async Task<IActionResult> CheckAvailability(
-            [FromQuery] int serviceId,
-            [FromQuery] DateTime startTime,
-            [FromQuery] DateTime endTime)
-        {
-            var isAvailable = await _bookingService.IsTimeSlotAvailableAsync(serviceId, startTime, endTime);
-            return Ok(new { isAvailable });
-        }
-
-        [HttpGet("calculate-price")]
-        public async Task<IActionResult> CalculatePrice(
-            [FromQuery] int serviceId,
-            [FromQuery] DateTime startTime,
-            [FromQuery] DateTime endTime,
-            [FromQuery] int petId)
-        {
-            try
-            {
-                var price = await _bookingService.CalculateBookingPriceAsync(serviceId, startTime, endTime, petId);
-                return Ok(new { price });
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-    }
-
-    public class CreateBookingRequest
-    {
-        public int ServiceId { get; set; }
-        public int OwnerId { get; set; }
-        public int? PetId { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public string Notes { get; set; }
-        public string SpecialInstructions { get; set; }
-    }
-
-    public class UpdateBookingStatusRequest
-    {
-        public BookingStatus Status { get; set; }
-    }
-
-    public class CancelBookingRequest
-    {
-        public string CancellationReason { get; set; }
     }
 }

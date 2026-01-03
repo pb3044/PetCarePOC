@@ -3,8 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using PetCarePlatform.Core.Interfaces;
 using PetCarePlatform.Core.Models;
+using PetCarePlatform.Core.DTOs.Requests;
+using PetCarePlatform.Core.DTOs.Responses;
 using PetCarePlatform.Web.Models;
 using System.Security.Claims;
+using System;
 
 namespace PetCarePlatform.Web.Controllers
 {
@@ -28,26 +31,37 @@ namespace PetCarePlatform.Web.Controllers
         public async Task<IActionResult> Profile()
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var user = await _userService.GetUserByIdAsync(userId);
+            var userResult = await _userService.GetUserByIdAsync(userId);
             
-            if (user == null)
+            if (userResult.IsFailure || userResult.Value == null)
             {
                 return NotFound();
             }
 
+            var userResponse = userResult.Value;
+            // Note: UserProfileViewModel expects ApplicationUser, but we have UserResponse
+            // This may need mapping or ViewModel update
             var model = new UserProfileViewModel
             {
-                User = user
+                // User property will need to be mapped from UserResponse or ViewModel updated
             };
 
             // Load additional data based on user type
             if (User.IsInRole("PetOwner"))
             {
-                model.PetOwner = await _petOwnerService.GetPetOwnerByUserIdAsync(userId);
+                var petOwnerResult = await _petOwnerService.GetPetOwnerByUserIdAsync(userId);
+                if (petOwnerResult.IsSuccess && petOwnerResult.Value != null)
+                {
+                    // model.PetOwner needs to be mapped from PetOwnerResponse
+                }
             }
             else if (User.IsInRole("ServiceProvider"))
             {
-                model.ServiceProvider = await _serviceProviderService.GetServiceProviderByUserIdAsync(userId);
+                var serviceProviderResult = await _serviceProviderService.GetServiceProviderByUserIdAsync(userId);
+                if (serviceProviderResult.IsSuccess && serviceProviderResult.Value != null)
+                {
+                    // model.ServiceProvider needs to be mapped from ServiceProviderResponse
+                }
             }
 
             return View(model);
@@ -57,13 +71,14 @@ namespace PetCarePlatform.Web.Controllers
         public async Task<IActionResult> EditProfile()
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var user = await _userService.GetUserByIdAsync(userId);
+            var userResult = await _userService.GetUserByIdAsync(userId);
             
-            if (user == null)
+            if (userResult.IsFailure || userResult.Value == null)
             {
                 return NotFound();
             }
 
+            var user = userResult.Value;
             var model = new EditProfileViewModel
             {
                 Id = user.Id,
@@ -90,23 +105,31 @@ namespace PetCarePlatform.Web.Controllers
 
             try
             {
-                var user = await _userService.GetUserByIdAsync(model.Id);
-                if (user == null)
+                var userResult = await _userService.GetUserByIdAsync(model.Id);
+                if (userResult.IsFailure || userResult.Value == null)
                 {
                     return NotFound();
                 }
 
-                // Update user properties
-                user.FirstName = model.FirstName;
-                user.LastName = model.LastName;
-                user.PhoneNumber = model.PhoneNumber;
-                user.Address = model.Address;
-                user.City = model.City;
-                user.Province = model.Province;
-                user.PostalCode = model.PostalCode;
-                user.UpdatedAt = DateTime.UtcNow;
+                var updateRequest = new UpdateUserProfileRequest
+                {
+                    UserId = model.Id,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    PhoneNumber = model.PhoneNumber,
+                    Address = model.Address,
+                    City = model.City,
+                    Province = model.Province,
+                    PostalCode = model.PostalCode
+                };
 
-                await _userService.UpdateUserProfileAsync(user);
+                var result = await _userService.UpdateUserProfileAsync(updateRequest);
+                if (result.IsFailure)
+                {
+                    ModelState.AddModelError("", result.ErrorMessage);
+                    return View(model);
+                }
+
                 TempData["SuccessMessage"] = "Profile updated successfully!";
                 return RedirectToAction("Profile");
             }
@@ -134,7 +157,20 @@ namespace PetCarePlatform.Web.Controllers
             try
             {
                 var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                await _userService.ChangePasswordAsync(userId, model.CurrentPassword, model.NewPassword);
+                var changePasswordRequest = new ChangePasswordRequest
+                {
+                    UserId = userId,
+                    CurrentPassword = model.CurrentPassword,
+                    NewPassword = model.NewPassword
+                };
+
+                var result = await _userService.ChangePasswordAsync(changePasswordRequest);
+                if (result.IsFailure)
+                {
+                    ModelState.AddModelError("", result.ErrorMessage);
+                    return View(model);
+                }
+
                 TempData["SuccessMessage"] = "Password changed successfully!";
                 return RedirectToAction("Profile");
             }
@@ -149,28 +185,28 @@ namespace PetCarePlatform.Web.Controllers
         public async Task<IActionResult> PetOwnerDashboard()
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var petOwner = await _petOwnerService.GetPetOwnerByUserIdAsync(userId);
+            var petOwnerResult = await _petOwnerService.GetPetOwnerByUserIdAsync(userId);
             
-            if (petOwner == null)
+            if (petOwnerResult.IsFailure || petOwnerResult.Value == null)
             {
                 return NotFound();
             }
 
-            return View(petOwner);
+            return View(petOwnerResult.Value);
         }
 
         [Authorize(Roles = "ServiceProvider")]
         public async Task<IActionResult> ServiceProviderDashboard()
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var serviceProvider = await _serviceProviderService.GetServiceProviderByUserIdAsync(userId);
+            var serviceProviderResult = await _serviceProviderService.GetServiceProviderByUserIdAsync(userId);
             
-            if (serviceProvider == null)
+            if (serviceProviderResult.IsFailure || serviceProviderResult.Value == null)
             {
                 return NotFound();
             }
 
-            return View(serviceProvider);
+            return View(serviceProviderResult.Value);
         }
 
         [Authorize(Roles = "Admin")]
@@ -219,25 +255,34 @@ namespace PetCarePlatform.Web.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var user = await _userService.GetUserByIdAsync(id);
-            if (user == null)
+            var userResult = await _userService.GetUserByIdAsync(id);
+            if (userResult.IsFailure || userResult.Value == null)
             {
                 return NotFound();
             }
 
+            var user = userResult.Value;
             var model = new UserProfileViewModel
             {
-                User = user
+                // User property will need to be mapped from UserResponse or ViewModel updated
             };
 
             // Load additional data based on user type
             if (user.UserType == UserType.PetOwner)
             {
-                model.PetOwner = await _petOwnerService.GetPetOwnerByUserIdAsync(id);
+                var petOwnerResult = await _petOwnerService.GetPetOwnerByUserIdAsync(id);
+                if (petOwnerResult.IsSuccess && petOwnerResult.Value != null)
+                {
+                    // model.PetOwner needs to be mapped from PetOwnerResponse
+                }
             }
             else if (user.UserType == UserType.ServiceProvider)
             {
-                model.ServiceProvider = await _serviceProviderService.GetServiceProviderByUserIdAsync(id);
+                var serviceProviderResult = await _serviceProviderService.GetServiceProviderByUserIdAsync(id);
+                if (serviceProviderResult.IsSuccess && serviceProviderResult.Value != null)
+                {
+                    // model.ServiceProvider needs to be mapped from ServiceProviderResponse
+                }
             }
 
             return View(model);

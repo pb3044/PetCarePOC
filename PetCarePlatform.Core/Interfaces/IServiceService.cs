@@ -1,32 +1,25 @@
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using PetCarePlatform.Core.Common;
+using PetCarePlatform.Core.DTOs.Queries;
+using PetCarePlatform.Core.DTOs.Requests;
+using PetCarePlatform.Core.DTOs.Responses;
 using PetCarePlatform.Core.Models;
 
 namespace PetCarePlatform.Core.Interfaces
 {
     public interface IServiceService
     {
-        Task<Service> GetServiceByIdAsync(int id);
-        Task<IEnumerable<Service>> GetAllServicesAsync();
-        Task<IEnumerable<Service>> GetServicesByProviderIdAsync(int providerId);
-        Task<IEnumerable<Service>> SearchServicesAsync(
-            string keyword = null,
-            ServiceType? type = null,
-            double? latitude = null,
-            double? longitude = null,
-            int? radiusInKm = null,
-            decimal? minPrice = null,
-            decimal? maxPrice = null,
-            string petTypes = null,
-            string petSizes = null);
-        Task<Service> CreateServiceAsync(Service service);
-        Task UpdateServiceAsync(Service service);
-        Task DeleteServiceAsync(int id);
-        Task<IEnumerable<ServicePhoto>> GetServicePhotosAsync(int serviceId);
-        Task AddServicePhotoAsync(ServicePhoto photo);
-        Task DeleteServicePhotoAsync(int photoId);
-        Task SetPrimaryPhotoAsync(int serviceId, int photoId);
-        Task<double> GetServiceRatingAsync(int serviceId);
-        Task<IEnumerable<Review>> GetServiceReviewsAsync(int serviceId);
+        Task<Result<ServiceResponse>> GetServiceByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task<Result<PagedResult<ServiceResponse>>> GetServicesAsync(ServiceQuery query, CancellationToken cancellationToken = default);
+        Task<Result<ServiceResponse>> CreateServiceAsync(CreateServiceRequest request, CancellationToken cancellationToken = default);
+        Task<Result<ServiceResponse>> UpdateServiceAsync(UpdateServiceRequest request, CancellationToken cancellationToken = default);
+        Task<Result> DeleteServiceAsync(int serviceId, CancellationToken cancellationToken = default);
+        Task<Result<double>> GetServiceRatingAsync(int serviceId, CancellationToken cancellationToken = default);
+        Task<Result<PagedResult<ServiceResponse>>> SearchServicesAsync(ServiceQuery query, CancellationToken cancellationToken = default);
+        Task<Result<PagedResult<ReviewResponse>>> GetServiceReviewsAsync(int serviceId, CancellationToken cancellationToken = default);
+        Task<Result<List<ServicePhotoResponse>>> GetServicePhotosAsync(int serviceId, CancellationToken cancellationToken = default);
+        Task<Result<IEnumerable<ServiceResponse>>> GetServicesByProviderIdAsync(int providerId, CancellationToken cancellationToken = default);
     }
 }

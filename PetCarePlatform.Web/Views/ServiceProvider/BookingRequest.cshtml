@@ -15,20 +15,60 @@
     }
 
     <!-- Header -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="mb-1">Booking Requests</h1>
-                    <p class="text-muted mb-0">Manage incoming booking requests from pet owners</p>
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6 mb-3 mb-md-0">
+            <h1 class="fw-800 mb-1" style="letter-spacing: -1px;">Booking Requests</h1>
+            <p class="text-muted mb-0">Manage incoming requests and grow your business</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <div class="d-flex flex-wrap gap-2 justify-content-md-end">
+                <div class="glass-card px-3 py-2 d-flex align-items-center gap-2">
+                    <span class="dot bg-warning"></span>
+                    <span class="fw-600 text-dark">@Model.TotalPendingCount Pending</span>
                 </div>
-                <div class="d-flex gap-2">
-                    <span class="badge bg-warning fs-6">@Model.TotalPendingCount Pending</span>
-                    <span class="badge bg-info fs-6">@Model.TotalRecentCount Recent</span>
+                <div class="glass-card px-3 py-2 d-flex align-items-center gap-2">
+                    <span class="dot bg-info"></span>
+                    <span class="fw-600 text-dark">@Model.TotalRecentCount Recent</span>
                 </div>
             </div>
         </div>
     </div>
+
+    <style>
+        .fw-800 { font-weight: 800; }
+        .fw-600 { font-weight: 600; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        .table-premium {
+            border-collapse: separate;
+            border-spacing: 0 12px;
+        }
+        .table-premium tr {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
+        }
+        .table-premium tr:hover {
+            transform: scale(1.01);
+            background: white;
+        }
+        .table-premium td {
+            border: none;
+            padding: 20px 15px;
+            vertical-align: middle;
+        }
+        .table-premium td:first-child { border-radius: 15px 0 0 15px; }
+        .table-premium td:last-child { border-radius: 0 15px 15px 0; }
+        .table-premium thead th {
+            border: none;
+            color: #64748b;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 15px 10px;
+        }
+    </style>
 
     <!-- Filters -->
     <div class="row mb-4">
@@ -101,110 +141,100 @@
     </div>
 
     <!-- Pending Requests -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">
-                        <i class="fas fa-clock text-warning me-2"></i>
-                        Pending Requests (@Model.PendingRequests.Count)
-                    </h5>
-                </div>
-                <div class="card-body">
-                    @if (Model.PendingRequests.Any())
+    <h5 class="fw-700 mb-4 d-flex align-items-center gap-2">
+        <i class="bi bi-clock-history text-warning"></i>
+        Pending Requests (@Model.PendingRequests.Count)
+    </h5>
+
+    @if (Model.PendingRequests.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-premium">
+                <thead>
+                    <tr>
+                        <th>Pet Owner</th>
+                        <th>Service & Pet</th>
+                        <th>Date & Time</th>
+                        <th>Price</th>
+                        <th>Availability</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var request in Model.PendingRequests)
                     {
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Pet Owner</th>
-                                        <th>Service & Pet</th>
-                                        <th>Date & Time</th>
-                                        <th>Duration</th>
-                                        <th>Price</th>
-                                        <th>Availability</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var request in Model.PendingRequests)
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="avatar-box bg-purple-light text-purple">
+                                        <i class="bi bi-person fw-bold"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-700">@request.PetOwnerName</div>
+                                        <div class="text-muted small">@request.PetOwnerPhone</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="fw-700">@request.ServiceName</div>
+                                <div class="text-muted small"><i class="bi bi-suit-heart me-1"></i>@request.PetName</div>
+                            </td>
+                            <td>
+                                <div class="fw-700">@request.StartTime.ToString("MMM dd")</div>
+                                <div class="text-muted small">@request.StartTime.ToString("HH:mm") - @request.EndTime.ToString("HH:mm")</div>
+                            </td>
+                            <td>
+                                <div class="fw-700 text-dark">$@request.TotalPrice.ToString("F2")</div>
+                            </td>
+                            <td>
+                                <span class="badge @(request.IsAvailable ? "bg-success" : "bg-danger") rounded-pill px-3">
+                                    @(request.IsAvailable ? "Available" : "Conflict")
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <div class="d-flex gap-2 justify-content-end">
+                                    <button type="button" class="btn btn-light btn-sm rounded-3 px-3 fw-600" data-bs-toggle="modal" data-bs-target="#requestDetailsModal" data-request-id="@request.Id">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    @if (request.IsAvailable)
                                     {
-                                        <tr>
-                                            <td>
-                                                <div>
-                                                    <strong>@request.PetOwnerName</strong><br>
-                                                    <small class="text-muted">
-                                                        <i class="fas fa-envelope me-1"></i>@request.PetOwnerEmail<br>
-                                                        <i class="fas fa-phone me-1"></i>@request.PetOwnerPhone
-                                                    </small>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div>
-                                                    <strong>@request.ServiceName</strong><br>
-                                                    <small class="text-muted">
-                                                        <i class="fas fa-paw me-1"></i>@request.PetName (@request.PetType - @request.PetBreed)
-                                                    </small>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div>
-                                                    <strong>@request.StartTime.ToString("MMM dd, yyyy")</strong><br>
-                                                    <small class="text-muted">
-                                                        @request.StartTime.ToString("HH:mm") - @request.EndTime.ToString("HH:mm")
-                                                    </small>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-info">@request.Duration</span>
-                                            </td>
-                                            <td>
-                                                <strong>$@request.TotalPrice.ToString("F2")</strong>
-                                            </td>
-                                            <td>
-                                                <span class="badge @(request.IsAvailable ? "bg-success" : "bg-danger")" 
-                                                      title="@request.AvailabilityMessage">
-                                                    @(request.IsAvailable ? "Available" : "Unavailable")
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <div class="btn-group" role="group">
-                                                    <button type="button" class="btn btn-sm btn-outline-primary" 
-                                                            data-bs-toggle="modal" data-bs-target="#requestDetailsModal" 
-                                                            data-request-id="@request.Id">
-                                                        <i class="fas fa-eye"></i> Details
-                                                    </button>
-                                                    @if (request.IsAvailable)
-                                                    {
-                                                        <button type="button" class="btn btn-sm btn-success accept-booking" 
-                                                                data-booking-id="@request.Id">
-                                                            <i class="fas fa-check"></i> Accept
-                                                        </button>
-                                                    }
-                                                    <button type="button" class="btn btn-sm btn-danger reject-booking" 
-                                                            data-booking-id="@request.Id">
-                                                        <i class="fas fa-times"></i> Reject
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        <button type="button" class="btn btn-success btn-sm rounded-3 px-3 fw-600 accept-booking" data-booking-id="@request.Id">
+                                            <i class="bi bi-check-lg"></i>
+                                        </button>
                                     }
-                                </tbody>
-                            </table>
-                        </div>
+                                    <button type="button" class="btn btn-outline-danger btn-sm rounded-3 px-3 fw-600 reject-booking" data-booking-id="@request.Id">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
                     }
-                    else
-                    {
-                        <div class="text-center py-4">
-                            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                            <h5 class="text-muted">No pending requests</h5>
-                            <p class="text-muted">You're all caught up!</p>
-                        </div>
-                    }
-                </div>
-            </div>
+                </tbody>
+            </table>
         </div>
-    </div>
+    }
+    else
+    {
+        <div class="glass-card p-5 text-center mb-5">
+            <i class="bi bi-inbox fa-3x text-muted mb-3 d-block"></i>
+            <h5 class="text-muted">No pending requests</h5>
+            <p class="text-muted mb-0">You're all caught up!</p>
+        </div>
+    }
+
+    <style>
+        .avatar-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .bg-purple-light { background: #f3f0ff; }
+        .text-purple { color: #7c4dff; }
+    </style>
 
     <!-- Recent Requests -->
     <div class="row">
@@ -398,6 +428,25 @@
                 `;
                 $('.container-fluid').prepend(alertHtml);
             }
+
+            // Load booking details when Details button is clicked
+            $('#requestDetailsModal').on('show.bs.modal', function (event) {
+                const button = $(event.relatedTarget);
+                const requestId = button.data('request-id');
+                const modal = $(this);
+                
+                // Clear previous content
+                modal.find('#requestDetailsContent').html('<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+                
+                // Load booking details
+                $.get('@Url.Action("BookingDetails", "ServiceProvider")/' + requestId)
+                    .done(function(html) {
+                        modal.find('#requestDetailsContent').html(html);
+                    })
+                    .fail(function() {
+                        modal.find('#requestDetailsContent').html('<div class="alert alert-danger">Failed to load booking details. Please try again.</div>');
+                    });
+            });
         });
     </script>
 }

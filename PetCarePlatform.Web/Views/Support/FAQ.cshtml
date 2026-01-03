@@ -1,0 +1,63 @@
+@{
+    ViewData["Title"] = "Frequently Asked Questions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h1>Frequently Asked Questions</h1>
+    
+    <div class="accordion mt-4" id="faqAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                    How do I book a service?
+                </button>
+            </h2>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    To book a service, first add your pet to your profile, then browse available services and select the one you need. Choose a date and time, and complete the booking.
+                </div>
+            </div>
+        </div>
+        
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                    How do I become a service provider?
+                </button>
+            </h2>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Register as a service provider, complete your profile with business information, and submit for verification. Once approved, you can start offering services.
+                </div>
+            </div>
+        </div>
+        
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                    What payment methods are accepted?
+                </button>
+            </h2>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    We accept all major credit cards through our secure payment processor. Payments are processed securely and you'll receive a receipt via email.
+                </div>
+            </div>
+        </div>
+        
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                    Can I cancel a booking?
+                </button>
+            </h2>
+            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Yes, you can cancel bookings through your dashboard. Cancellation policies may vary by service provider. Refunds are processed according to the provider's policy.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

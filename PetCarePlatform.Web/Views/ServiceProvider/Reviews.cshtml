@@ -4,63 +4,87 @@
 }
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1>Customer Reviews</h1>
-                <div class="d-flex align-items-center">
-                    <span class="badge bg-warning text-dark fs-6 me-3">
-                        <i class="fas fa-star"></i> @ViewBag.AverageRating / 5.0
-                    </span>
-                    <span class="text-muted">(@ViewBag.TotalReviews reviews)</span>
+    <div class="row align-items-center mb-5">
+        <div class="col-md-7">
+            <h1 class="fw-800 mb-1" style="letter-spacing: -1px;">Customer Reviews</h1>
+            <p class="text-muted mb-0">What pet owners are saying about your care</p>
+        </div>
+        <div class="col-md-5 text-md-end mt-3 mt-md-0">
+            <div class="d-flex flex-wrap gap-2 justify-content-md-end align-items-center">
+                <div class="glass-card px-3 py-2 d-flex align-items-center gap-2">
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <span class="fw-800">@(ViewBag.AverageRating ?? 0)</span>
+                    <span class="text-muted small">/ 5.0</span>
                 </div>
+                <div class="text-muted small fw-600 me-2">(@(ViewBag.TotalReviews ?? 0) reviews)</div>
+                <a href="@Url.Action("Analytics", "ServiceProvider")" class="btn btn-premium btn-sm d-flex align-items-center gap-2">
+                    <i class="bi bi-graph-up"></i>
+                    <span>Analytics</span>
+                </a>
             </div>
         </div>
     </div>
 
+    <style>
+        .fw-800 { font-weight: 800; }
+        .fw-700 { font-weight: 700; }
+        .fw-600 { font-weight: 600; }
+        .icon-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .bg-purple-light { background: #f3f0ff; }
+        .text-purple { color: #7c4dff; }
+        .bg-blue-light { background: #eef2ff; }
+        .text-blue { color: #3d5afe; }
+        .bg-green-light { background: #f0fdf4; }
+        .text-green { color: #22c55e; }
+        .bg-orange-light { background: #fff8f1; }
+        .text-orange { color: #ff9100; }
+        .bg-red-light { background: #fef2f2; }
+        .text-red { color: #ef4444; }
+    </style>
+
     <!-- Summary Cards -->
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card text-white bg-success">
-                <div class="card-body text-center">
-                    <h3 class="card-title">@ViewBag.FiveStarCount</h3>
-                    <p class="card-text">5 Star Reviews</p>
-                    <div class="text-warning">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
+    <div class="row g-3 mb-5">
+        <div class="col-6 col-lg-3">
+            <div class="card glass-card border-0 p-3 text-center stats-hover">
+                <h3 class="fw-800 mb-1 text-green">@(ViewBag.FiveStarCount ?? 0)</h3>
+                <p class="text-muted small fw-600 mb-2">5 Star Reviews</p>
+                <div class="d-flex justify-content-center gap-1 text-warning small">
+                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-white bg-info">
-                <div class="card-body text-center">
-                    <h3 class="card-title">@ViewBag.FourStarCount</h3>
-                    <p class="card-text">4 Star Reviews</p>
-                    <div class="text-warning">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
-                    </div>
+        <div class="col-6 col-lg-3">
+            <div class="card glass-card border-0 p-3 text-center stats-hover">
+                <h3 class="fw-800 mb-1 text-blue">@(ViewBag.FourStarCount ?? 0)</h3>
+                <p class="text-muted small fw-600 mb-2">4 Star Reviews</p>
+                <div class="d-flex justify-content-center gap-1 text-warning small">
+                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star text-muted"></i>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-white bg-warning">
-                <div class="card-body text-center">
-                    <h3 class="card-title">@ViewBag.ThreeStarCount</h3>
-                    <p class="card-text">3 Star Reviews</p>
-                    <div class="text-warning">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
-                    </div>
+        <div class="col-6 col-lg-3">
+            <div class="card glass-card border-0 p-3 text-center stats-hover">
+                <h3 class="fw-800 mb-1 text-orange">@(ViewBag.ThreeStarCount ?? 0)</h3>
+                <p class="text-muted small fw-600 mb-2">3 Star Reviews</p>
+                <div class="d-flex justify-content-center gap-1 text-warning small">
+                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star text-muted"></i><i class="bi bi-star text-muted"></i>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-white bg-danger">
-                <div class="card-body text-center">
-                    <h3 class="card-title">@ViewBag.LowRatingCount</h3>
-                    <p class="card-text">Below 3 Stars</p>
-                    <div class="text-warning">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
-                    </div>
+        <div class="col-6 col-lg-3">
+            <div class="card glass-card border-0 p-3 text-center stats-hover">
+                <h3 class="fw-800 mb-1 text-red">@((ViewBag.TwoStarCount ?? 0) + (ViewBag.OneStarCount ?? 0))</h3>
+                <p class="text-muted small fw-600 mb-2">Below 3 Stars</p>
+                <div class="d-flex justify-content-center gap-1 text-warning small">
+                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star text-muted"></i><i class="bi bi-star text-muted"></i><i class="bi bi-star text-muted"></i>
                 </div>
             </div>
         </div>
@@ -109,92 +133,89 @@
     <!-- Reviews List -->
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Customer Reviews</h5>
-                </div>
-                <div class="card-body">
-                    @if (ViewBag.Reviews != null && ((IEnumerable<dynamic>)ViewBag.Reviews).Any())
+            <h5 class="fw-700 mb-4">Latest Feedback</h5>
+            @if (ViewBag.Reviews != null && ((IEnumerable<dynamic>)ViewBag.Reviews).Any())
+            {
+                <div class="d-flex flex-column gap-3">
+                    @foreach (var review in ViewBag.Reviews)
                     {
-                        @foreach (var review in ViewBag.Reviews)
-                        {
-                            <div class="review-item border-bottom pb-3 mb-3">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <h6 class="mb-0 me-3">@review.CustomerName</h6>
-                                            <div class="text-warning me-3">
-                                                @for (int i = 1; i <= 5; i++)
-                                                {
-                                                    if (i <= review.Rating)
-                                                    {
-                                                        <i class="fas fa-star"></i>
-                                                    }
-                                                    else
-                                                    {
-                                                        <i class="far fa-star"></i>
-                                                    }
-                                                }
-                                            </div>
-                                            <small class="text-muted">@review.CreatedDate.ToString("MMM dd, yyyy")</small>
+                        <div class="card glass-card border-0 p-4 stats-hover">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="d-flex align-items-center gap-3 mb-3">
+                                        <div class="avatar-box bg-purple-light text-purple">
+                                            <i class="bi bi-person fw-bold"></i>
                                         </div>
-                                        <p class="text-muted mb-2"><strong>Service:</strong> @review.ServiceName</p>
-                                        <p class="mb-2">@review.Comment</p>
-                                        @if (!string.IsNullOrEmpty(review.Response))
-                                        {
-                                            <div class="response bg-light p-2 rounded mt-2">
-                                                <small class="text-muted">Your Response:</small>
-                                                <p class="mb-0">@review.Response</p>
+                                        <div>
+                                            <div class="fw-700">@review.CustomerName</div>
+                                            <div class="text-muted small">@review.CreatedDate.ToString("MMM dd, yyyy")</div>
+                                        </div>
+                                        <div class="ms-auto d-md-none text-warning">
+                                            @for (int i = 1; i <= 5; i++) {
+                                                if (i <= review.Rating) { <i class="bi bi-star-fill small"></i> }
+                                                else { <i class="bi bi-star small"></i> }
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="d-none d-md-flex text-warning mb-2">
+                                        @for (int i = 1; i <= 5; i++) {
+                                            if (i <= review.Rating) { <i class="bi bi-star-fill small"></i> }
+                                            else { <i class="bi bi-star small"></i> }
+                                        }
+                                    </div>
+                                    <div class="text-muted small mb-2"><i class="bi bi-bag-check me-1"></i> @review.ServiceName</div>
+                                    <p class="mb-3 text-dark">@review.Comment</p>
+                                    
+                                    @if (!string.IsNullOrEmpty(review.Response))
+                                    {
+                                        <div class="bg-light p-3 rounded-4 mt-2">
+                                            <div class="d-flex align-items-center gap-2 mb-1">
+                                                <i class="bi bi-reply-fill text-primary"></i>
+                                                <small class="fw-700 text-primary">Your Response</small>
                                             </div>
-                                        }
-                                    </div>
-                                    <div class="col-md-4 text-end">
-                                        @if (string.IsNullOrEmpty(review.Response))
-                                        {
-                                            <button class="btn btn-outline-primary btn-sm" onclick="showResponseModal(@review.Id)">
-                                                <i class="fas fa-reply"></i> Respond
-                                            </button>
-                                        }
-                                        else
-                                        {
-                                            <button class="btn btn-outline-secondary btn-sm" onclick="editResponse(@review.Id)">
-                                                <i class="fas fa-edit"></i> Edit Response
-                                            </button>
-                                        }
-                                    </div>
+                                            <p class="mb-0 small text-muted">@review.Response</p>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                    @if (string.IsNullOrEmpty(review.Response))
+                                    {
+                                        <button class="btn btn-outline-primary btn-sm rounded- pill px-4 fw-600" onclick="showResponseModal(@review.Id)">
+                                            <i class="bi bi-reply me-1"></i> Respond
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-light btn-sm rounded-pill px-4 fw-600" onclick="editResponse(@review.Id)">
+                                            <i class="bi bi-pencil me-1"></i> Edit Response
+                                        </button>
+                                    }
                                 </div>
                             </div>
-                        }
-
-                        <!-- Pagination -->
-                        <nav aria-label="Reviews pagination">
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    }
-                    else
-                    {
-                        <div class="text-center py-5">
-                            <i class="fas fa-star fa-3x text-muted mb-3"></i>
-                            <h5 class="text-muted">No reviews yet</h5>
-                            <p class="text-muted">Complete some services to start receiving customer reviews.</p>
                         </div>
                     }
                 </div>
-            </div>
+                
+                <style>
+                    .avatar-box {
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 12px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 1.1rem;
+                    }
+                </style>
+            }
+            else
+            {
+                <div class="glass-card p-5 text-center">
+                    <i class="bi bi-star fa-3x text-muted mb-3 d-block"></i>
+                    <h5 class="text-muted">No reviews yet</h5>
+                    <p class="text-muted mb-0">Complete some services to start receiving feedback.</p>
+                </div>
+            }
         </div>
     </div>
 </div>

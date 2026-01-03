@@ -1,5 +1,7 @@
 @using PetCarePlatform.Core.Models
-@model IEnumerable<Service>
+@using PetCarePlatform.Core.Common
+@using PetCarePlatform.Core.DTOs.Responses
+@model PagedResult<ServiceResponse>
 @{
     ViewData["Title"] = "Services";
     Layout = "~/Views/Shared/_PetOwnerLayout.cshtml";
@@ -38,9 +40,9 @@
 
     <!-- Services Grid -->
     <div class="row g-4">
-        @if (Model != null && Model.Any())
+        @if (Model != null && Model.Items != null && Model.Items.Any())
         {
-            foreach (var service in Model)
+            foreach (var service in Model.Items)
             {
                 <div class="col-lg-6 col-xl-4">
                     <div class="card border-0 shadow-sm h-100">

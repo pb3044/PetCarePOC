@@ -19,6 +19,8 @@ namespace PetCarePlatform.Web.Models
     {
         public int Id { get; set; }
         public string PetOwnerName { get; set; } = string.Empty;
+        public string PetOwnerEmail { get; set; } = string.Empty;
+        public string PetOwnerPhone { get; set; } = string.Empty;
         public string ServiceName { get; set; } = string.Empty;
         public DateTime RequestDate { get; set; }
         public string Status { get; set; } = string.Empty;

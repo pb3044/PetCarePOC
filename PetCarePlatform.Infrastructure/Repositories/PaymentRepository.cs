@@ -11,17 +11,17 @@ namespace PetCarePlatform.Infrastructure.Repositories
         {
         }
 
-        public override async Task<PetCarePlatform.Core.Models.Payment?> GetByIdAsync(int id)
+        public override async Task<PetCarePlatform.Core.Models.Payment?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(p => p.Booking)
                     .ThenInclude(b => b.Service)
                 .Include(p => p.Booking)
                     .ThenInclude(b => b.Owner)
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
         }
 
-        public override async Task<IEnumerable<PetCarePlatform.Core.Models.Payment>> GetAllAsync()
+        public override async Task<IEnumerable<PetCarePlatform.Core.Models.Payment>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(p => p.Booking)
@@ -29,7 +29,23 @@ namespace PetCarePlatform.Infrastructure.Repositories
                 .Include(p => p.Booking)
                     .ThenInclude(b => b.Owner)
                 .OrderByDescending(p => p.CreatedAt)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
+        }
+
+        // Explicit interface implementations (without CancellationToken)
+        async Task<PetCarePlatform.Core.Models.Payment> IPaymentRepository.GetByIdAsync(int id)
+        {
+            return await GetByIdAsync(id) ?? throw new InvalidOperationException($"Payment with ID {id} not found");
+        }
+
+        async Task<IEnumerable<PetCarePlatform.Core.Models.Payment>> IPaymentRepository.GetAllAsync()
+        {
+            return await GetAllAsync();
+        }
+
+        async Task IPaymentRepository.DeleteAsync(int id)
+        {
+            await DeleteAsync(id);
         }
 
         public async Task<PetCarePlatform.Core.Models.Payment> GetByBookingIdAsync(int bookingId)
@@ -40,6 +56,16 @@ namespace PetCarePlatform.Infrastructure.Repositories
                 .Include(p => p.Booking)
                     .ThenInclude(b => b.Owner)
                 .FirstOrDefaultAsync(p => p.BookingId == bookingId);
+        }
+
+        public async Task<PetCarePlatform.Core.Models.Payment> GetByTransactionIdAsync(string transactionId)
+        {
+            return await _dbSet
+                .Include(p => p.Booking)
+                    .ThenInclude(b => b.Service)
+                .Include(p => p.Booking)
+                    .ThenInclude(b => b.Owner)
+                .FirstOrDefaultAsync(p => p.TransactionId == transactionId);
         }
 
         public async Task<IEnumerable<PetCarePlatform.Core.Models.Payment>> GetByUserIdAsync(int userId)

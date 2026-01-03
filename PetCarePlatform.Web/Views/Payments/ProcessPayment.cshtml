@@ -1,0 +1,251 @@
+@model PetCarePlatform.Web.Models.ProcessPaymentViewModel
+@{
+    ViewData["Title"] = "Process Payment";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-credit-card me-2"></i>
+                        Complete Payment
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <!-- Payment Summary -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Service Details</h5>
+                            <p class="mb-1"><strong>Service:</strong> @Model.ServiceName</p>
+                            <p class="mb-1"><strong>Booking ID:</strong> #@Model.BookingId</p>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <h5>Payment Summary</h5>
+                            <p class="mb-1"><strong>Amount:</strong> $@Model.Amount.ToString("F2") CAD</p>
+                            <p class="mb-1"><strong>Platform Fee (15%):</strong> $@((Model.Amount * 0.15m).ToString("F2")) CAD</p>
+                            <hr>
+                            <h5 class="text-primary">Total: $@Model.Amount.ToString("F2") CAD</h5>
+                        </div>
+                    </div>
+
+                    <!-- Payment Form -->
+                    <form id="payment-form">
+                        <div class="mb-4">
+                            <label for="card-element" class="form-label">
+                                <i class="bi bi-credit-card me-1"></i>
+                                Credit or Debit Card
+                            </label>
+                            <div id="card-element" class="form-control" style="height: 40px; padding: 10px;">
+                                <!-- Stripe Elements will create form elements here -->
+                            </div>
+                            <div id="card-errors" role="alert" class="text-danger mt-2"></div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="save-card" name="saveCard">
+                                <label class="form-check-label" for="save-card">
+                                    Save this card for future payments
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="@Url.Action("Details", "Bookings", new { id = Model.BookingId })" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-arrow-left me-1"></i>
+                                Back to Booking
+                            </a>
+                            <button id="submit-payment" class="btn btn-primary">
+                                <span id="button-text">
+                                    <i class="bi bi-lock me-1"></i>
+                                    Pay $@Model.Amount.ToString("F2")
+                                </span>
+                                <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Security Notice -->
+                    <div class="alert alert-info mt-4">
+                        <i class="bi bi-shield-check me-2"></i>
+                        <strong>Secure Payment:</strong> Your payment information is encrypted and processed securely by Stripe. 
+                        We never store your card details on our servers.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        // Initialize Stripe
+        let stripe;
+        let elements;
+        let cardElement;
+        let clientSecret;
+
+        // Get publishable key and initialize Stripe
+        async function initializeStripe() {
+            try {
+                const response = await fetch('/api/PaymentsApi/publishable-key');
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to get Stripe configuration');
+                }
+
+                stripe = Stripe(data.publishableKey);
+                elements = stripe.elements();
+
+                // Create card element
+                cardElement = elements.create('card', {
+                    style: {
+                        base: {
+                            fontSize: '16px',
+                            color: '#424770',
+                            '::placeholder': {
+                                color: '#aab7c4',
+                            },
+                        },
+                        invalid: {
+                            color: '#9e2146',
+                        },
+                    },
+                });
+
+                cardElement.mount('#card-element');
+
+                // Handle real-time validation errors from the card Element
+                cardElement.on('change', function(event) {
+                    const displayError = document.getElementById('card-errors');
+                    if (event.error) {
+                        displayError.textContent = event.error.message;
+                    } else {
+                        displayError.textContent = '';
+                    }
+                });
+
+                // Create payment intent
+                await createPaymentIntent();
+            } catch (error) {
+                console.error('Error initializing Stripe:', error);
+                showError('Failed to initialize payment system. Please refresh the page and try again.');
+            }
+        }
+
+        // Create payment intent
+        async function createPaymentIntent() {
+            try {
+                const response = await fetch('/api/PaymentsApi/create-payment-intent', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                    },
+                    body: JSON.stringify({
+                        bookingId: @Model.BookingId
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to create payment intent');
+                }
+
+                clientSecret = data.clientSecret;
+            } catch (error) {
+                console.error('Error creating payment intent:', error);
+                showError('Failed to create payment intent. Please try again.');
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('payment-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const submitButton = document.getElementById('submit-payment');
+            const buttonText = document.getElementById('button-text');
+            const spinner = document.getElementById('spinner');
+
+            // Disable button and show spinner
+            submitButton.disabled = true;
+            buttonText.classList.add('d-none');
+            spinner.classList.remove('d-none');
+
+            try {
+                const {error, paymentIntent} = await stripe.confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card: cardElement,
+                        billing_details: {
+                            name: 'Customer Name', // You might want to get this from user profile
+                        },
+                    }
+                });
+
+                if (error) {
+                    // Show error to customer
+                    showError(error.message);
+                } else if (paymentIntent.status === 'succeeded') {
+                    // Payment succeeded
+                    await confirmPayment(paymentIntent.id);
+                } else {
+                    showError('Payment was not successful. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error processing payment:', error);
+                showError('An unexpected error occurred. Please try again.');
+            } finally {
+                // Re-enable button and hide spinner
+                submitButton.disabled = false;
+                buttonText.classList.remove('d-none');
+                spinner.classList.add('d-none');
+            }
+        });
+
+        // Confirm payment on server
+        async function confirmPayment(transactionId) {
+            try {
+                const response = await fetch('/api/PaymentsApi/confirm-payment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                    },
+                    body: JSON.stringify({
+                        paymentId: @Model.BookingId, // You might need to get this from the payment intent response
+                        transactionId: transactionId
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Payment successful - redirect to success page
+                    window.location.href = '@Url.Action("Receipt", "Payments", new { id = Model.BookingId })';
+                } else {
+                    throw new Error(data.error || 'Failed to confirm payment');
+                }
+            } catch (error) {
+                console.error('Error confirming payment:', error);
+                showError('Payment was processed but confirmation failed. Please contact support.');
+            }
+        }
+
+        // Show error message
+        function showError(message) {
+            const errorDiv = document.getElementById('card-errors');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeStripe);
+    </script>
+}

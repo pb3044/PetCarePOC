@@ -1,0 +1,406 @@
+@model PetCarePlatform.Web.Models.RatingAnalyticsViewModel
+@{
+    ViewData["Title"] = "Rating Analytics";
+    Layout = "~/Views/Shared/_ServiceProviderLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="row align-items-center mb-5">
+        <div class="col-md-7">
+            <h1 class="fw-800 mb-1" style="letter-spacing: -1px;">Rating Analytics</h1>
+            <p class="text-muted mb-0">Insights into your performance and customer satisfaction</p>
+        </div>
+        <div class="col-md-5 text-md-end mt-3 mt-md-0">
+            <div class="d-flex flex-wrap gap-2 justify-content-md-end align-items-center">
+                <div class="glass-card px-3 py-2 d-flex align-items-center gap-3">
+                    <div class="d-flex gap-1 text-warning small">
+                        @for (int i = 1; i <= 5; i++) {
+                            <i class="bi bi-star@(i <= Model.AverageRating ? "-fill" : "")"></i>
+                        }
+                    </div>
+                    <div class="d-flex align-items-baseline gap-1">
+                        <span class="fw-800 fs-4 text-primary">@Model.AverageRating.ToString("F1")</span>
+                        <span class="text-muted small fw-600">(@Model.TotalReviews)</span>
+                    </div>
+                </div>
+                <a href="@Url.Action("Dashboard", "ServiceProvider")" class="btn btn-light rounded-pill px-4 fw-600">
+                    <i class="bi bi-house me-1"></i> Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .fw-800 { font-weight: 800; }
+        .fw-700 { font-weight: 700; }
+        .fw-600 { font-weight: 600; }
+        .icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+        .bg-purple-light { background: #f3f0ff; }
+        .text-purple { color: #7c4dff; }
+        .bg-blue-light { background: #eef2ff; }
+        .text-blue { color: #3d5afe; }
+        .bg-green-light { background: #f0fdf4; }
+        .text-green { color: #22c55e; }
+        .bg-orange-light { background: #fff8f1; }
+        .text-orange { color: #ff9100; }
+        .bg-red-light { background: #fef2f2; }
+        .text-red { color: #ef4444; }
+        .stats-hover { transition: transform 0.3s ease; border: none; }
+        .stats-hover:hover { transform: translateY(-5px); }
+    </style>
+
+    <!-- Performance Metrics Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-6 col-lg-3">
+            <div class="card glass-card border-0 p-3 stats-hover">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="icon-box bg-purple-light text-purple">
+                        <i class="bi bi-reply-all"></i>
+                    </div>
+                    <span class="badge text-purple bg-purple-light rounded-pill small">Response</span>
+                </div>
+                <h3 class="fw-800 mb-0">@Model.PerformanceMetrics.ResponseRate.ToString("F0")%</h3>
+                <p class="text-muted small fw-600 mb-0">Rate</p>
+            </div>
+        </div>
+        
+        <div class="col-6 col-lg-3">
+            <div class="card glass-card border-0 p-3 stats-hover">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="icon-box bg-blue-light text-blue">
+                        <i class="bi bi-alarm"></i>
+                    </div>
+                    <span class="badge text-primary bg-blue-light rounded-pill small">Speed</span>
+                </div>
+                <h3 class="fw-800 mb-0">@Model.PerformanceMetrics.AverageResponseTime.ToString("F1")h</h3>
+                <p class="text-muted small fw-600 mb-0">Avg Time</p>
+            </div>
+        </div>
+        
+        <div class="col-6 col-lg-3">
+            <div class="card glass-card border-0 p-3 stats-hover">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="icon-box bg-green-light text-green">
+                        <i class="bi bi-graph-up-arrow"></i>
+                    </div>
+                    <span class="badge text-success bg-green-light rounded-pill small">New</span>
+                </div>
+                <h3 class="fw-800 mb-0">@Model.PerformanceMetrics.ReviewsThisMonth</h3>
+                <p class="text-muted small fw-600 mb-0">This Month</p>
+            </div>
+        </div>
+        
+        <div class="col-6 col-lg-3">
+            <div class="card glass-card border-0 p-3 stats-hover">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="icon-box bg-orange-light text-orange">
+                        <i class="bi bi-exclamation-circle"></i>
+                    </div>
+                    <span class="badge text-warning bg-orange-light rounded-pill small">Alert</span>
+                </div>
+                <h3 class="fw-800 mb-0">@Model.PerformanceMetrics.PendingResponses</h3>
+                <p class="text-muted small fw-600 mb-0">Pending</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row g-4 mb-5">
+        <!-- Rating Breakdown Chart -->
+        <div class="col-lg-5">
+            <div class="card glass-card border-0 p-4">
+                <h5 class="fw-800 mb-4 d-flex align-items-center gap-2">
+                    <i class="bi bi-pie-chart text-primary"></i>
+                    Rating Breakdown
+                </h5>
+                <div style="height: 280px;">
+                    <canvas id="ratingBreakdownChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Rating Trends Chart -->
+        <div class="col-lg-7">
+            <div class="card glass-card border-0 p-4">
+                <h5 class="fw-800 mb-4 d-flex align-items-center gap-2">
+                    <i class="bi bi-graph-up text-primary"></i>
+                    Rating Trends (30 Days)
+                </h5>
+                <div style="height: 280px;">
+                    <canvas id="ratingTrendsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Performance & Recent Reviews -->
+    <div class="row g-4 mb-5">
+        <!-- Service Performance -->
+        <div class="col-lg-8">
+            <div class="card glass-card border-0 p-4">
+                <h5 class="fw-800 mb-4 d-flex align-items-center gap-2">
+                    <i class="bi bi-bar-chart-line text-primary"></i>
+                    Service Performance
+                </h5>
+                @if (Model.ServiceRatings.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-premium">
+                            <thead>
+                                <tr>
+                                    <th>Service</th>
+                                    <th>Rating</th>
+                                    <th>Reviews</th>
+                                    <th>Conversion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var service in Model.ServiceRatings)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="fw-700">@service.ServiceName</div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <i class="bi bi-star-fill text-warning small"></i>
+                                                <span class="fw-700">@service.AverageRating.ToString("F1")</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-blue-light text-blue rounded-pill px-3">@service.ReviewCount</span>
+                                        </td>
+                                        <td style="width: 150px;">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="progress flex-grow-1" style="height: 6px;">
+                                                    <div class="progress-bar bg-primary" role="progressbar" 
+                                                         style="width: @service.ConversionRate.ToString("F1")%" 
+                                                         aria-valuenow="@service.ConversionRate" 
+                                                         aria-valuemin="0" aria-valuemax="100">
+                                                    </div>
+                                                </div>
+                                                <span class="small fw-700 text-muted">@service.ConversionRate.ToString("F0")%</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <style>
+                        .table-premium { border-collapse: separate; border-spacing: 0 8px; }
+                        .table-premium tr { background: rgba(255, 255, 255, 0.4); }
+                        .table-premium td { border: none; padding: 15px; vertical-align: middle; }
+                        .table-premium td:first-child { border-radius: 12px 0 0 12px; }
+                        .table-premium td:last-child { border-radius: 0 12px 12px 0; }
+                        .table-premium thead th { border: none; color: #64748b; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; padding: 0 15px 10px; }
+                    </style>
+                }
+                else
+                {
+                    <div class="text-center py-5">
+                        <i class="bi bi-bar-chart fa-3x text-muted mb-3 d-block"></i>
+                        <h5 class="text-muted">No service data yet</h5>
+                    </div>
+                }
+            </div>
+        </div>
+        
+        <!-- Recent Reviews -->
+        <div class="col-lg-4">
+            <div class="card glass-card border-0 p-4">
+                <h5 class="fw-800 mb-4 d-flex align-items-center gap-2">
+                    <i class="bi bi-chat-left-text text-primary"></i>
+                    Recent Reviews
+                </h5>
+                @if (Model.RecentReviews.Any())
+                {
+                    <div class="d-flex flex-column gap-3">
+                        @foreach (var review in Model.RecentReviews)
+                        {
+                            <div class="border-bottom border-light pb-3 mb-1">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <div class="fw-700 small">@review.ReviewerName</div>
+                                    <div class="text-warning small d-flex gap-1">
+                                        @for (int i = 1; i <= 5; i++) {
+                                            <i class="bi bi-star-fill"></i>
+                                        }
+                                    </div>
+                                </div>
+                                <p class="mb-2 small text-dark">@(review.Comment.Length > 80 ? review.Comment.Substring(0, 80) + "..." : review.Comment)</p>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <span class="badge bg-light text-muted fw-600 rounded-pill" style="font-size: 0.65rem;">@review.ServiceName</span>
+                                    <small class="text-muted" style="font-size: 0.65rem;">@review.CreatedAt.ToString("MMM dd")</small>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-4">
+                        <i class="bi bi-chat-square-dots fa-2x text-muted mb-2 d-block"></i>
+                        <h5 class="text-muted small">No reviews yet</h5>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/chartjs/chart.umd.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Rating Breakdown Chart (Pie Chart)
+            const ratingBreakdownCtx = document.getElementById('ratingBreakdownChart').getContext('2d');
+            new Chart(ratingBreakdownCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['5 Stars', '4 Stars', '3 Stars', '2 Stars', '1 Star'],
+                    datasets: [{
+                        data: [
+                            @Model.RatingBreakdown.FiveStarCount,
+                            @Model.RatingBreakdown.FourStarCount,
+                            @Model.RatingBreakdown.ThreeStarCount,
+                            @Model.RatingBreakdown.TwoStarCount,
+                            @Model.RatingBreakdown.OneStarCount
+                        ],
+                        backgroundColor: [
+                            '#28a745', // Green for 5 stars
+                            '#17a2b8', // Blue for 4 stars
+                            '#ffc107', // Yellow for 3 stars
+                            '#fd7e14', // Orange for 2 stars
+                            '#dc3545'  // Red for 1 star
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = total > 0 ? ((context.parsed / total) * 100).toFixed(1) : 0;
+                                    return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Rating Trends Chart (Line Chart)
+            const ratingTrendsCtx = document.getElementById('ratingTrendsChart').getContext('2d');
+            const trendsData = @Html.Raw(Json.Serialize(Model.RatingTrends.Select(t => new { 
+                date = t.Date.ToString("MMM dd"), 
+                rating = t.AverageRating,
+                count = t.ReviewCount 
+            })));
+            
+            new Chart(ratingTrendsCtx, {
+                type: 'line',
+                data: {
+                    labels: trendsData.map(t => t.date),
+                    datasets: [{
+                        label: 'Average Rating',
+                        data: trendsData.map(t => t.rating),
+                        borderColor: '#007bff',
+                        backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#007bff',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 1,
+                            max: 5,
+                            ticks: {
+                                stepSize: 0.5
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                afterLabel: function(context) {
+                                    const dataIndex = context.dataIndex;
+                                    const reviewCount = trendsData[dataIndex].count;
+                                    return 'Reviews: ' + reviewCount;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Auto-refresh analytics every 5 minutes
+            setTimeout(function() {
+                location.reload();
+            }, 300000);
+        });
+    </script>
+}
+
+<style>
+/* Simplified Analytics Styles */
+.glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
+}
+
+.bg-success-light { background: #f0fdf4; }
+.text-success { color: #22c55e; }
+
+/* Progress bar styling */
+.progress {
+    border-radius: 10px;
+    background-color: rgba(0,0,0,0.05);
+}
+
+.progress-bar {
+    border-radius: 10px;
+}
+
+@@media (max-width: 768px) {
+    .fw-800 { font-size: 1.5rem; }
+    .icon-box { width: 40px; height: 40px; font-size: 1.1rem; }
+}
+</style>

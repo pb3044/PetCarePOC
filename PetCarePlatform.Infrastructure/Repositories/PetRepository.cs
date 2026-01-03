@@ -11,21 +11,42 @@ namespace PetCarePlatform.Infrastructure.Repositories
         {
         }
 
-        public override async Task<Pet?> GetByIdAsync(int id)
+        public override async Task<Pet?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(p => p.Owner)
                 .Include(p => p.Photos)
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
         }
 
-        public override async Task<IEnumerable<Pet>> GetAllAsync()
+        public override async Task<IEnumerable<Pet>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(p => p.Owner)
                 .Include(p => p.Photos)
                 .OrderBy(p => p.Name)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
+        }
+
+        // Explicit interface implementations (without CancellationToken)
+        async Task<Pet> IPetRepository.GetByIdAsync(int id)
+        {
+            return await GetByIdAsync(id) ?? throw new InvalidOperationException($"Pet with ID {id} not found");
+        }
+
+        async Task<IEnumerable<Pet>> IPetRepository.GetAllAsync()
+        {
+            return await GetAllAsync();
+        }
+
+        async Task<Pet> IPetRepository.CreateAsync(Pet pet)
+        {
+            return await CreateAsync(pet);
+        }
+
+        async Task IPetRepository.DeleteAsync(int id)
+        {
+            await DeleteAsync(id);
         }
 
         public async Task<IEnumerable<Pet>> GetByOwnerIdAsync(int ownerId)

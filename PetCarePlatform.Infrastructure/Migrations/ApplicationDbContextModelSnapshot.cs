@@ -17,7 +17,7 @@ namespace PetCarePlatform.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.16")
+                .HasAnnotation("ProductVersion", "10.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -877,6 +877,14 @@ namespace PetCarePlatform.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("BusinessNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Certifications")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -898,6 +906,9 @@ namespace PetCarePlatform.Infrastructure.Migrations
                     b.Property<string>("InsuranceInfo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LicenseInfo")
                         .IsRequired()

@@ -1,6 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using PetCarePlatform.Core.Common;
+using PetCarePlatform.Core.DTOs.Queries;
+using PetCarePlatform.Core.DTOs.Requests;
+using PetCarePlatform.Core.DTOs.Responses;
+using PetCarePlatform.Core.Exceptions;
 using PetCarePlatform.Core.Interfaces;
 using PetCarePlatform.Core.Models;
 
@@ -14,6 +22,7 @@ namespace PetCarePlatform.Core.Services
         private readonly IMessageRepository _messageRepository;
         private readonly IReviewRepository _reviewRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ILogger<NotificationService> _logger;
         
         public NotificationService(
             INotificationRepository notificationRepository,
@@ -21,14 +30,16 @@ namespace PetCarePlatform.Core.Services
             IPaymentRepository paymentRepository,
             IMessageRepository messageRepository,
             IReviewRepository reviewRepository,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            ILogger<NotificationService> logger)
         {
-            _notificationRepository = notificationRepository;
-            _bookingRepository = bookingRepository;
-            _paymentRepository = paymentRepository;
-            _messageRepository = messageRepository;
-            _reviewRepository = reviewRepository;
-            _userRepository = userRepository;
+            _notificationRepository = notificationRepository ?? throw new ArgumentNullException(nameof(notificationRepository));
+            _bookingRepository = bookingRepository ?? throw new ArgumentNullException(nameof(bookingRepository));
+            _paymentRepository = paymentRepository ?? throw new ArgumentNullException(nameof(paymentRepository));
+            _messageRepository = messageRepository ?? throw new ArgumentNullException(nameof(messageRepository));
+            _reviewRepository = reviewRepository ?? throw new ArgumentNullException(nameof(reviewRepository));
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<Notification> GetNotificationByIdAsync(int id)
@@ -257,6 +268,238 @@ namespace PetCarePlatform.Core.Services
             };
 
             await _notificationRepository.CreateAsync(notification);
+        }
+
+        // ============================================
+        // Enterprise Pattern Methods (Result-based)
+        // ============================================
+
+        public async Task<Result<NotificationResponse>> GetNotificationByIdAsync(int id, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                _logger.LogInformation("Getting notification by ID: {NotificationId}", id);
+                
+                var notification = await _notificationRepository.GetByIdAsync(id).ConfigureAwait(false);
+                if (notification == null)
+                {
+                    _logger.LogWarning("Notification not found: {NotificationId}", id);
+                    return Result<NotificationResponse>.Failure("Notification not found", "NOTIFICATION_NOT_FOUND");
+                }
+
+                var response = MapToNotificationResponse(notification);
+                return Result<NotificationResponse>.Success(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting notification {NotificationId}", id);
+                return Result<NotificationResponse>.Failure("An error occurred while retrieving the notification", "INTERNAL_ERROR");
+            }
+        }
+
+        public async Task<Result<PagedResult<NotificationResponse>>> GetNotificationsAsync(NotificationQuery query, int userId, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                _logger.LogInformation("Getting notifications for user {UserId} with query", userId);
+
+                var notifications = await _notificationRepository.GetByUserIdAsync(userId).ConfigureAwait(false);
+
+                // Apply filters
+                if (query.Type.HasValue)
+                {
+                    notifications = notifications.Where(n => n.Type == query.Type.Value);
+                }
+
+                if (query.IsRead.HasValue)
+                {
+                    notifications = notifications.Where(n => n.IsRead == query.IsRead.Value);
+                }
+
+                if (query.FromDate.HasValue)
+                {
+                    notifications = notifications.Where(n => n.CreatedAt >= query.FromDate.Value);
+                }
+
+                if (query.ToDate.HasValue)
+                {
+                    notifications = notifications.Where(n => n.CreatedAt <= query.ToDate.Value);
+                }
+
+                if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+                {
+                    var searchTerm = query.SearchTerm.ToLower();
+                    notifications = notifications.Where(n => 
+                        n.Title.ToLower().Contains(searchTerm) || 
+                        n.Content.ToLower().Contains(searchTerm));
+                }
+
+                // Apply sorting
+                notifications = query.SortBy?.ToLower() switch
+                {
+                    "createdat" => query.SortOrder == "asc" 
+                        ? notifications.OrderBy(n => n.CreatedAt) 
+                        : notifications.OrderByDescending(n => n.CreatedAt),
+                    "isread" => query.SortOrder == "asc" 
+                        ? notifications.OrderBy(n => n.IsRead) 
+                        : notifications.OrderByDescending(n => n.IsRead),
+                    "type" => query.SortOrder == "asc" 
+                        ? notifications.OrderBy(n => n.Type) 
+                        : notifications.OrderByDescending(n => n.Type),
+                    _ => notifications.OrderByDescending(n => n.CreatedAt)
+                };
+
+                var totalCount = notifications.Count();
+                var items = notifications
+                    .Skip((query.PageNumber - 1) * query.PageSize)
+                    .Take(query.PageSize)
+                    .Select(MapToNotificationResponse)
+                    .ToList();
+
+                var pagedResult = new PagedResult<NotificationResponse>(
+                    items,
+                    totalCount,
+                    query.PageNumber,
+                    query.PageSize
+                );
+
+                return Result<PagedResult<NotificationResponse>>.Success(pagedResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting notifications for user {UserId}", userId);
+                return Result<PagedResult<NotificationResponse>>.Failure("An error occurred while retrieving notifications", "INTERNAL_ERROR");
+            }
+        }
+
+        public async Task<Result<NotificationResponse>> CreateNotificationAsync(CreateNotificationRequest request, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                _logger.LogInformation("Creating notification for user {UserId}", request.UserId);
+
+                // Validate user exists
+                var user = await _userRepository.GetByIdAsync(request.UserId).ConfigureAwait(false);
+                if (user == null)
+                {
+                    _logger.LogWarning("User not found: {UserId}", request.UserId);
+                    return Result<NotificationResponse>.Failure("User not found", "USER_NOT_FOUND");
+                }
+
+                // Create notification
+                var notification = new Notification
+                {
+                    UserId = request.UserId,
+                    Title = request.Title,
+                    Content = request.Content,
+                    Type = request.Type,
+                    ActionUrl = request.ActionUrl,
+                    IsRead = false,
+                    CreatedAt = DateTime.UtcNow,
+                    ReadAt = null
+                };
+
+                var createdNotification = await _notificationRepository.CreateAsync(notification).ConfigureAwait(false);
+
+                _logger.LogInformation("Notification created successfully: {NotificationId}", createdNotification.Id);
+
+                var response = MapToNotificationResponse(createdNotification);
+                return Result<NotificationResponse>.Success(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating notification for user {UserId}", request.UserId);
+                return Result<NotificationResponse>.Failure("An error occurred while creating the notification", "INTERNAL_ERROR");
+            }
+        }
+
+        public async Task<Result> MarkNotificationAsReadAsync(int notificationId, int userId, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                _logger.LogInformation("Marking notification {NotificationId} as read by user {UserId}", notificationId, userId);
+
+                var notification = await _notificationRepository.GetByIdAsync(notificationId).ConfigureAwait(false);
+                if (notification == null)
+                {
+                    _logger.LogWarning("Notification not found: {NotificationId}", notificationId);
+                    return Result.Failure("Notification not found", "NOTIFICATION_NOT_FOUND");
+                }
+
+                // Validate user owns the notification
+                if (notification.UserId != userId)
+                {
+                    _logger.LogWarning("User {UserId} does not own notification {NotificationId}", userId, notificationId);
+                    return Result.Failure("You can only mark your own notifications as read", "UNAUTHORIZED");
+                }
+
+                if (!notification.IsRead)
+                {
+                    await _notificationRepository.MarkAsReadAsync(notificationId).ConfigureAwait(false);
+                    _logger.LogInformation("Notification {NotificationId} marked as read", notificationId);
+                }
+
+                return Result.Success();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error marking notification {NotificationId} as read", notificationId);
+                return Result.Failure("An error occurred while marking the notification as read", "INTERNAL_ERROR");
+            }
+        }
+
+        public async Task<Result> MarkAllNotificationsAsReadAsync(int userId, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                _logger.LogInformation("Marking all notifications as read for user {UserId}", userId);
+
+                await _notificationRepository.MarkAllAsReadAsync(userId).ConfigureAwait(false);
+                _logger.LogInformation("All notifications marked as read for user {UserId}", userId);
+
+                return Result.Success();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error marking all notifications as read for user {UserId}", userId);
+                return Result.Failure("An error occurred while marking notifications as read", "INTERNAL_ERROR");
+            }
+        }
+
+        public async Task<Result<int>> GetUnreadNotificationCountAsync(int userId, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                _logger.LogInformation("Getting unread notification count for user {UserId}", userId);
+
+                var unreadNotifications = await _notificationRepository.GetUnreadByUserIdAsync(userId).ConfigureAwait(false);
+                var count = unreadNotifications.Count();
+
+                return Result<int>.Success(count);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting unread notification count for user {UserId}", userId);
+                return Result<int>.Failure("An error occurred while retrieving unread notification count", "INTERNAL_ERROR");
+            }
+        }
+
+        // Helper method to map Notification to NotificationResponse
+        private NotificationResponse MapToNotificationResponse(Notification notification)
+        {
+            return new NotificationResponse
+            {
+                Id = notification.Id,
+                UserId = notification.UserId,
+                UserName = $"{notification.User?.FirstName} {notification.User?.LastName}".Trim(),
+                Title = notification.Title,
+                Content = notification.Content,
+                Type = notification.Type,
+                ActionUrl = notification.ActionUrl,
+                IsRead = notification.IsRead,
+                CreatedAt = notification.CreatedAt,
+                ReadAt = notification.ReadAt
+            };
         }
     }
 }

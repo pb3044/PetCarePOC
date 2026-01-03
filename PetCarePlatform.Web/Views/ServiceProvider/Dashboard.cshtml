@@ -14,89 +14,111 @@
         </div>
     }
 
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <h1 class="mb-1">Service Provider Dashboard</h1>
-                    <p class="text-muted mb-0">Welcome back, @Model.ProviderInfo.BusinessName</p>
-                </div>
-                <div class="text-end">
-                    <div class="badge @(Model.ProviderInfo.IsAvailableToday ? "bg-success" : "bg-danger") fs-6">
-                        <i class="fas @(Model.ProviderInfo.IsAvailableToday ? "fa-check-circle" : "fa-times-circle") me-1"></i>
-                        @Model.ProviderInfo.CurrentAvailabilityStatus
-                    </div>
-                </div>
+    <div class="row align-items-center mb-5">
+        <div class="col-md-8">
+            <h1 class="fw-800 mb-1" style="letter-spacing: -1px;">Pro Dashboard</h1>
+            <p class="text-muted mb-0">Analytics and overview for <span class="fw-600 text-dark">@Model.ProviderInfo.BusinessName</span></p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <div class="glass-card d-inline-flex align-items-center px-3 py-2 gap-2">
+                <span class="dot @(Model.ProviderInfo.IsAvailableToday ? "bg-success" : "bg-danger")"></span>
+                <span class="fw-600 text-dark">@Model.ProviderInfo.CurrentAvailabilityStatus</span>
             </div>
         </div>
     </div>
 
     <!-- Summary Cards -->
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card text-white bg-primary">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h4 class="card-title">@Model.TotalBookings</h4>
-                            <p class="card-text">Total Bookings</p>
+    <div class="row g-4 mb-5">
+        <div class="col-6 col-lg-3">
+            <div class="card glass-card border-0 h-100 p-3 stats-hover">
+                <div class="d-flex flex-column h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="icon-box bg-purple-light text-purple">
+                            <i class="bi bi-calendar-check fs-5"></i>
                         </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-calendar-check fa-2x"></i>
-                        </div>
+                        <span class="badge text-success bg-success-light rounded-pill">+12%</span>
                     </div>
+                    <h3 class="fw-800 mb-1">@Model.TotalBookings</h3>
+                    <p class="text-muted small fw-600 mb-0">Total Bookings</p>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-3">
-            <div class="card text-white bg-success">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h4 class="card-title">@Model.PendingRequests</h4>
-                            <p class="card-text">Pending Requests</p>
+        <div class="col-6 col-lg-3">
+            <div class="card glass-card border-0 h-100 p-3 stats-hover">
+                <div class="d-flex flex-column h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="icon-box bg-orange-light text-orange">
+                            <i class="bi bi-clock-history fs-5"></i>
                         </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-clock fa-2x"></i>
-                        </div>
+                        @if (Model.PendingRequests > 0) {
+                            <span class="badge text-warning bg-warning-light rounded-pill">@Model.PendingRequests Action</span>
+                        }
                     </div>
+                    <h3 class="fw-800 mb-1">@Model.PendingRequests</h3>
+                    <p class="text-muted small fw-600 mb-0">Pending</p>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-3">
-            <div class="card text-white bg-info">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h4 class="card-title">@Model.ActiveServices</h4>
-                            <p class="card-text">Active Services</p>
+        <div class="col-6 col-lg-3">
+            <div class="card glass-card border-0 h-100 p-3 stats-hover">
+                <div class="d-flex flex-column h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="icon-box bg-blue-light text-blue">
+                            <i class="bi bi-grid fs-5"></i>
                         </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-paw fa-2x"></i>
-                        </div>
+                        <span class="badge text-info bg-info-light rounded-pill">Active</span>
                     </div>
+                    <h3 class="fw-800 mb-1">@Model.ActiveServices</h3>
+                    <p class="text-muted small fw-600 mb-0">My Services</p>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-3">
-            <div class="card text-white bg-warning">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h4 class="card-title">$@Model.MonthlyEarnings.ToString("F2")</h4>
-                            <p class="card-text">This Month</p>
+        <div class="col-6 col-lg-3">
+            <div class="card glass-card border-0 h-100 p-3 stats-hover">
+                <div class="d-flex flex-column h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="icon-box bg-green-light text-green">
+                            <i class="bi bi-wallet2 fs-5"></i>
                         </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-dollar-sign fa-2x"></i>
-                        </div>
+                        <span class="badge text-success bg-success-light rounded-pill">+8%</span>
                     </div>
+                    <h3 class="fw-800 mb-1">$@Model.MonthlyEarnings.ToString("N0")</h3>
+                    <p class="text-muted small fw-600 mb-0">Earnings</p>
                 </div>
             </div>
         </div>
     </div>
+
+    <style>
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .bg-purple-light { background: #f3f0ff; }
+        .text-purple { color: #7c4dff; }
+        .bg-orange-light { background: #fff8f1; }
+        .text-orange { color: #ff9100; }
+        .bg-blue-light { background: #eef2ff; }
+        .text-blue { color: #3d5afe; }
+        .bg-green-light { background: #f0fdf4; }
+        .text-green { color: #22c55e; }
+        .bg-success-light { background: rgba(34, 197, 94, 0.1); }
+        .bg-warning-light { background: rgba(245, 158, 11, 0.1); }
+        .bg-info-light { background: rgba(59, 130, 246, 0.1); }
+        .stats-hover { transition: transform 0.3s ease; }
+        .stats-hover:hover { transform: translateY(-5px); }
+        .fw-800 { font-weight: 800; }
+        .fw-700 { font-weight: 700; }
+        .fw-600 { font-weight: 600; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    </style>
 
     <!-- Recent Activity & Upcoming Appointments -->
     <div class="row">
@@ -124,7 +146,33 @@
                                     @foreach (var request in Model.RecentRequests)
                                     {
                                         <tr>
-                                            <td>@request.PetOwnerName</td>
+                                            <td>
+                                                <div>
+                                                    <strong>@request.PetOwnerName</strong><br>
+                                                    <small class="text-muted d-block">
+                                                        <i class="fas fa-envelope me-1"></i>
+                                                        @if (!string.IsNullOrWhiteSpace(request.PetOwnerEmail))
+                                                        {
+                                                            <span>@request.PetOwnerEmail</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="text-muted">N/A</span>
+                                                        }
+                                                    </small>
+                                                    <small class="text-muted d-block">
+                                                        <i class="fas fa-phone me-1"></i>
+                                                        @if (!string.IsNullOrWhiteSpace(request.PetOwnerPhone))
+                                                        {
+                                                            <span>@request.PetOwnerPhone</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="text-muted">N/A</span>
+                                                        }
+                                                    </small>
+                                                </div>
+                                            </td>
                                             <td>@request.ServiceName</td>
                                             <td>@request.RequestDate.ToString("MMM dd, yyyy")</td>
                                             <td>
@@ -141,7 +189,7 @@
                                             <td>
                                                 @if (request.Status == "Pending")
                                                 {
-                                                    <a href="@Url.Action("Details", "BookingRequest", new { id = request.Id })" class="btn btn-sm btn-outline-primary">
+                                                    <a href="@Url.Action("BookingRequest", "ServiceProvider")" class="btn btn-sm btn-outline-primary">
                                                         View Details
                                                     </a>
                                                 }
@@ -246,6 +294,9 @@
                         <a href="@Url.Action("Profile", "ServiceProvider")" class="btn btn-outline-warning">
                             <i class="fas fa-user-edit"></i> Update Profile
                         </a>
+                        <a href="@Url.Action("Analytics", "ServiceProvider")" class="btn btn-outline-info">
+                            <i class="fas fa-chart-line"></i> View Analytics
+                        </a>
                     </div>
                 </div>
             </div>
@@ -253,11 +304,23 @@
     </div>
 </div>
 
+    <style>
+        .stats-trend { display: none; }
+    </style>
+
 @section Scripts {
     <script>
         // Auto-refresh dashboard every 5 minutes
         setTimeout(function() {
             location.reload();
         }, 300000);
+        
+        // Add smooth animations
+        $(document).ready(function() {
+            $('.stats-card').each(function(index) {
+                $(this).css('animation-delay', (index * 0.1) + 's');
+                $(this).addClass('animate__animated animate__fadeInUp');
+            });
+        });
     </script>
 }

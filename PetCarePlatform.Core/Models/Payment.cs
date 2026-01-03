@@ -30,7 +30,9 @@ namespace PetCarePlatform.Core.Models
         Captured,
         Refunded,
         Failed,
-        Cancelled
+        Cancelled,
+        RequiresAction,
+        Disputed
     }
 
     public enum PaymentMethod

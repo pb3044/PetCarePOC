@@ -150,6 +150,20 @@
                                             <div class="col-md-2 text-center">
                                                 <h4 class="text-success mb-0">$@booking.TotalPrice.ToString("F2")</h4>
                                                 <span class="badge bg-@GetStatusBadgeColor(booking.Status)">@booking.Status</span>
+                                                @if (booking.Status == BookingStatus.Requested && booking.PaymentId == null)
+                                                {
+                                                    <div class="mt-1">
+                                                        <a href="@Url.Action("ProcessPayment", "Payments", new { bookingId = booking.Id })" class="btn btn-sm btn-warning">
+                                                            <i class="fas fa-credit-card me-1"></i>Pay Now
+                                                        </a>
+                                                    </div>
+                                                }
+                                                else if (booking.PaymentId != null)
+                                                {
+                                                    <div class="mt-1">
+                                                        <span class="badge bg-success">Paid</span>
+                                                    </div>
+                                                }
                                             </div>
                                             <div class="col-md-2 text-end">
                                                 <div class="dropdown">
@@ -446,8 +460,8 @@
         }
 
         function leaveReview(bookingId) {
-            // Implement review functionality
-            alert('Leave review for booking ID: ' + bookingId);
+            // Redirect to review creation page
+            window.location.href = '/Reviews/Create?bookingId=' + bookingId;
         }
 
         function rebookService(serviceId) {

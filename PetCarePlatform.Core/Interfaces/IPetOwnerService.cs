@@ -1,22 +1,18 @@
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using PetCarePlatform.Core.Common;
+using PetCarePlatform.Core.DTOs.Requests;
+using PetCarePlatform.Core.DTOs.Responses;
 using PetCarePlatform.Core.Models;
 
 namespace PetCarePlatform.Core.Interfaces
 {
     public interface IPetOwnerService
     {
-        Task<PetOwner> GetPetOwnerByIdAsync(int id);
-        Task<PetOwner> GetPetOwnerByUserIdAsync(int userId);
-        Task<PetOwner> CreatePetOwnerProfileAsync(PetOwner petOwner);
-        Task UpdatePetOwnerProfileAsync(PetOwner petOwner);
-        Task<IEnumerable<Pet>> GetPetsByOwnerIdAsync(int ownerId);
-        Task<Pet> AddPetAsync(Pet pet);
-        Task UpdatePetAsync(Pet pet);
-        Task DeletePetAsync(int petId);
-        Task<IEnumerable<ServiceProvider>> GetFavoriteProvidersAsync(int petOwnerId);
-        Task AddFavoriteProviderAsync(int petOwnerId, int providerId);
-        Task RemoveFavoriteProviderAsync(int petOwnerId, int providerId);
-        Task<IEnumerable<Booking>> GetOwnerBookingsAsync(int ownerId, bool includeHistory = false);
+        Task<Result<PetOwnerResponse>> GetPetOwnerByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task<Result<PetOwnerResponse>> GetPetOwnerByUserIdAsync(int userId, CancellationToken cancellationToken = default);
+        Task<Result<PetOwnerResponse>> CreatePetOwnerProfileAsync(CreatePetOwnerRequest request, CancellationToken cancellationToken = default);
+        Task<Result<PetOwnerResponse>> UpdatePetOwnerProfileAsync(UpdatePetOwnerRequest request, CancellationToken cancellationToken = default);
     }
 }

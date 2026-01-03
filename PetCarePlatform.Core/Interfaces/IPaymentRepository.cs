@@ -9,6 +9,7 @@ namespace PetCarePlatform.Core.Interfaces
         Task<Payment> GetByIdAsync(int id);
         Task<IEnumerable<Payment>> GetAllAsync();
         Task<Payment> GetByBookingIdAsync(int bookingId);
+        Task<Payment> GetByTransactionIdAsync(string transactionId);
         Task<IEnumerable<Payment>> GetByUserIdAsync(int userId);
         Task<IEnumerable<Payment>> GetByStatusAsync(PaymentStatus status);
         Task<Payment> CreateAsync(Payment payment);

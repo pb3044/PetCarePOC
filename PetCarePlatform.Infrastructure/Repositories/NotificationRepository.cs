@@ -11,19 +11,40 @@ namespace PetCarePlatform.Infrastructure.Repositories
         {
         }
 
-        public override async Task<Notification?> GetByIdAsync(int id)
+        public override async Task<Notification?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(n => n.User)
-                .FirstOrDefaultAsync(n => n.Id == id);
+                .FirstOrDefaultAsync(n => n.Id == id, cancellationToken);
         }
 
-        public override async Task<IEnumerable<Notification>> GetAllAsync()
+        public override async Task<IEnumerable<Notification>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(n => n.User)
                 .OrderByDescending(n => n.CreatedAt)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
+        }
+
+        // Explicit interface implementations (without CancellationToken)
+        async Task<Notification> INotificationRepository.GetByIdAsync(int id)
+        {
+            return await GetByIdAsync(id) ?? throw new InvalidOperationException($"Notification with ID {id} not found");
+        }
+
+        async Task<IEnumerable<Notification>> INotificationRepository.GetAllAsync()
+        {
+            return await GetAllAsync();
+        }
+
+        async Task<Notification> INotificationRepository.CreateAsync(Notification notification)
+        {
+            return await CreateAsync(notification);
+        }
+
+        async Task INotificationRepository.DeleteAsync(int id)
+        {
+            await DeleteAsync(id);
         }
 
         public async Task<IEnumerable<Notification>> GetByUserIdAsync(int userId)

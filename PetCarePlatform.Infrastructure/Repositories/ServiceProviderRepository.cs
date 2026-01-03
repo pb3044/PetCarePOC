@@ -11,7 +11,7 @@ namespace PetCarePlatform.Infrastructure.Repositories
         {
         }
 
-        public override async Task<ServiceProvider?> GetByIdAsync(int id)
+        public override async Task<ServiceProvider?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(sp => sp.User)
@@ -21,7 +21,7 @@ namespace PetCarePlatform.Infrastructure.Repositories
                     .ThenInclude(s => s.Reviews)
                 .Include(sp => sp.AvailabilitySchedules)
                 .Include(sp => sp.FavoritedByOwners)
-                .FirstOrDefaultAsync(sp => sp.Id == id);
+                .FirstOrDefaultAsync(sp => sp.Id == id, cancellationToken);
         }
 
         public async Task<ServiceProvider> GetByUserIdAsync(int userId)
@@ -34,16 +34,38 @@ namespace PetCarePlatform.Infrastructure.Repositories
                     .ThenInclude(s => s.Reviews)
                 .Include(sp => sp.AvailabilitySchedules)
                 .Include(sp => sp.FavoritedByOwners)
-                .FirstOrDefaultAsync(sp => sp.UserId == userId);
+                .FirstOrDefaultAsync(sp => sp.UserId == userId)
+                ?? throw new InvalidOperationException($"ServiceProvider with UserId {userId} not found");
         }
 
-        public override async Task<IEnumerable<ServiceProvider>> GetAllAsync()
+        public override async Task<IEnumerable<ServiceProvider>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(sp => sp.User)
                 .Include(sp => sp.Services)
                 .OrderBy(sp => sp.BusinessName)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
+        }
+
+        // Explicit interface implementations (without CancellationToken)
+        async Task<ServiceProvider> IServiceProviderRepository.GetByIdAsync(int id)
+        {
+            return await GetByIdAsync(id) ?? throw new InvalidOperationException($"ServiceProvider with ID {id} not found");
+        }
+
+        async Task<IEnumerable<ServiceProvider>> IServiceProviderRepository.GetAllAsync()
+        {
+            return await GetAllAsync();
+        }
+
+        async Task<ServiceProvider> IServiceProviderRepository.CreateAsync(ServiceProvider serviceProvider)
+        {
+            return await CreateAsync(serviceProvider);
+        }
+
+        async Task IServiceProviderRepository.DeleteAsync(int id)
+        {
+            await DeleteAsync(id);
         }
 
         public async Task<IEnumerable<ServiceProvider>> GetByServiceTypeAsync(ServiceType serviceType)

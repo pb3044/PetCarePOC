@@ -2,294 +2,602 @@
     ViewData["Title"] = "Home";
 }
 
-<!-- Hero Section -->
-<div class="hero-section">
-    <div class="container text-center">
-        <h1 class="display-4 mb-4">Find Trusted Pet Care in Your Neighborhood</h1>
-        <p class="lead mb-5">Connect with experienced pet sitters, dog walkers, groomers, and more.</p>
-        <div class="d-flex justify-content-center">
-            <a href="/Services" class="btn btn-primary btn-lg me-3">Find Services</a>
-            <a href="/Account/Register" class="btn btn-outline-light btn-lg">Become a Provider</a>
+<div class="landing-page-wrapper">
+    <!-- Hero Section -->
+    <section class="hero-section text-white d-flex align-items-center position-relative overflow-hidden">
+        <div class="mesh-gradient-container">
+            <div class="mesh-blob blob-1"></div>
+            <div class="mesh-blob blob-2"></div>
+            <div class="mesh-blob blob-3"></div>
         </div>
-    </div>
-</div>
-
-<!-- Search Box -->
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-lg-10">
-            <div class="search-box">
-                <form>
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <label for="serviceType" class="form-label">Service Type</label>
-                            <select id="serviceType" class="form-select">
-                                <option selected>All Services</option>
-                                <option>Pet Sitting</option>
-                                <option>Dog Walking</option>
-                                <option>Pet Boarding</option>
-                                <option>Pet Grooming</option>
-                                <option>Pet Training</option>
-                                <option>Veterinary Services</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="location" class="form-label">Location</label>
-                            <input type="text" class="form-control" id="location" placeholder="Enter your address">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="date" class="form-label">Date</label>
-                            <input type="date" class="form-control" id="date">
-                        </div>
-                        <div class="col-md-1 d-flex align-items-end">
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="bi bi-search"></i>
-                            </button>
+        
+        <div class="container position-relative z-2">
+            <div class="row align-items-center g-5">
+                <!-- Image Side: Order 1 on mobile, Order 2 on Desktop -->
+                <div class="col-lg-5 order-1 order-lg-2 position-relative animate__animated animate__fadeInRight">
+                    <div class="hero-visual-stack">
+                        <!-- Main Hero Image -->
+                        <div class="main-visual-container">
+                            <div class="visual-bg-orb"></div>
+                            <img src="/images/hero/pets-hero.png" alt="Happy Pets" class="img-fluid hero-pet-image">
                         </div>
                     </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+                </div>
 
-<!-- Featured Services -->
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Popular Services</h2>
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card service-card">
-                <img src="/images/dog-walking.jpg" class="card-img-top" alt="Dog Walking">
-                <div class="card-body">
-                    <h5 class="card-title">Dog Walking</h5>
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="text-primary fw-bold">$15-25/hour</span>
-                        <span class="rating-stars">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
-                            <span class="text-muted ms-1">4.5</span>
-                        </span>
-                    </div>
-                    <p class="card-text">Professional dog walkers will ensure your furry friend gets the exercise they need.</p>
-                    <a href="/Services/Details/1" class="btn btn-outline-primary">View Details</a>
-                </div>
-                <div class="provider-badge">
-                    <img src="/images/provider1.jpg" class="rounded-circle me-1" width="20" height="20" alt="Provider">
-                    <span>Jane D.</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card service-card">
-                <img src="/images/pet-sitting.jpg" class="card-img-top" alt="Pet Sitting">
-                <div class="card-body">
-                    <h5 class="card-title">Pet Sitting</h5>
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="text-primary fw-bold">$30-50/day</span>
-                        <span class="rating-stars">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star"></i>
-                            <span class="text-muted ms-1">4.0</span>
-                        </span>
-                    </div>
-                    <p class="card-text">Experienced pet sitters will care for your pets in the comfort of your own home.</p>
-                    <a href="/Services/Details/2" class="btn btn-outline-primary">View Details</a>
-                </div>
-                <div class="provider-badge">
-                    <img src="/images/provider2.jpg" class="rounded-circle me-1" width="20" height="20" alt="Provider">
-                    <span>Mark S.</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card service-card">
-                <img src="/images/grooming.jpg" class="card-img-top" alt="Pet Grooming">
-                <div class="card-body">
-                    <h5 class="card-title">Pet Grooming</h5>
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="text-primary fw-bold">$40-80/session</span>
-                        <span class="rating-stars">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <span class="text-muted ms-1">5.0</span>
-                        </span>
-                    </div>
-                    <p class="card-text">Professional groomers will keep your pet clean, healthy, and looking their best.</p>
-                    <a href="/Services/Details/3" class="btn btn-outline-primary">View Details</a>
-                </div>
-                <div class="provider-badge">
-                    <img src="/images/provider3.jpg" class="rounded-circle me-1" width="20" height="20" alt="Provider">
-                    <span>Sarah L.</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="text-center mt-3">
-        <a href="/Services" class="btn btn-primary">View All Services</a>
-    </div>
-</div>
-
-<!-- How It Works -->
-<div class="container mt-5 py-5 bg-light rounded">
-    <h2 class="text-center mb-5">How It Works</h2>
-    <div class="row text-center">
-        <div class="col-md-3 mb-4">
-            <div class="feature-icon">
-                <i class="bi bi-search"></i>
-            </div>
-            <h5>Search</h5>
-            <p>Find trusted pet care providers in your neighborhood.</p>
-        </div>
-        <div class="col-md-3 mb-4">
-            <div class="feature-icon">
-                <i class="bi bi-calendar-check"></i>
-            </div>
-            <h5>Book</h5>
-            <p>Schedule services that fit your needs and schedule.</p>
-        </div>
-        <div class="col-md-3 mb-4">
-            <div class="feature-icon">
-                <i class="bi bi-credit-card"></i>
-            </div>
-            <h5>Pay</h5>
-            <p>Secure payments with our trusted payment system.</p>
-        </div>
-        <div class="col-md-3 mb-4">
-            <div class="feature-icon">
-                <i class="bi bi-heart"></i>
-            </div>
-            <h5>Relax</h5>
-            <p>Enjoy peace of mind knowing your pet is in good hands.</p>
-        </div>
-    </div>
-    <div class="text-center mt-4">
-        <a href="/Home/HowItWorks" class="btn btn-outline-primary">Learn More</a>
-    </div>
-</div>
-
-<!-- Testimonials -->
-<div class="container mt-5">
-    <h2 class="text-center mb-4">What Pet Owners Say</h2>
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card testimonial-card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-3">
-                        <img src="/images/testimonial1.jpg" alt="Testimonial" class="testimonial-avatar">
-                        <div>
-                            <h5 class="card-title mb-0">Emily Johnson</h5>
-                            <div class="rating-stars">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
+                <!-- Text Side: Order 2 on mobile, Order 1 on Desktop -->
+                <div class="col-lg-7 order-2 order-lg-1 text-center text-lg-start animate__animated animate__fadeInLeft position-relative">
+                    <!-- Trust Badges Row - Fixed above title -->
+                    <div class="trust-badge-row d-flex flex-wrap justify-content-center justify-content-lg-start gap-4 mb-4 animate__animated animate__fadeInDown">
+                        <div class="trust-item d-flex align-items-center gap-2">
+                            <div class="trust-icon-sm bg-warning"><i class="bi bi-star-fill"></i></div>
+                            <div class="trust-text-group">
+                                <div class="fw-800 small mb-0">5.0 Rating</div>
+                                <div class="x-small opacity-75">Verified</div>
+                            </div>
+                        </div>
+                        <div class="trust-item d-flex align-items-center gap-2">
+                            <div class="trust-icon-sm bg-info"><i class="bi bi-shield-check"></i></div>
+                            <div class="trust-text-group">
+                                <div class="fw-800 small mb-0">100% Safe</div>
+                                <div class="x-small opacity-75">Insured</div>
                             </div>
                         </div>
                     </div>
-                    <p class="card-text">"I was nervous about leaving my cat with a sitter, but Mark was amazing! He sent photos and updates daily, and my cat was so happy when I returned."</p>
+
+                    <h1 class="hero-title fw-800 mb-3 ls-tight">
+                        <span class="d-md-none">Trusted Pet Care in Your Neighborhood</span>
+                        <span class="d-none d-md-inline">Trusted Pet Care <br> <span class="text-gradient">Right in Your</span><br> Neighborhood</span>
+                    </h1>
+                    <p class="hero-subtitle text-white-50 fs-6 fs-md-5 mb-4 mb-md-5 opacity-75">
+                        100% insured, 1,000% loved.
+                    </p>
+                    
+                    <div class="hero-actions d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3">
+                        <a href="/Services/Search" class="btn btn-hero-primary px-5 py-3 rounded-pill fw-800 fs-5">
+                            <i class="bi bi-search me-2"></i> Find Services
+                        </a>
+                        <a href="/Account/Register" class="btn btn-hero-outline px-5 py-3 rounded-pill fw-800 fs-5">
+                            Become a Provider
+                        </a>
+                    </div>
+
+                    <div class="hero-stats-glass d-flex justify-content-center justify-content-lg-start gap-3 gap-md-5 mt-5">
+                        <div class="stat-item">
+                            <h3 class="fw-800 mb-0">10k+</h3>
+                            <p class="small text-white-50 mb-0">Happy Pets</p>
+                        </div>
+                        <div class="stat-item border-start border-white-10 ps-3 ps-md-5">
+                            <h3 class="fw-800 mb-0">500+</h3>
+                            <p class="small text-white-50 mb-0">Providers</p>
+                        </div>
+                        <div class="stat-item border-start border-white-10 ps-3 ps-md-5">
+                            <h3 class="fw-800 mb-0">4.9</h3>
+                            <p class="small text-white-50 mb-0">Avg Rating</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card testimonial-card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-3">
-                        <img src="/images/testimonial2.jpg" alt="Testimonial" class="testimonial-avatar">
-                        <div>
-                            <h5 class="card-title mb-0">Michael Smith</h5>
-                            <div class="rating-stars">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
+    </section>
+
+    <!-- Smart Search Bar (Floating over Hero) -->
+    <div class="search-bar-container position-relative container mt-n5 z-10">
+        <div class="search-glass-pill p-3 p-md-4 shadow-lg animate__animated animate__zoomIn">
+            <form action="/Services/Search" method="get" class="row g-3 align-items-center">
+                <div class="col-12 col-lg-4">
+                    <div class="input-with-icon h-100">
+                        <i class="bi bi-geo-alt text-primary"></i>
+                        <input type="text" name="location" placeholder="Where are you located?" class="form-control-minimal">
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="input-with-icon h-100">
+                        <i class="bi bi-paw text-primary"></i>
+                        <select name="type" class="form-select-minimal">
+                            <option value="">What service?</option>
+                            <option value="0">Dog Walking</option>
+                            <option value="1">Pet Sitting</option>
+                            <option value="4">Grooming</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="input-with-icon h-100">
+                        <i class="bi bi-calendar-event text-primary"></i>
+                        <input type="date" name="date" class="form-control-minimal">
+                    </div>
+                </div>
+                <div class="col-12 col-lg-2">
+                    <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill fw-800">
+                        Search Now
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section class="py-10 bg-white">
+        <div class="container text-center">
+            <h2 class="fw-800 mb-2">Our Premium Services</h2>
+            <p class="text-muted mb-5">Professional care tailored to your pet's personality.</p>
+            
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-4">
+                    <div class="service-card-premium p-5 text-start h-100">
+                        <div class="service-icon mb-4"><i class="bi bi-walking"></i></div>
+                        <h4 class="fw-800 mb-3">Dog Walking</h4>
+                        <p class="text-muted small mb-4">Ensuring your furry friend gets the exercise and adventure they crave.</p>
+                        <a href="/Services/Search?type=0" class="text-primary text-decoration-none fw-700">Learn More <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card-premium p-5 text-start h-100 active">
+                        <div class="service-icon mb-4"><i class="bi bi-house-door"></i></div>
+                        <h4 class="fw-800 mb-3">In-Home Sitting</h4>
+                        <p class="text-muted small mb-4">Loving care in the comfort of your pet's own familiar environment.</p>
+                        <a href="/Services/Search?type=1" class="text-primary text-decoration-none fw-700">Learn More <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card-premium p-5 text-start h-100">
+                        <div class="service-icon mb-4"><i class="bi bi-scissors"></i></div>
+                        <h4 class="fw-800 mb-3">Pet Grooming</h4>
+                        <p class="text-muted small mb-4">Keep your pets healthy, clean, and looking their absolute best.</p>
+                        <a href="/Services/Search?type=4" class="text-primary text-decoration-none fw-700">Learn More <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-10 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-800">How PetCare Works</h2>
+                <p class="text-muted">Getting started is simple and takes just a few minutes.</p>
+            </div>
+            
+            <div class="row g-4 position-relative">
+                <div class="col-md-4">
+                    <div class="step-card text-center p-4">
+                        <div class="step-number-circle">1</div>
+                        <h5 class="fw-800 mt-4">Search & Match</h5>
+                        <p class="text-muted small">Tell us about your pet and needs. We'll match you with verified providers.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-card text-center p-4">
+                        <div class="step-number-circle">2</div>
+                        <h5 class="fw-800 mt-4">Book & Schedule</h5>
+                        <p class="text-muted small">Choose your preferred provider and schedule services that fit your lifestyle.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-card text-center p-4">
+                        <div class="step-number-circle">3</div>
+                        <h5 class="fw-800 mt-4">Relax & Enjoy</h5>
+                        <p class="text-muted small">Get real-time updates and photos while your pet receives loving care.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-10 bg-white">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-800">What Pet Parents Say</h2>
+                <p class="text-muted">Join thousands of satisfied customers who trust PetCare.</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="testimonial-card-premium p-4">
+                        <div class="stars mb-3 text-warning"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                        <p class="text-muted mb-4 fst-italic">"Sarah is absolutely amazing! My anxious rescue dog now gets excited when she arrives."</p>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="avatar-small bg-primary-light text-primary fw-800">EJ</div>
+                            <div>
+                                <h6 class="fw-800 mb-0">Emily Johnson</h6>
+                                <span class="small text-muted">Dog Parent</span>
                             </div>
                         </div>
                     </div>
-                    <p class="card-text">"Jane is the best dog walker we've ever had! Our energetic Lab loves her, and she's always reliable and professional. Highly recommend!"</p>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card testimonial-card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-3">
-                        <img src="/images/testimonial3.jpg" alt="Testimonial" class="testimonial-avatar">
-                        <div>
-                            <h5 class="card-title mb-0">Sophia Williams</h5>
-                            <div class="rating-stars">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
+                <div class="col-md-4">
+                    <div class="testimonial-card-premium p-4 active">
+                        <div class="stars mb-3 text-warning"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                        <p class="text-muted mb-4 fst-italic">"Mark has been walking our energetic Lab for 6 months. He's reliable, professional, and our dog adores him."</p>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="avatar-small bg-success-light text-success fw-800">MS</div>
+                            <div>
+                                <h6 class="fw-800 mb-0">Michael Smith</h6>
+                                <span class="small text-muted">Labrador Owner</span>
                             </div>
                         </div>
                     </div>
-                    <p class="card-text">"Sarah transformed my scruffy poodle into a gorgeous fluffball! Her grooming skills are incredible, and she was so gentle with my nervous dog."</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card-premium p-4">
+                        <div class="stars mb-3 text-warning"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                        <p class="text-muted mb-4 fst-italic">"The grooming service transformed my scruffy poodle into a gorgeous show dog! Absolutely worth every penny."</p>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="avatar-small bg-orange-light text-orange fw-800">SW</div>
+                            <div>
+                                <h6 class="fw-800 mb-0">Sophia Williams</h6>
+                                <span class="small text-muted">Poodle Parent</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
 
-<!-- Become a Provider -->
-<div class="container mt-5">
-    <div class="row align-items-center">
-        <div class="col-md-6">
-            <h2>Become a Pet Care Provider</h2>
-            <p class="lead">Turn your love for pets into income. Join our community of trusted pet care professionals.</p>
-            <ul class="list-unstyled">
-                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Set your own schedule and rates</li>
-                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Build a client base in your neighborhood</li>
-                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Get paid securely and on time</li>
-                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Access to liability insurance</li>
-            </ul>
-            <a href="/Identity/Account/Register?userType=ServiceProvider" class="btn btn-primary mt-3">Apply Now</a>
-        </div>
-        <div class="col-md-6">
-            <img src="/images/become-provider.jpg" alt="Become a Provider" class="img-fluid rounded">
-        </div>
-    </div>
-</div>
-
-<!-- App Download -->
-<div class="container mt-5 py-5 bg-primary text-white rounded">
-    <div class="row align-items-center">
-        <div class="col-md-7">
-            <h2>Get the PetCare App</h2>
-            <p class="lead">Book services, message providers, and manage your pet care on the go.</p>
-            <div class="d-flex mt-4">
-                <a href="#" class="me-3">
-                    <img src="/images/app-store-badge.png" alt="App Store" height="50">
-                </a>
-                <a href="#">
-                    <img src="/images/google-play-badge.png" alt="Google Play" height="50">
-                </a>
+    <!-- CTA Section -->
+    <section class="py-10 position-relative overflow-hidden">
+        <div class="cta-mesh-bg"></div>
+        <div class="container position-relative z-2 text-center text-white">
+            <h2 class="display-4 fw-800 mb-4">Ready to Give Your Pet <br> the Best Care?</h2>
+            <p class="fs-5 text-white-50 mb-5 max-w-600 mx-auto">Join thousands of pet parents who trust PetCare for their furry family members. Get started today!</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="/Services/Search" class="btn btn-hero-primary px-5 py-3 rounded-pill fw-800">Get Started</a>
+                <a href="/Account/Register" class="btn btn-hero-outline px-5 py-3 rounded-pill fw-800">Join as Provider</a>
             </div>
         </div>
-        <div class="col-md-5 text-center">
-            <img src="/images/app-mockup.png" alt="App Mockup" class="img-fluid" style="max-height: 400px;">
-        </div>
-    </div>
+    </section>
 </div>
+
+<style>
+    /* UTILITIES */
+    .fw-800 { font-weight: 800; }
+    .fw-700 { font-weight: 700; }
+    .ls-tight { letter-spacing: -1.5px; }
+    .py-10 { padding: 4rem 0; }
+    
+    @@media (min-width: 992px) {
+        .py-10 { padding: 8rem 0; }
+        .ls-tight { letter-spacing: -2.5px; }
+        /* Main Content */
+        main {
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Animations */
+        @@keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+    }
+
+    .hero-section {
+        min-height: 100vh;
+        background: #0f172a;
+        margin-top: -80px;
+        padding-top: 120px;
+        padding-bottom: 100px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Mesh Gradient Animation */
+    .mesh-gradient-container {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        z-index: 1;
+        overflow: hidden;
+    }
+
+    .mesh-blob {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        filter: blur(50px);
+        opacity: 0.3;
+        animation: rotate 20s infinite linear;
+    }
+
+    @@media (min-width: 768px) {
+        .mesh-blob {
+            width: 800px;
+            height: 800px;
+            filter: blur(80px);
+            opacity: 0.4;
+        }
+    }
+
+    .blob-1 {
+        background: #6366f1;
+        top: -10%; left: -10%;
+        animation-duration: 30s;
+    }
+
+    .blob-2 {
+        background: #a855f7;
+        bottom: -20%; right: -10%;
+        animation: rotate 25s infinite reverse linear;
+    }
+
+    .blob-3 {
+        background: #ec4899;
+        top: 20%; right: 20%;
+        width: 200px; height: 200px;
+    }
+
+    @@keyframes rotate {
+        from { transform: rotate(0deg) translate(50px) rotate(0deg); }
+        to { transform: rotate(360deg) translate(50px) rotate(-360deg); }
+    }
+
+    .text-gradient {
+        background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+
+
+    .btn-hero-primary {
+        background: white;
+        color: #6366f1;
+        box-shadow: 0 10px 40px rgba(255,255,255,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .btn-hero-primary:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 50px rgba(255,255,255,0.2);
+        background: #f8fafc;
+    }
+
+    .btn-hero-outline {
+        border: 2px solid rgba(255,255,255,0.2);
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .btn-hero-outline:hover {
+        background: rgba(255,255,255,0.05);
+        border-color: white;
+        color: white;
+    }
+
+    .trust-item {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 8px 16px;
+        border-radius: 100px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+
+    .trust-icon-sm {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        color: white;
+    }
+
+    .trust-icon-sm.bg-warning { color: #000; }
+
+    .x-small { font-size: 0.7rem; }
+
+    .icon-circle {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+    }
+
+    .main-visual-container {
+        position: relative;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .visual-bg-orb {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        aspect-ratio: 1;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+        z-index: 1;
+    }
+
+    .hero-pet-image {
+        position: relative;
+        z-index: 2;
+        filter: drop-shadow(0 20px 50px rgba(0,0,0,0.3));
+        transition: transform 0.5s ease;
+        border-radius: 20px; /* Slight roundness for a cleaner look */
+    }
+
+    .hero-pet-image:hover {
+        transform: scale(1.02);
+    }
+
+    /* Search Glass Pill */
+    .search-bar-container { 
+        margin-top: -50px; 
+        z-index: 100 !important; /* Extremely high to stay in front */
+    }
+    
+    .search-glass-pill {
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        border: 1px solid rgba(255,255,255,0.5);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    @@media (min-width: 992px) {
+        .search-glass-pill {
+            border-radius: 100px;
+            padding: 1rem 2rem !important;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.15);
+        }
+        .search-bar-container { margin-top: -65px; }
+    }
+
+    .form-control-minimal, .form-select-minimal {
+        background: transparent;
+        border: none;
+        padding: 12px 0;
+        width: 100%;
+        color: #1a1c1e;
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+    .form-control-minimal:focus, .form-select-minimal:focus { outline: none; }
+
+    .input-with-icon {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 10px;
+    }
+
+    @@media (min-width: 992px) {
+        .input-with-icon {
+            border-right: 1px solid #eef2f6;
+            padding: 0 20px;
+        }
+        .col-lg-2 .input-with-icon { border-right: none; }
+    }
+
+    /* Service Cards */
+    .service-card-premium {
+        background: #f8fafc;
+        border-radius: 32px;
+        transition: all 0.4s ease;
+        border: 1px solid #eef2f6;
+    }
+
+    .service-card-premium:hover {
+        background: white;
+        transform: translateY(-15px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        border-color: #6366f1;
+    }
+
+    .service-card-premium.active {
+        background: white;
+        border-color: #6366f1;
+        box-shadow: 0 30px 60px rgba(99, 102, 241, 0.1);
+    }
+
+    .service-icon {
+        width: 64px;
+        height: 64px;
+        background: #eef2f6;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        color: #6366f1;
+        transition: all 0.3s ease;
+    }
+
+    .service-card-premium:hover .service-icon {
+        background: #6366f1;
+        color: white;
+    }
+
+    /* Stepper Styling */
+    .step-number-circle {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 1.2rem;
+        margin: 0 auto;
+    }
+
+    /* Testimonials */
+    .testimonial-card-premium {
+        background: #f8fafc;
+        border-radius: 24px;
+        border: 1px solid #eef2f6;
+    }
+
+    .testimonial-card-premium.active {
+        background: white;
+        border-color: #6366f1;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+    }
+
+    .avatar-small {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .bg-primary-light { background: rgba(99, 102, 241, 0.1); }
+    .bg-success-light { background: rgba(34, 197, 94, 0.1); }
+    .bg-orange-light { background: rgba(249, 115, 22, 0.1); }
+
+    .cta-mesh-bg {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: #0f172a;
+        z-index: 1;
+    }
+
+    @@keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+    }
+
+    @@media (max-width: 991px) {
+        .hero-section { text-align: center; padding-bottom: 20px; padding-top: 50px; min-height: auto; }
+        .hero-visual-stack { margin-top: 0; margin-bottom: 20px; }
+        .hero-pet-image { max-width: 100%; max-height: 400px; object-fit: contain; }
+        .hero-title { font-size: 1.8rem !important; line-height: 1.2; }
+        .hero-actions { gap: 10px; }
+        .btn-hero-primary, .btn-hero-outline { padding: 12px 24px !important; font-size: 1rem !important; }
+    }
+</style>
 
 @section Scripts {
     <script>
-        // Initialize any home page specific JavaScript here
         $(document).ready(function() {
-            // Animation for service cards
-            $('.service-card').addClass('fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.service-card-premium, .step-card, .testimonial-card-premium').forEach(card => {
+                observer.observe(card);
+            });
         });
     </script>
 }

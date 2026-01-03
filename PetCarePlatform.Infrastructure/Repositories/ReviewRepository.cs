@@ -11,7 +11,7 @@ namespace PetCarePlatform.Infrastructure.Repositories
         {
         }
 
-        public override async Task<Review?> GetByIdAsync(int id)
+        public override async Task<Review?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(r => r.Reviewer)
@@ -19,10 +19,10 @@ namespace PetCarePlatform.Infrastructure.Repositories
                 .Include(r => r.Service)
                 .Include(r => r.Booking)
                 .Include(r => r.Photos)
-                .FirstOrDefaultAsync(r => r.Id == id);
+                .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
         }
 
-        public override async Task<IEnumerable<Review>> GetAllAsync()
+        public override async Task<IEnumerable<Review>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(r => r.Reviewer)
@@ -30,7 +30,28 @@ namespace PetCarePlatform.Infrastructure.Repositories
                 .Include(r => r.Service)
                 .Include(r => r.Photos)
                 .OrderByDescending(r => r.CreatedAt)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
+        }
+
+        // Explicit interface implementations (without CancellationToken)
+        async Task<Review> IReviewRepository.GetByIdAsync(int id)
+        {
+            return await GetByIdAsync(id) ?? throw new InvalidOperationException($"Review with ID {id} not found");
+        }
+
+        async Task<IEnumerable<Review>> IReviewRepository.GetAllAsync()
+        {
+            return await GetAllAsync();
+        }
+
+        async Task<Review> IReviewRepository.CreateAsync(Review review)
+        {
+            return await CreateAsync(review);
+        }
+
+        async Task IReviewRepository.DeleteAsync(int id)
+        {
+            await DeleteAsync(id);
         }
 
         public async Task<IEnumerable<Review>> GetByReviewerIdAsync(int reviewerId)

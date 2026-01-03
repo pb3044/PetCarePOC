@@ -1,0 +1,45 @@
+/* Inter Font - Local Version */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url('../webfonts/inter-light.woff2') format('woff2'),
+         url('../webfonts/inter-light.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../webfonts/inter-regular.woff2') format('woff2'),
+         url('../webfonts/inter-regular.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../webfonts/inter-medium.woff2') format('woff2'),
+         url('../webfonts/inter-medium.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('../webfonts/inter-semi-bold.woff2') format('woff2'),
+         url('../webfonts/inter-semi-bold.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../webfonts/inter-bold.woff2') format('woff2'),
+         url('../webfonts/inter-bold.woff') format('woff');
+}

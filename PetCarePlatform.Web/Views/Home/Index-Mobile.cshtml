@@ -1,0 +1,312 @@
+@{
+    ViewData["Title"] = "Home - Mobile First";
+}
+
+<!-- Mobile-First Landing Page -->
+<div class="hero-section">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Trusted Pet Care<br>
+                <span class="highlight">Right in Your</span><br>
+                Neighborhood
+            </h1>
+            <p class="hero-subtitle">
+                Connect with verified pet sitters, dog walkers, groomers, and veterinary professionals who treat your pets like family.
+            </p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">10,000+</span>
+                    <span class="stat-label">Happy Pets</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">Verified Providers</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">4.9★</span>
+                    <span class="stat-label">Average Rating</span>
+                </div>
+            </div>
+            <div class="hero-actions">
+                <a href="/Services/Search" class="btn btn-primary">
+                    <i class="fas fa-search"></i>
+                    Find Services
+                </a>
+                <a href="/Account/Register" class="btn btn-outline">
+                    <i class="fas fa-user-plus"></i>
+                    Become a Provider
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile Search Section -->
+<div class="search-section">
+    <div class="container">
+        <div class="search-header">
+            <h2>Find the Perfect Care for Your Pet</h2>
+            <p>Tell us what you need and we'll match you with trusted providers</p>
+        </div>
+        <form class="smart-search-form" action="/Services/Search" method="get">
+            <div class="search-inputs">
+                <div class="input-group">
+                    <div class="input-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <input type="text" name="location" placeholder="Where are you located?" class="form-control">
+                </div>
+                <div class="input-group">
+                    <div class="input-icon">
+                        <i class="fas fa-paw"></i>
+                    </div>
+                    <select name="type" class="form-control">
+                        <option value="">What service do you need?</option>
+                        <option value="0">Dog Walking</option>
+                        <option value="1">Pet Sitting</option>
+                        <option value="2">Boarding</option>
+                        <option value="3">Day Care</option>
+                        <option value="4">Grooming</option>
+                        <option value="5">Training</option>
+                        <option value="6">Pet Taxi</option>
+                        <option value="7">Veterinary</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <div class="input-icon">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <input type="date" name="date" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary search-btn">
+                    <i class="fas fa-search"></i>
+                    Search
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Services Showcase - Mobile First -->
+<div class="services-showcase">
+    <div class="container">
+        <div class="section-header">
+            <h2>Popular Services</h2>
+            <p>Discover the most requested pet care services in your area</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-walking"></i>
+                </div>
+                <h3>Dog Walking</h3>
+                <div class="service-meta">
+                    <span class="price">$15-25/hour</span>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <span>4.8</span>
+                    </div>
+                </div>
+                <p>Professional dog walkers ensure your furry friend gets the exercise they need with personalized attention.</p>
+                <div class="service-features">
+                    <span class="feature-tag">GPS Tracking</span>
+                    <span class="feature-tag">Photo Updates</span>
+                    <span class="feature-tag">Flexible Schedule</span>
+                </div>
+                <a href="/Services/Search?type=0" class="btn btn-outline">Find Walkers</a>
+            </div>
+
+            <div class="service-card featured">
+                <div class="service-badge">Most Popular</div>
+                <div class="service-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <h3>Pet Sitting</h3>
+                <div class="service-meta">
+                    <span class="price">$30-50/day</span>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <span>4.9</span>
+                    </div>
+                </div>
+                <p>Experienced pet sitters care for your pets in the comfort of your own home with 24/7 attention.</p>
+                <div class="service-features">
+                    <span class="feature-tag">In-Home Care</span>
+                    <span class="feature-tag">Daily Updates</span>
+                    <span class="feature-tag">Medication Admin</span>
+                </div>
+                <a href="/Services/Search?type=1" class="btn btn-primary">Find Sitters</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-cut"></i>
+                </div>
+                <h3>Pet Grooming</h3>
+                <div class="service-meta">
+                    <span class="price">$40-80/session</span>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <span>4.7</span>
+                    </div>
+                </div>
+                <p>Professional groomers keep your pet clean, healthy, and looking their absolute best.</p>
+                <div class="service-features">
+                    <span class="feature-tag">Full Service</span>
+                    <span class="feature-tag">Mobile Available</span>
+                    <span class="feature-tag">Specialized Care</span>
+                </div>
+                <a href="/Services/Search?type=4" class="btn btn-outline">Find Groomers</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- How It Works -->
+<div class="how-it-works">
+    <div class="container">
+        <div class="section-header">
+            <h2>How PetCare Works</h2>
+            <p>Getting started is simple and takes just a few minutes</p>
+        </div>
+        <div class="steps-container">
+            <div class="step-item">
+                <div class="step-number">1</div>
+                <div class="step-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>Search & Match</h3>
+                <p>Tell us about your pet and needs. We'll match you with verified providers in your area.</p>
+            </div>
+            <div class="step-item">
+                <div class="step-number">2</div>
+                <div class="step-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3>Book & Schedule</h3>
+                <p>Choose your preferred provider and schedule services that fit your lifestyle.</p>
+            </div>
+            <div class="step-item">
+                <div class="step-number">3</div>
+                <div class="step-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Relax & Enjoy</h3>
+                <p>Get real-time updates and photos while your pet receives loving care.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Testimonials -->
+<div class="testimonials-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>What Pet Parents Say</h2>
+            <p>Join thousands of satisfied customers who trust PetCare</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p>"Sarah is absolutely amazing! My anxious rescue dog now gets excited when she arrives. The daily photos and updates give me such peace of mind."</p>
+                <div class="testimonial-author">
+                    <img src="/images/testimonial1.jpg" alt="Emily Johnson">
+                    <div>
+                        <h4>Emily Johnson</h4>
+                        <span>Dog Parent</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card featured">
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p>"Mark has been walking our energetic Lab for 6 months now. He's reliable, professional, and our dog adores him. Couldn't recommend more!"</p>
+                <div class="testimonial-author">
+                    <img src="/images/testimonial2.jpg" alt="Michael Smith">
+                    <div>
+                        <h4>Michael Smith</h4>
+                        <span>Labrador Owner</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p>"The grooming service transformed my scruffy poodle into a gorgeous show dog! Professional, gentle, and absolutely worth every penny."</p>
+                <div class="testimonial-author">
+                    <img src="/images/testimonial3.jpg" alt="Sophia Williams">
+                    <div>
+                        <h4>Sophia Williams</h4>
+                        <span>Poodle Parent</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="cta-section">
+    <div class="container">
+        <h2>Ready to Give Your Pet the Best Care?</h2>
+        <p>Join thousands of pet parents who trust PetCare for their furry family members</p>
+        <div class="cta-actions">
+            <a href="/Services/Search" class="btn btn-primary btn-large">
+                <i class="fas fa-search"></i>
+                Find Services Now
+            </a>
+            <a href="/Account/Register" class="btn btn-outline btn-large">
+                <i class="fas fa-user-plus"></i>
+                Become a Provider
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+
+            if (mobileMenu && navLinks) {
+                mobileMenu.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                });
+            }
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

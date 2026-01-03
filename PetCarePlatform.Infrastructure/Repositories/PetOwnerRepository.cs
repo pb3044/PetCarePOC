@@ -11,7 +11,7 @@ namespace PetCarePlatform.Infrastructure.Repositories
         {
         }
 
-        public override async Task<PetOwner?> GetByIdAsync(int id)
+        public override async Task<PetOwner?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(po => po.User)
@@ -21,7 +21,7 @@ namespace PetCarePlatform.Infrastructure.Repositories
                     .ThenInclude(b => b.Service)
                         .ThenInclude(s => s.Provider)
                 .Include(po => po.FavoriteProviders)
-                .FirstOrDefaultAsync(po => po.Id == id);
+                .FirstOrDefaultAsync(po => po.Id == id, cancellationToken);
         }
 
         public async Task<PetOwner> GetByUserIdAsync(int userId)
@@ -34,17 +34,39 @@ namespace PetCarePlatform.Infrastructure.Repositories
                     .ThenInclude(b => b.Service)
                         .ThenInclude(s => s.Provider)
                 .Include(po => po.FavoriteProviders)
-                .FirstOrDefaultAsync(po => po.UserId == userId);
+                .FirstOrDefaultAsync(po => po.UserId == userId) 
+                ?? throw new InvalidOperationException($"PetOwner with UserId {userId} not found");
         }
 
-        public override async Task<IEnumerable<PetOwner>> GetAllAsync()
+        public override async Task<IEnumerable<PetOwner>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(po => po.User)
                 .Include(po => po.Pets)
                 .OrderBy(po => po.User.LastName)
                 .ThenBy(po => po.User.FirstName)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
+        }
+
+        // Explicit interface implementations (without CancellationToken)
+        async Task<PetOwner> IPetOwnerRepository.GetByIdAsync(int id)
+        {
+            return await GetByIdAsync(id) ?? throw new InvalidOperationException($"PetOwner with ID {id} not found");
+        }
+
+        async Task<IEnumerable<PetOwner>> IPetOwnerRepository.GetAllAsync()
+        {
+            return await GetAllAsync();
+        }
+
+        async Task<PetOwner> IPetOwnerRepository.CreateAsync(PetOwner petOwner)
+        {
+            return await CreateAsync(petOwner);
+        }
+
+        async Task IPetOwnerRepository.DeleteAsync(int id)
+        {
+            await DeleteAsync(id);
         }
 
         public async Task UpdateAsync(PetOwner petOwner)

@@ -357,6 +357,12 @@
 @section Scripts {
     <script>
         $(document).ready(function() {
+            // Verify jQuery is loaded
+            if (typeof $ === 'undefined') {
+                console.error('jQuery is not loaded!');
+                return;
+            }
+            
             // Handle form submissions
             $('#personalInfoForm').on('submit', function(e) {
                 e.preventDefault();
@@ -376,10 +382,100 @@
                 console.log('Availability form submitted');
             });
             
-            $('#profilePictureForm').on('submit', function(e) {
+            // Profile picture upload handler
+            var profilePictureForm = $('#profilePictureForm');
+            if (profilePictureForm.length === 0) {
+                console.warn('Profile picture form not found');
+            } else {
+                console.log('Profile picture form found, binding submit handler');
+            }
+            
+            profilePictureForm.on('submit', function(e) {
                 e.preventDefault();
-                // Add your file upload logic here
-                console.log('Profile picture form submitted');
+                console.log('Profile picture form submit triggered');
+                
+                var formData = new FormData();
+                var fileInput = $('#profilePicture')[0];
+                
+                if (!fileInput) {
+                    console.error('File input not found');
+                    alert('File input not found. Please refresh the page and try again.');
+                    return;
+                }
+                
+                if (!fileInput.files || fileInput.files.length === 0) {
+                    alert('Please select a file to upload');
+                    return;
+                }
+                
+                var file = fileInput.files[0];
+                console.log('Selected file:', file.name, 'Size:', file.size, 'Type:', file.type);
+                
+                formData.append('profilePicture', file);
+                
+                // Show loading state
+                var submitButton = $(this).find('button[type="submit"]');
+                var originalText = submitButton.text();
+                submitButton.prop('disabled', true).text('Uploading...');
+                
+                // Generate absolute URL to avoid connection issues
+                var uploadUrl = '@Url.Action("UploadProfilePicture", "ServiceProvider", null, Context.Request.Scheme)';
+                console.log('Upload URL:', uploadUrl);
+                
+                $.ajax({
+                    url: uploadUrl,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log('Upload response:', response);
+                        if (response && response.success) {
+                            // Update the image preview
+                            var imgElement = $('#profilePictureForm').closest('.card-body').find('img');
+                            if (imgElement.length) {
+                                imgElement.attr('src', response.url + '?t=' + new Date().getTime());
+                            }
+                            
+                            // Show success message
+                            alert('Profile picture uploaded successfully!');
+                            
+                            // Reset the form
+                            $('#profilePictureForm')[0].reset();
+                        } else {
+                            var errorMsg = response && response.message ? response.message : 'Unknown error occurred';
+                            alert('Error: ' + errorMsg);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Upload error details:');
+                        console.error('Status:', status);
+                        console.error('Error:', error);
+                        console.error('Response Text:', xhr.responseText);
+                        console.error('Status Code:', xhr.status);
+                        
+                        var errorMessage = 'An error occurred while uploading the profile picture.';
+                        if (xhr.responseText) {
+                            try {
+                                var errorResponse = JSON.parse(xhr.responseText);
+                                if (errorResponse.message) {
+                                    errorMessage = errorResponse.message;
+                                }
+                            } catch (e) {
+                                // If not JSON, use the response text if available
+                                if (xhr.responseText.length < 200) {
+                                    errorMessage = xhr.responseText;
+                                }
+                            }
+                        }
+                        alert(errorMessage);
+                    },
+                    complete: function() {
+                        // Restore button state
+                        submitButton.prop('disabled', false).text(originalText);
+                    }
+                });
             });
             
             // Handle review filtering

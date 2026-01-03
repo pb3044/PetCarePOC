@@ -1,0 +1,61 @@
+/* Font Awesome - Local Version */
+@font-face {
+    font-family: 'Font Awesome 6 Free';
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: url('../webfonts/fa-solid-900.woff2') format('woff2'),
+         url('../webfonts/fa-solid-900.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Font Awesome 6 Brands';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../webfonts/fa-brands-400.woff2') format('woff2'),
+         url('../webfonts/fa-brands-400.woff') format('woff');
+}
+
+.fa, .fas, .far, .fal, .fat, .fad {
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-style: normal;
+    display: inline-block;
+    line-height: 1;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+.fab {
+    font-family: 'Font Awesome 6 Brands';
+    font-weight: 400;
+    font-style: normal;
+    display: inline-block;
+    line-height: 1;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Common Font Awesome icons used in the app */
+.fa-heart:before { content: "\f004"; }
+.fa-search:before { content: "\f002"; }
+.fa-user-plus:before { content: "\f234"; }
+.fa-map-marker-alt:before { content: "\f3c5"; }
+.fa-paw:before { content: "\f1b0"; }
+.fa-calendar:before { content: "\f133"; }
+.fa-walking:before { content: "\f554"; }
+.fa-home:before { content: "\f015"; }
+.fa-cut:before { content: "\f0f5"; }
+.fa-star:before { content: "\f005"; }
+.fa-shield-alt:before { content: "\f3ed"; }
+.fa-camera:before { content: "\f030"; }
+.fa-umbrella:before { content: "\f0e9"; }
+.fa-dog:before { content: "\f6d3"; }
+.fa-cat:before { content: "\f6be"; }
+.fa-calendar-check:before { content: "\f274"; }
+.fa-facebook-f:before { content: "\f39e"; }
+.fa-twitter:before { content: "\f099"; }
+.fa-instagram:before { content: "\f16d"; }
+.fa-linkedin-in:before { content: "\f0e1"; }
+.fa-bars:before { content: "\f0c9"; }

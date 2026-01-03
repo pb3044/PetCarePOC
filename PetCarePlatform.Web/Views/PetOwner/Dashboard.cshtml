@@ -1,265 +1,347 @@
 ﻿@model PetCarePlatform.Web.ViewModels.PetOwnerDashboardViewModel
 @{
-    ViewData["Title"] = "PetOwnerDashboard";
+    ViewData["Title"] = "Dashboard";
     Layout = "~/Views/Shared/_PetOwnerLayout.cshtml";
 }
 
-<div class="container-fluid py-4">
-    <!-- Welcome Header -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card bg-primary text-white">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h2 class="mb-1">Welcome back, @Model.FirstName + @Model.LastName!</h2>
-                            <p class="mb-0">Manage your pets and bookings from your dashboard</p>
-                        </div>
-                        <div class="text-end">
-                            <i class="fas fa-paw fa-3x opacity-50"></i>
-                        </div>
+<div class="dashboard-container animate__animated animate__fadeIn">
+    <!-- Header Section -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+        <div>
+            <h1 class="fw-800 mb-1">Welcome back, @Model.FirstName! 👋</h1>
+            <p class="text-muted fw-600 mb-0">Manage your pets and bookings with ease.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="@Url.Action("Index", "Services")" class="btn btn-premium d-flex align-items-center gap-2">
+                <i class="bi bi-search"></i>
+                <span>Find Services</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="card glass-card border-0 p-3 h-100 stats-hover">
+                <div class="d-flex flex-column h-100">
+                    <div class="icon-box bg-purple-light text-purple mb-3">
+                        <i class="bi bi-heart-fill"></i>
+                    </div>
+                    <div>
+                        <h3 class="fw-800 mb-0">@Model.TotalPets</h3>
+                        <p class="text-muted small fw-600 mb-0">My Pets</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card glass-card border-0 p-3 h-100 stats-hover">
+                <div class="d-flex flex-column h-100">
+                    <div class="icon-box bg-blue-light text-blue mb-3">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+                    <div>
+                        <h3 class="fw-800 mb-0">@Model.UpcomingBookings</h3>
+                        <p class="text-muted small fw-600 mb-0">Upcoming</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card glass-card border-0 p-3 h-100 stats-hover">
+                <div class="d-flex flex-column h-100">
+                    <div class="icon-box bg-orange-light text-orange mb-3">
+                        <i class="bi bi-clock-history"></i>
+                    </div>
+                    <div>
+                        <h3 class="fw-800 mb-0">@Model.PendingRequests</h3>
+                        <p class="text-muted small fw-600 mb-0">Pending</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card glass-card border-0 p-3 h-100 stats-hover">
+                <div class="d-flex flex-column h-100">
+                    <div class="icon-box bg-success-light text-success mb-3">
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                    <div>
+                        <h3 class="fw-800 mb-0">@Model.AverageRating.ToString("F1")</h3>
+                        <p class="text-muted small fw-600 mb-0">Rating</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Quick Stats -->
-    <div class="row mb-4 g-3">
-        <div class="col-md-3 col-sm-6">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center">
-                    <div class="text-primary mb-2">
-                        <i class="fas fa-dog fa-2x"></i>
-                    </div>
-                    <h3 class="fw-bold text-primary">@Model.TotalPets</h3>
-                    <p class="text-muted mb-0">My Pets</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center">
-                    <div class="text-success mb-2">
-                        <i class="fas fa-calendar-check fa-2x"></i>
-                    </div>
-                    <h3 class="fw-bold text-success">@Model.UpcomingBookings</h3>
-                    <p class="text-muted mb-0">Upcoming Bookings</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center">
-                    <div class="text-warning mb-2">
-                        <i class="fas fa-clock fa-2x"></i>
-                    </div>
-                    <h3 class="fw-bold text-warning">@Model.PendingRequests</h3>
-                    <p class="text-muted mb-0">Pending Requests</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center">
-                    <div class="text-info mb-2">
-                        <i class="fas fa-star fa-2x"></i>
-                    </div>
-                    <h3 class="fw-bold text-info">@Model.AverageRating</h3>
-                    <p class="text-muted mb-0">Avg Rating</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content Row -->
     <div class="row g-4">
-        <!-- Quick Actions -->
-        <div class="col-lg-4">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-transparent border-0 pb-0">
-                    <h5 class="card-title mb-0"><i class="fas fa-bolt text-primary me-2"></i>Quick Actions</h5>
-                </div>
-                <div class="card-body">
-                    <div class="d-grid gap-2">
-                        <a href="/PetOwner/BookService" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Book New Service</a>
-                        <a href="/PetOwner/MyPets" class="btn btn-outline-secondary"><i class="fas fa-paw me-2"></i>Manage My Pets</a>
-                        <a href="/Services" class="btn btn-outline-info"><i class="fas fa-search me-2"></i>Browse Services</a>
-                        <a href="/PetOwner/Profile" class="btn btn-outline-success"><i class="fas fa-user me-2"></i>Update Profile</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Recent Bookings -->
         <div class="col-lg-8">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-transparent border-0 pb-0">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0"><i class="fas fa-calendar text-primary me-2"></i>Recent Bookings</h5>
-                        <a href="/PetOwner/MyBookings" class="btn btn-sm btn-outline-primary">View All</a>
-                    </div>
+            <div class="card glass-card border-0 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-800 mb-0 d-flex align-items-center gap-2">
+                        <i class="bi bi-calendar3 text-primary"></i>
+                        Recent Bookings
+                    </h5>
+                    <a href="@Url.Action("MyBookings", "PetOwner")" class="text-primary text-decoration-none small fw-700">View All</a>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Service</th>
-                                    <th>Pet</th>
-                                    <th>Date</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+
+                <div class="table-responsive">
+                    <table class="table table-premium align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Service</th>
+                                <th>Pet</th>
+                                <th class="d-none d-md-table-cell">Date</th>
+                                <th>Status</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.RecentBookings != null && Model.RecentBookings.Any())
+                            {
                                 @foreach (var booking in Model.RecentBookings)
                                 {
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fas fa-concierge-bell text-primary me-2"></i>
-                                                    <span>@booking.Service?.Title</span>
-                                                </div>
-                                            </td>
-                                            <td>@booking.Pet?.Name</td>
-                                            <td>@booking.StartTime.ToString("MMM dd, yyyy")</td>
-                                            <td>
-                                                <span class="badge bg-secondary">@booking.Status.ToString()</span>
-                                            </td>
-                                            <td><button class="btn btn-sm btn-outline-primary">View</button></td>
-                                        </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="fw-700">@booking.Service?.Title</div>
+                                            <div class="text-muted small d-md-none">@booking.StartTime.ToString("MMM dd")</div>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-purple-light text-purple rounded-pill px-3 fw-600">@booking.Pet?.Name</span>
+                                        </td>
+                                        <td class="d-none d-md-table-cell">
+                                            <div class="fw-600">@booking.StartTime.ToString("MMM dd, yyyy")</div>
+                                        </td>
+                                        <td>
+                                            @{
+                                                var statusClass = booking.Status.ToString() switch
+                                                {
+                                                    "Confirmed" => "bg-success-light text-success",
+                                                    "Pending" => "bg-orange-light text-orange",
+                                                    "Completed" => "bg-blue-light text-blue",
+                                                    "Cancelled" => "bg-danger-light text-danger",
+                                                    _ => "bg-light text-muted"
+                                                };
+                                            }
+                                            <span class="badge @statusClass rounded-pill px-3 fw-600">@booking.Status</span>
+                                        </td>
+                                        <td class="text-end">
+                                            <button class="btn btn-light btn-sm rounded-pill px-3 fw-600" onclick="viewBookingDetails(@booking.Id)">
+                                                Details
+                                            </button>
+                                        </td>
+                                    </tr>
                                 }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bottom Row -->
-    <div class="row mt-4 g-4">
-        <!-- My Pets -->
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-transparent border-0 pb-0">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0"><i class="fas fa-heart text-danger me-2"></i>My Pets</h5>
-                        <a href="/PetOwner/MyPets" class="btn btn-sm btn-outline-primary">Manage</a>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row g-3">
-                        @foreach (var pet in Model.Pets)
-                        {
-                                <div class="col-md-6">
-                                    <div class="card bg-light border-0">
-                                        <div class="card-body text-center py-3">
-                                            <div class="mb-2">
-                                                <i class="fas fa-dog fa-2x text-primary"></i>
-                                            </div>
-                                            <h6 class="mb-1">@pet.Name</h6>
-                                            <small class="text-muted">@pet.Breed</small>
-                                        </div>
-                                    </div>
-                                </div>
-                        }
-                    </div>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center py-5">
+                                        <div class="text-muted mb-3">No bookings found</div>
+                                        <a href="@Url.Action("Index", "Services")" class="btn btn-outline-primary rounded-pill px-4">Book Your First Service</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
 
-        <!-- Favorite Providers -->
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-transparent border-0 pb-0">
-                    <h5 class="card-title mb-0"><i class="fas fa-star text-warning me-2"></i>Favorite Services</h5>
+        <!-- My Pets Sidebar Section -->
+        <div class="col-lg-4">
+            <div class="card glass-card border-0 p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-800 mb-0 d-flex align-items-center gap-2">
+                        <i class="bi bi-heart text-danger"></i>
+                        My Pets
+                    </h5>
+                    <a href="@Url.Action("MyPets", "PetOwner")" class="text-primary text-decoration-none small fw-700">Manage</a>
                 </div>
-                <div class="card-body">
-                    <div class="list-group list-group-flush">
-                        @foreach (var provider in Model.FavoriteProviders)
+
+                <div class="d-flex flex-column gap-3">
+                    @if (Model.Pets != null && Model.Pets.Any())
+                    {
+                        @foreach (var pet in Model.Pets.Take(3))
                         {
-                                <div class="list-group-item border-0 px-0">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-user-md text-primary me-3"></i>
-                                            <div>
-                                                <h6 class="mb-0">@provider.BusinessName</h6>
-                                                <small class="text-muted">@provider.Description</small>
-                                            </div>
-                                        </div>
-                                        <div class="text-end">
-                                            <span class="text-warning"><i class="fas fa-star"></i> @provider.AverageRating</span>
-                                        </div>
+                            <div class="d-flex align-items-center gap-3 p-3 rounded-4 bg-light border-0 transition-hover">
+                                <div class="avatar-box bg-white text-primary">
+                                    <i class="bi bi-paw-fill"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="fw-700">@pet.Name</div>
+                                    <div class="text-muted small">@pet.Breed</div>
+                                </div>
+                                <i class="bi bi-chevron-right text-muted"></i>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-4 bg-light rounded-4">
+                            <p class="text-muted small mb-3">You haven't added any pets yet.</p>
+                            <a href="@Url.Action("MyPets", "PetOwner")" class="btn btn-sm btn-outline-primary rounded-pill px-3">Add Pet</a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="card glass-card border-0 p-4">
+                <h5 class="fw-800 mb-4 d-flex align-items-center gap-2">
+                    <i class="bi bi-bookmark-star text-warning"></i>
+                    Favorite Services
+                </h5>
+                <div class="d-flex flex-column gap-3">
+                    @if (Model.FavoriteProviders != null && Model.FavoriteProviders.Any())
+                    {
+                        @foreach (var provider in Model.FavoriteProviders.Take(3))
+                        {
+                            <div class="d-flex align-items-center gap-3 p-3 rounded-4 bg-light-orange border-0 transition-hover">
+                                <div class="avatar-box bg-white text-orange shadow-sm small">
+                                    <i class="bi bi-shop"></i>
+                                </div>
+                                <div class="flex-grow-1 min-w-0">
+                                    <div class="fw-700 text-truncate">@provider.BusinessName</div>
+                                    <div class="d-flex align-items-center gap-1 text-warning small fw-700">
+                                        <i class="bi bi-star-fill"></i>
+                                        @provider.AverageRating.ToString("F1")
                                     </div>
                                 </div>
+                                <a href="@Url.Action("Details", "Services", new { id = provider.Id })" class="btn btn-white btn-sm rounded-circle shadow-sm">
+                                    <i class="bi bi-arrow-right-short fs-5 text-dark"></i>
+                                </a>
+                            </div>
                         }
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4 bg-light rounded-4">
+                            <p class="text-muted small mb-0">Browse services to find favorites!</p>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Details Modal (Stub) -->
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glass-card border-0">
+            <div id="modalLoading" class="p-5 text-center">
+                <div class="spinner-border text-primary" role="status"></div>
+                <div class="mt-3 text-muted fw-600">Loading details...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
-    .avatar-sm {
-        width: 32px;
-        height: 32px;
-        font-size: 14px;
+    .fw-600 { font-weight: 600; }
+    .fw-700 { font-weight: 700; }
+    .fw-800 { font-weight: 800; }
+    
+    .text-purple { color: #764ba2; }
+    .bg-purple-light { background: rgba(118, 75, 162, 0.1); }
+    .text-blue { color: #667eea; }
+    .bg-blue-light { background: rgba(102, 126, 234, 0.1); }
+    .text-orange { color: #f6ad55; }
+    .bg-orange-light { background: rgba(246, 173, 85, 0.1); }
+    .bg-success-light { background: rgba(72, 187, 120, 0.1); }
+    .text-success { color: #48bb78; }
+    .bg-danger-light { background: rgba(245, 101, 101, 0.1); }
+    .text-danger { color: #f56565; }
+    .bg-light-orange { background: #fffaf0; }
+
+    .icon-box {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 50%;
-        background-color: #f0f0f0;
+        font-size: 1.5rem;
     }
 
-    .card {
-        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-        border-radius: 0.5rem;
+    .avatar-box {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        flex-shrink: 0;
     }
 
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
-        }
-
-    .card-title {
-        font-weight: 600;
-        font-size: 1.1rem;
+    .stats-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .stats-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.08);
     }
 
-    .table th {
-        font-weight: 600;
-        font-size: 0.875rem;
-        color: #6c757d;
-    }
-
-    .badge {
+    .table-premium thead th {
+        background: transparent;
+        border-bottom: 2px solid #f0f2f5;
+        color: #94a3b8;
+        font-weight: 700;
+        text-transform: uppercase;
         font-size: 0.75rem;
-        font-weight: 500;
-        padding: 0.35em 0.6em;
-        border-radius: 0.35rem;
+        letter-spacing: 0.5px;
+        padding-bottom: 15px;
     }
 
-    .table td {
-        vertical-align: middle;
+    .table-premium tbody td {
+        padding: 18px 0;
     }
 
-    .list-group-item h6 {
-        font-weight: 600;
-        margin-bottom: 0.25rem;
+    .transition-hover {
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+    .transition-hover:hover {
+        background-color: #f8fafc !important;
+        transform: scale(1.01);
     }
 
-    .list-group-item small {
-        font-size: 0.75rem;
+    .btn-white {
+        background: white;
+        border: none;
+        color: #1a1c1e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .btn-outline-primary:hover,
-    .btn-outline-info:hover,
-    .btn-outline-success:hover,
-    .btn-outline-secondary:hover {
-        color: white;
-    } 
-    
+    /* Animation */
+    @@keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate__fadeIn {
+        animation: fadeInUp 0.5s ease forwards;
+    }
+
+    @@media (max-width: 768px) {
+        .dashboard-container { padding: 5px; }
+        .fw-800 { font-size: 1.5rem; }
+    }
 </style>
+
+@section Scripts {
+    <script>
+        function viewBookingDetails(id) {
+            $('#detailsModal').modal('show');
+            // Mock dynamic loading logic
+            setTimeout(() => {
+                // This would normally be an AJAX call
+                console.log("Loading details for booking: " + id);
+            }, 500);
+        }
+    </script>
+}

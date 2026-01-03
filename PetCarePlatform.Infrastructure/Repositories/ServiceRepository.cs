@@ -11,17 +11,19 @@ namespace PetCarePlatform.Infrastructure.Repositories
         {
         }
 
-        public override async Task<Service?> GetByIdAsync(int id)
+        public override async Task<Service?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(s => s.Provider)
+                    .ThenInclude(p => p.User)
                 .Include(s => s.Photos)
                 .Include(s => s.Reviews)
+                    .ThenInclude(r => r.Reviewer)
                 .Include(s => s.Bookings)
-                .FirstOrDefaultAsync(s => s.Id == id);
+                .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
         }
 
-        public override async Task<IEnumerable<Service>> GetAllAsync()
+        public override async Task<IEnumerable<Service>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(s => s.Provider)
@@ -29,7 +31,28 @@ namespace PetCarePlatform.Infrastructure.Repositories
                 .Include(s => s.Reviews)
                 .Where(s => s.IsActive)
                 .OrderBy(s => s.Title)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
+        }
+
+        // Explicit interface implementations (without CancellationToken)
+        async Task<Service> IServiceRepository.GetByIdAsync(int id)
+        {
+            return await GetByIdAsync(id) ?? throw new InvalidOperationException($"Service with ID {id} not found");
+        }
+
+        async Task<IEnumerable<Service>> IServiceRepository.GetAllAsync()
+        {
+            return await GetAllAsync();
+        }
+
+        async Task<Service> IServiceRepository.CreateAsync(Service service)
+        {
+            return await CreateAsync(service);
+        }
+
+        async Task IServiceRepository.DeleteAsync(int id)
+        {
+            await DeleteAsync(id);
         }
 
         public async Task<IEnumerable<Service>> GetByProviderIdAsync(int providerId)

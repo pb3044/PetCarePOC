@@ -11,19 +11,20 @@ namespace PetCarePlatform.Infrastructure.Repositories
         {
         }
 
-        public override async Task<Booking?> GetByIdAsync(int id)
+        public override async Task<Booking?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(b => b.Service)
                     .ThenInclude(s => s.Provider)
                 .Include(b => b.Owner)
+                    .ThenInclude(o => o.User)
                 .Include(b => b.Pet)
                 .Include(b => b.Payment)
                 .Include(b => b.Review)
-                .FirstOrDefaultAsync(b => b.Id == id);
+                .FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
         }
 
-        public override async Task<IEnumerable<Booking>> GetAllAsync()
+        public override async Task<IEnumerable<Booking>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(b => b.Service)
@@ -31,7 +32,28 @@ namespace PetCarePlatform.Infrastructure.Repositories
                 .Include(b => b.Owner)
                 .Include(b => b.Pet)
                 .OrderByDescending(b => b.CreatedAt)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
+        }
+
+        // Explicit interface implementations (without CancellationToken)
+        async Task<Booking> IBookingRepository.GetByIdAsync(int id)
+        {
+            return await GetByIdAsync(id) ?? throw new InvalidOperationException($"Booking with ID {id} not found");
+        }
+
+        async Task<IEnumerable<Booking>> IBookingRepository.GetAllAsync()
+        {
+            return await GetAllAsync();
+        }
+
+        async Task<Booking> IBookingRepository.CreateAsync(Booking booking)
+        {
+            return await CreateAsync(booking);
+        }
+
+        async Task IBookingRepository.DeleteAsync(int id)
+        {
+            await DeleteAsync(id);
         }
 
         public async Task<IEnumerable<Booking>> GetByOwnerIdAsync(int ownerId)
@@ -54,6 +76,7 @@ namespace PetCarePlatform.Infrastructure.Repositories
                 .Include(b => b.Service)
                     .ThenInclude(s => s.Provider)
                 .Include(b => b.Owner)
+                    .ThenInclude(o => o.User)
                 .Include(b => b.Pet)
                 .Include(b => b.Payment)
                 .Include(b => b.Review)

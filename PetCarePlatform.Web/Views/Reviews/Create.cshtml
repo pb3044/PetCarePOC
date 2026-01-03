@@ -1,0 +1,435 @@
+@model PetCarePlatform.Web.Models.CreateReviewViewModel
+@{
+    ViewData["Title"] = "Write a Review";
+    Layout = "~/Views/Shared/_PetOwnerLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="mb-1">
+                        <i class="fas fa-star text-warning me-2"></i>Write a Review
+                    </h2>
+                    <p class="text-muted mb-0">Share your experience to help other pet owners</p>
+                </div>
+                <a href="@Url.Action("MyBookings", "PetOwner")" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Bookings
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="BookingId" />
+        
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Review Form -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-edit me-2"></i>Your Review
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Rating Section -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">How would you rate this service? *</label>
+                            <div class="rating-input">
+                                <div class="star-rating" data-rating="0">
+                                    <input type="hidden" asp-for="Rating" id="ratingValue" />
+                                    <div class="stars">
+                                        <i class="fas fa-star" data-rating="1"></i>
+                                        <i class="fas fa-star" data-rating="2"></i>
+                                        <i class="fas fa-star" data-rating="3"></i>
+                                        <i class="fas fa-star" data-rating="4"></i>
+                                        <i class="fas fa-star" data-rating="5"></i>
+                                    </div>
+                                    <div class="rating-text mt-2">
+                                        <span id="ratingText">Click on a star to rate</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Rating" class="text-danger"></span>
+                        </div>
+
+                        <!-- Review Comment -->
+                        <div class="mb-4">
+                            <label asp-for="Comment" class="form-label fw-bold"></label>
+                            <textarea asp-for="Comment" class="form-control" rows="6" 
+                                      placeholder="Tell other pet owners about your experience. What did you like? What could be improved?"></textarea>
+                            <div class="form-text">
+                                <span id="charCount">0</span>/1000 characters
+                            </div>
+                            <span asp-validation-for="Comment" class="text-danger"></span>
+                        </div>
+
+                        <!-- Photo Upload Section -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Photos (Optional)</label>
+                            <div class="photo-upload-section">
+                                <div class="upload-area" id="uploadArea">
+                                    <div class="upload-content">
+                                        <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                                        <p class="mb-2">Drag and drop photos here, or click to browse</p>
+                                        <p class="text-muted small">Supports JPG, PNG, GIF, WebP (max 5MB each)</p>
+                                        <input type="file" id="photoInput" name="Photos" multiple accept="image/*" style="display: none;">
+                                        <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('photoInput').click()">
+                                            <i class="fas fa-plus me-2"></i>Add Photos
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="photo-preview-container" id="photoPreviewContainer" style="display: none;">
+                                    <h6 class="mt-3 mb-2">Selected Photos:</h6>
+                                    <div class="row" id="photoPreviews"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Review Guidelines -->
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-info-circle me-2"></i>Review Guidelines</h6>
+                            <ul class="mb-0">
+                                <li>Be honest and constructive in your feedback</li>
+                                <li>Focus on the service quality and your pet's experience</li>
+                                <li>Avoid personal attacks or inappropriate language</li>
+                                <li>Your review will be visible to other pet owners</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <!-- Service Details -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>Service Details
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <strong>Service:</strong><br>
+                            <span class="text-primary">@Model.ServiceName</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Provider:</strong><br>
+                            <span>@Model.ProviderName</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Pet:</strong><br>
+                            <span>@Model.PetName</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Service Date:</strong><br>
+                            <span>@Model.ServiceDate.ToString("MMMM dd, yyyy 'at' h:mm tt")</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rating Guide -->
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="fas fa-question-circle me-2"></i>Rating Guide
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="rating-guide">
+                            <div class="rating-item">
+                                <div class="stars text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <small class="text-muted">Excellent - Exceeded expectations</small>
+                            </div>
+                            <div class="rating-item">
+                                <div class="stars text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <small class="text-muted">Very Good - Met expectations well</small>
+                            </div>
+                            <div class="rating-item">
+                                <div class="stars text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <small class="text-muted">Good - Met expectations</small>
+                            </div>
+                            <div class="rating-item">
+                                <div class="stars text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <small class="text-muted">Fair - Below expectations</small>
+                            </div>
+                            <div class="rating-item">
+                                <div class="stars text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <small class="text-muted">Poor - Significantly below expectations</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Buttons -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between">
+                    <a href="@Url.Action("MyBookings", "PetOwner")" class="btn btn-outline-secondary">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-paper-plane me-2"></i>Submit Review
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function() {
+            // Star rating functionality
+            $('.star-rating .stars i').on('click', function() {
+                var rating = $(this).data('rating');
+                $('#ratingValue').val(rating);
+                
+                // Update star display
+                $('.star-rating .stars i').each(function(index) {
+                    if (index < rating) {
+                        $(this).removeClass('far').addClass('fas');
+                    } else {
+                        $(this).removeClass('fas').addClass('far');
+                    }
+                });
+                
+                // Update rating text
+                var ratingTexts = {
+                    1: 'Poor - Significantly below expectations',
+                    2: 'Fair - Below expectations',
+                    3: 'Good - Met expectations',
+                    4: 'Very Good - Met expectations well',
+                    5: 'Excellent - Exceeded expectations'
+                };
+                $('#ratingText').text(ratingTexts[rating]);
+            });
+
+            // Hover effect for stars
+            $('.star-rating .stars i').on('mouseenter', function() {
+                var rating = $(this).data('rating');
+                $('.star-rating .stars i').each(function(index) {
+                    if (index < rating) {
+                        $(this).removeClass('far').addClass('fas');
+                    } else {
+                        $(this).removeClass('fas').addClass('far');
+                    }
+                });
+            });
+
+            $('.star-rating .stars').on('mouseleave', function() {
+                var currentRating = $('#ratingValue').val() || 0;
+                $('.star-rating .stars i').each(function(index) {
+                    if (index < currentRating) {
+                        $(this).removeClass('far').addClass('fas');
+                    } else {
+                        $(this).removeClass('fas').addClass('far');
+                    }
+                });
+            });
+
+            // Character count for comment
+            $('#Comment').on('input', function() {
+                var length = $(this).val().length;
+                $('#charCount').text(length);
+                
+                if (length > 1000) {
+                    $('#charCount').addClass('text-danger');
+                } else {
+                    $('#charCount').removeClass('text-danger');
+                }
+            });
+
+            // Photo upload functionality
+            let selectedFiles = [];
+            
+            $('#photoInput').on('change', function(e) {
+                handleFiles(e.target.files);
+            });
+            
+            // Drag and drop functionality
+            $('#uploadArea').on('dragover', function(e) {
+                e.preventDefault();
+                $(this).addClass('drag-over');
+            });
+            
+            $('#uploadArea').on('dragleave', function(e) {
+                e.preventDefault();
+                $(this).removeClass('drag-over');
+            });
+            
+            $('#uploadArea').on('drop', function(e) {
+                e.preventDefault();
+                $(this).removeClass('drag-over');
+                handleFiles(e.originalEvent.dataTransfer.files);
+            });
+            
+            function handleFiles(files) {
+                for (let file of files) {
+                    if (file.type.startsWith('image/') && file.size <= 5 * 1024 * 1024) {
+                        selectedFiles.push(file);
+                        previewPhoto(file);
+                    } else {
+                        alert('Please select valid image files under 5MB each.');
+                    }
+                }
+                
+                if (selectedFiles.length > 0) {
+                    $('#photoPreviewContainer').show();
+                }
+            }
+            
+            function previewPhoto(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewHtml = `
+                        <div class="col-md-3 mb-3">
+                            <div class="photo-preview-card">
+                                <img src="${e.target.result}" class="img-fluid rounded" style="height: 150px; width: 100%; object-fit: cover;">
+                                <div class="photo-actions mt-2">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Caption (optional)" name="PhotoCaptions">
+                                    <button type="button" class="btn btn-sm btn-outline-danger mt-1" onclick="removePhoto(this)">
+                                        <i class="fas fa-trash"></i> Remove
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    $('#photoPreviews').append(previewHtml);
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            window.removePhoto = function(button) {
+                const photoCard = $(button).closest('.col-md-3');
+                const index = photoCard.index();
+                selectedFiles.splice(index, 1);
+                photoCard.remove();
+                
+                if (selectedFiles.length === 0) {
+                    $('#photoPreviewContainer').hide();
+                }
+            };
+
+            // Form validation
+            $('form').on('submit', function(e) {
+                var rating = $('#ratingValue').val();
+                var comment = $('#Comment').val().trim();
+                
+                if (!rating || rating == 0) {
+                    e.preventDefault();
+                    alert('Please select a rating before submitting your review.');
+                    return false;
+                }
+                
+                if (comment.length < 10) {
+                    e.preventDefault();
+                    alert('Please write at least 10 characters for your review.');
+                    return false;
+                }
+            });
+        });
+    </script>
+}
+
+<style>
+    .star-rating .stars i {
+        font-size: 2rem;
+        color: #ddd;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+    
+    .star-rating .stars i:hover,
+    .star-rating .stars i.fas {
+        color: #ffc107;
+    }
+    
+    .rating-guide .rating-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+    
+    .rating-guide .rating-item .stars {
+        margin-right: 0.5rem;
+        min-width: 80px;
+    }
+    
+    .rating-guide .rating-item .stars i {
+        font-size: 0.8rem;
+    }
+    
+    /* Photo Upload Styles */
+    .upload-area {
+        border: 2px dashed #ddd;
+        border-radius: 10px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .upload-area:hover,
+    .upload-area.drag-over {
+        border-color: #007bff;
+        background-color: #f8f9ff;
+    }
+    
+    .upload-content {
+        pointer-events: none;
+    }
+    
+    .photo-preview-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 0.5rem;
+        background: white;
+    }
+    
+    .photo-actions {
+        text-align: center;
+    }
+    
+    .photo-preview-card img {
+        border-radius: 4px;
+    }
+</style>

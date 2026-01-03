@@ -4,97 +4,129 @@
     Layout = "~/Views/Shared/_ServiceProviderLayout.cshtml";
 }
 
-<div class="container-fluid">
-    <div class="row">
-        <!-- Statistics Cards -->
-        <div class="col-12 mb-4">
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="card bg-primary text-white">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Today</h5>
-                            <h3>@Model.Statistics.TodayAppointments</h3>
-                            <small>Appointments</small>
-                        </div>
-                    </div>
+    <div class="row align-items-center mb-5">
+        <div class="col-md-8">
+            <h1 class="fw-800 mb-1" style="letter-spacing: -1px;">My Schedule</h1>
+            <p class="text-muted mb-0">Manage your availability and appointments</p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <button type="button" class="btn btn-premium d-flex align-items-center gap-2 ms-auto" data-bs-toggle="modal" data-bs-target="#availabilityModal">
+                <i class="bi bi-clock-history"></i>
+                <span>Set Availability</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Statistics Grid -->
+    <div class="row g-4 mb-5">
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="card glass-card border-0 p-3 stats-hover text-center">
+                <div class="icon-box bg-purple-light text-purple mx-auto mb-2">
+                    <i class="bi bi-calendar-event"></i>
                 </div>
-                <div class="col-md-2">
-                    <div class="card bg-success text-white">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">This Week</h5>
-                            <h3>@Model.Statistics.WeekAppointments</h3>
-                            <small>Appointments</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card bg-info text-white">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Available</h5>
-                            <h3>@Model.Statistics.AvailableSlots</h3>
-                            <small>Time Slots</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card bg-warning text-white">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Today</h5>
-                            <h3>$@Model.Statistics.TodayEarnings.ToString("F2")</h3>
-                            <small>Earnings</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card bg-secondary text-white">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">This Week</h5>
-                            <h3>$@Model.Statistics.WeekEarnings.ToString("F2")</h3>
-                            <small>Earnings</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card bg-dark text-white">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Blocked</h5>
-                            <h3>@Model.Statistics.BlockedHours</h3>
-                            <small>Hours</small>
-                        </div>
-                    </div>
-                </div>
+                <h4 class="fw-800 mb-0">@Model.Statistics.TodayAppointments</h4>
+                <p class="text-muted small fw-600 mb-0">Today</p>
             </div>
         </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="card glass-card border-0 p-3 stats-hover text-center">
+                <div class="icon-box bg-blue-light text-blue mx-auto mb-2">
+                    <i class="bi bi-calendar-week"></i>
+                </div>
+                <h4 class="fw-800 mb-0">@Model.Statistics.WeekAppointments</h4>
+                <p class="text-muted small fw-600 mb-0">Weekly</p>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="card glass-card border-0 p-3 stats-hover text-center">
+                <div class="icon-box bg-green-light text-green mx-auto mb-2">
+                    <i class="bi bi-check-circle"></i>
+                </div>
+                <h4 class="fw-800 mb-0">@Model.Statistics.AvailableSlots</h4>
+                <p class="text-muted small fw-600 mb-0">Slots</p>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="card glass-card border-0 p-3 stats-hover text-center">
+                <div class="icon-box bg-orange-light text-orange mx-auto mb-2">
+                    <i class="bi bi-currency-dollar"></i>
+                </div>
+                <h4 class="fw-800 mb-0">$@Model.Statistics.TodayEarnings.ToString("N0")</h4>
+                <p class="text-muted small fw-600 mb-0">Today $</p>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="card glass-card border-0 p-3 stats-hover text-center">
+                <div class="icon-box bg-purple-light text-purple mx-auto mb-2">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+                <h4 class="fw-800 mb-0">$@Model.Statistics.WeekEarnings.ToString("N0")</h4>
+                <p class="text-muted small fw-600 mb-0">Weekly $</p>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="card glass-card border-0 p-3 stats-hover text-center">
+                <div class="icon-box bg-red-light text-red mx-auto mb-2">
+                    <i class="bi bi-slash-circle"></i>
+                </div>
+                <h4 class="fw-800 mb-0">@Model.Statistics.BlockedHours</h4>
+                <p class="text-muted small fw-600 mb-0">Blocked</p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .fw-800 { font-weight: 800; }
+        .fw-700 { font-weight: 700; }
+        .fw-600 { font-weight: 600; }
+        .icon-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .bg-purple-light { background: #f3f0ff; }
+        .text-purple { color: #7c4dff; }
+        .bg-blue-light { background: #eef2ff; }
+        .text-blue { color: #3d5afe; }
+        .bg-green-light { background: #f0fdf4; }
+        .text-green { color: #22c55e; }
+        .bg-orange-light { background: #fff8f1; }
+        .text-orange { color: #ff9100; }
+        .bg-red-light { background: #fef2f2; }
+        .text-red { color: #ef4444; }
+        .stats-hover { transition: transform 0.3s ease; border: none; }
+        .stats-hover:hover { transform: translateY(-5px); }
+    </style>
 
         <!-- Schedule Controls -->
-        <div class="col-12 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-md-4">
-                            <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-outline-primary view-btn" data-view="day">Day</button>
-                                <button type="button" class="btn btn-outline-primary view-btn" data-view="week">Week</button>
-                                <button type="button" class="btn btn-outline-primary view-btn" data-view="month">Month</button>
-                            </div>
+        <div class="col-12 mb-4">
+            <div class="card glass-card border-0 shadow-sm p-4">
+                <div class="row align-items-center g-3">
+                    <div class="col-md-4 order-2 order-md-1">
+                        <div class="btn-group w-100 w-md-auto" role="group">
+                            <button type="button" class="btn btn-outline-primary view-btn px-4 fw-600" data-view="day">Day</button>
+                            <button type="button" class="btn btn-outline-primary view-btn px-4 fw-600" data-view="week">Week</button>
+                            <button type="button" class="btn btn-outline-primary view-btn px-4 fw-600" data-view="month">Month</button>
                         </div>
-                        <div class="col-md-4 text-center">
-                            <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-outline-secondary" id="prevBtn">
-                                    <i class="fas fa-chevron-left"></i>
-                                </button>
-                                <button type="button" class="btn btn-outline-secondary" id="todayBtn">Today</button>
-                                <button type="button" class="btn btn-outline-secondary" id="nextBtn">
-                                    <i class="fas fa-chevron-right"></i>
-                                </button>
-                            </div>
-                            <h5 class="mt-2" id="currentDate">@Model.CurrentDate.ToString("MMMM yyyy")</h5>
-                        </div>
-                        <div class="col-md-4 text-end">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#availabilityModal">
-                                <i class="fas fa-clock"></i> Set Availability
+                    </div>
+                    <div class="col-md-4 text-center order-1 order-md-2">
+                        <div class="d-flex align-items-center justify-content-center gap-3 mb-2">
+                            <button type="button" class="btn btn-light rounded-pill px-3" id="prevBtn">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+                            <button type="button" class="btn btn-light rounded-pill px-4 fw-600" id="todayBtn">Today</button>
+                            <button type="button" class="btn btn-light rounded-pill px-3" id="nextBtn">
+                                <i class="bi bi-chevron-right"></i>
                             </button>
                         </div>
+                        <h4 class="fw-800 text-dark mb-0" id="currentDate">@Model.CurrentDate.ToString("MMMM yyyy")</h4>
+                    </div>
+                    <div class="col-md-4 text-end order-3">
+                        @* Spacer or additional controls *@
                     </div>
                 </div>
             </div>
@@ -182,8 +214,8 @@
 </div>
 
 @section Scripts {
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <link href="~/lib/fullcalendar/main.min.css" rel="stylesheet">
+    <script src="~/lib/fullcalendar/main.min.js"></script>
     
     <script>
         let currentDate = new Date('@Model.CurrentDate.ToString("yyyy-MM-dd")');

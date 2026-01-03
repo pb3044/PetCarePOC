@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using PetCarePlatform.API.Controllers;
+using PetCarePlatform.Web.Controllers;
 using PetCarePlatform.Core.Interfaces;
 using PetCarePlatform.Core.Models;
 

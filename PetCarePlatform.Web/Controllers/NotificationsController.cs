@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading;
 using System.Threading.Tasks;
+using PetCarePlatform.Core.DTOs.Queries;
 using PetCarePlatform.Core.Interfaces;
 using System.Security.Claims;
 
@@ -16,63 +18,156 @@ namespace PetCarePlatform.Web.Controllers
             _notificationService = notificationService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 20, string? type = null, bool? isRead = null)
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var notifications = await _notificationService.GetNotificationsByUserIdAsync(userId);
-            return View(notifications);
+            
+            // Get unread count
+            var unreadCountResult = await _notificationService.GetUnreadNotificationCountAsync(userId);
+            ViewBag.UnreadCount = unreadCountResult.IsSuccess ? unreadCountResult.Value : 0;
+
+            // Get notifications with query
+            var query = new NotificationQuery
+            {
+                PageNumber = page,
+                PageSize = pageSize,
+                Type = !string.IsNullOrEmpty(type) && Enum.TryParse<PetCarePlatform.Core.Models.NotificationType>(type, out var notificationType) 
+                    ? notificationType 
+                    : null,
+                IsRead = isRead,
+                SortBy = "CreatedAt",
+                SortOrder = "desc"
+            };
+
+            var result = await _notificationService.GetNotificationsAsync(query, userId);
+            
+            if (result.IsFailure)
+            {
+                TempData["Error"] = result.ErrorMessage;
+                return View(new PetCarePlatform.Core.Common.PagedResult<PetCarePlatform.Core.DTOs.Responses.NotificationResponse>(
+                    new List<PetCarePlatform.Core.DTOs.Responses.NotificationResponse>(),
+                    0,
+                    1,
+                    20
+                ));
+            }
+
+            ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = result.Value!.TotalPages;
+            ViewBag.TotalCount = result.Value.TotalCount;
+
+            return View(result.Value);
         }
 
-        public async Task<IActionResult> Unread()
+        public async Task<IActionResult> Unread(int page = 1, int pageSize = 20)
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var notifications = await _notificationService.GetUnreadNotificationsByUserIdAsync(userId);
-            return View(notifications);
+            
+            var query = new NotificationQuery
+            {
+                PageNumber = page,
+                PageSize = pageSize,
+                IsRead = false,
+                SortBy = "CreatedAt",
+                SortOrder = "desc"
+            };
+
+            var result = await _notificationService.GetNotificationsAsync(query, userId);
+            
+            if (result.IsFailure)
+            {
+                TempData["Error"] = result.ErrorMessage;
+                return View(new PetCarePlatform.Core.Common.PagedResult<PetCarePlatform.Core.DTOs.Responses.NotificationResponse>(
+                    new List<PetCarePlatform.Core.DTOs.Responses.NotificationResponse>(),
+                    0,
+                    1,
+                    20
+                ));
+            }
+
+            ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = result.Value!.TotalPages;
+            ViewBag.TotalCount = result.Value.TotalCount;
+
+            return View(result.Value);
         }
 
         [HttpPost]
         public async Task<IActionResult> MarkAsRead(int id)
         {
-            try
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            
+            var result = await _notificationService.MarkNotificationAsReadAsync(id, userId);
+            
+            if (result.IsFailure)
             {
-                await _notificationService.MarkNotificationAsReadAsync(id);
-                return Json(new { success = true });
+                return Json(new { success = false, message = result.ErrorMessage });
             }
-            catch
-            {
-                return Json(new { success = false });
-            }
+
+            return Json(new { success = true, message = "Notification marked as read" });
         }
 
         [HttpPost]
         public async Task<IActionResult> MarkAllAsRead()
         {
-            try
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            
+            var result = await _notificationService.MarkAllNotificationsAsReadAsync(userId, CancellationToken.None);
+            
+            if (result.IsFailure)
             {
-                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                await _notificationService.MarkAllNotificationsAsReadAsync(userId);
-                TempData["SuccessMessage"] = "All notifications marked as read!";
+                TempData["ErrorMessage"] = result.ErrorMessage;
             }
-            catch (Exception ex)
+            else
             {
-                TempData["ErrorMessage"] = "An error occurred: " + ex.Message;
+                TempData["SuccessMessage"] = "All notifications marked as read!";
             }
 
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetUnreadCount()
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            
+            var result = await _notificationService.GetUnreadNotificationCountAsync(userId, CancellationToken.None);
+            
+            if (result.IsFailure)
+            {
+                return Json(new { success = false, count = 0 });
+            }
+
+            return Json(new { success = true, count = result.Value });
+        }
+
         public async Task<IActionResult> Details(int id)
         {
-            var notification = await _notificationService.GetNotificationByIdAsync(id);
-            if (notification == null)
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            
+            var result = await _notificationService.GetNotificationByIdAsync(id, CancellationToken.None);
+            
+            if (result.IsFailure)
             {
-                return NotFound();
+                TempData["Error"] = result.ErrorMessage;
+                return RedirectToAction("Index");
+            }
+
+            var notification = result.Value!;
+
+            // Validate user owns the notification
+            if (notification.UserId != userId)
+            {
+                TempData["Error"] = "You do not have permission to view this notification.";
+                return RedirectToAction("Index");
             }
 
             // Mark as read when viewing details
             if (!notification.IsRead)
             {
-                await _notificationService.MarkNotificationAsReadAsync(id);
+                await _notificationService.MarkNotificationAsReadAsync(id, userId);
             }
 
             return View(notification);

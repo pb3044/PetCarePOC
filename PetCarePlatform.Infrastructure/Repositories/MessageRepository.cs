@@ -11,21 +11,42 @@ namespace PetCarePlatform.Infrastructure.Repositories
         {
         }
 
-        public override async Task<Message?> GetByIdAsync(int id)
+        public override async Task<Message?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(m => m.Sender)
                 .Include(m => m.Receiver)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id, cancellationToken);
         }
 
-        public override async Task<IEnumerable<Message>> GetAllAsync()
+        public override async Task<IEnumerable<Message>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(m => m.Sender)
                 .Include(m => m.Receiver)
                 .OrderByDescending(m => m.CreatedAt)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
+        }
+
+        // Explicit interface implementations (without CancellationToken)
+        async Task<Message> IMessageRepository.GetByIdAsync(int id)
+        {
+            return await GetByIdAsync(id) ?? throw new InvalidOperationException($"Message with ID {id} not found");
+        }
+
+        async Task<IEnumerable<Message>> IMessageRepository.GetAllAsync()
+        {
+            return await GetAllAsync();
+        }
+
+        async Task<Message> IMessageRepository.CreateAsync(Message message)
+        {
+            return await CreateAsync(message);
+        }
+
+        async Task IMessageRepository.DeleteAsync(int id)
+        {
+            await DeleteAsync(id);
         }
 
         public async Task<IEnumerable<Message>> GetBySenderIdAsync(int senderId)

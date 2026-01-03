@@ -8,6 +8,8 @@ namespace PetCarePlatform.Core.Models
         public int Id { get; set; }
         public int UserId { get; set; }
         public string BusinessName { get; set; }
+        public string BusinessType { get; set; }
+        public string BusinessNumber { get; set; }
         public string Description { get; set; }
         public string Credentials { get; set; }
         public string Certifications { get; set; }
@@ -22,8 +24,12 @@ namespace PetCarePlatform.Core.Models
         public int ServiceRadius { get; set; }
         public string BankingInfo { get; set; }
         public string TaxInfo { get; set; }
+        public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        
+        // Computed property for overall verification status
+        public bool IsVerified => BackgroundCheckVerified && IdentityVerified;
         
         // Navigation properties
         public virtual ApplicationUser User { get; set; }
